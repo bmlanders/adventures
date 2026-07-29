@@ -1,0 +1,179 @@
+:root {
+  --navy: #1B2A41;
+  --navy-deep: #10192A;
+  --gold: #C99A2E;
+  --gold-light: #E8DFC8;
+  --cream: #F7F4EE;
+  --ink: #2A2A2A;
+  --gray: #6B6B6B;
+  --line: #D8D4CC;
+  --live: #3E6B4F;
+  --upcoming: #A63D2F;
+  --serif: "Iowan Old Style", "Georgia", serif;
+  --sans: -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+  --mono: "SFMono-Regular", Consolas, monospace;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--cream);
+  color: var(--ink);
+  font-family: var(--sans);
+  line-height: 1.5;
+}
+
+a { color: var(--navy); }
+a:focus-visible, button:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+
+/* ---- Site header: a ticket-stub strip ---- */
+.site-header {
+  background: var(--navy);
+  border-bottom: 4px solid var(--gold);
+  padding: 18px 20px;
+}
+.site-header .wrap {
+  max-width: 960px;
+  margin: 0 auto;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.site-header .brand {
+  font-family: var(--serif);
+  font-weight: 700;
+  font-size: 1.5rem;
+  color: #fff;
+  text-decoration: none;
+  letter-spacing: 0.01em;
+}
+.site-header .tag {
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--gold-light);
+}
+
+main { max-width: 960px; margin: 0 auto; padding: 28px 20px 60px; }
+
+/* ---- Trip cards on the home page ---- */
+.trip-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 18px;
+  margin-top: 20px;
+}
+.trip-card {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 3px;
+  overflow: hidden;
+  text-decoration: none;
+  color: var(--ink);
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.trip-card:hover { transform: translateY(-2px); box-shadow: 0 6px 18px rgba(27,42,65,0.12); }
+.trip-card .stripe { height: 6px; background: var(--gold); }
+.trip-card.status-live .stripe { background: var(--live); }
+.trip-card .card-body { padding: 16px 18px 18px; }
+.trip-card .status {
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--gray);
+}
+.trip-card.status-live .status { color: var(--live); font-weight: 700; }
+.trip-card h2 {
+  font-family: var(--serif);
+  font-size: 1.25rem;
+  margin: 6px 0 4px;
+  color: var(--navy);
+}
+.trip-card .dates { font-size: 0.82rem; color: var(--gray); margin-bottom: 8px; }
+.trip-card .blurb { font-size: 0.88rem; color: var(--ink); }
+
+/* ---- Trip detail page ---- */
+.trip-hero {
+  background: var(--navy);
+  color: #fff;
+  padding: 30px 22px;
+  border-radius: 3px;
+  border-bottom: 4px solid var(--gold);
+  margin-bottom: 24px;
+}
+.trip-hero .eyebrow {
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--gold-light);
+}
+.trip-hero h1 { font-family: var(--serif); font-size: 1.9rem; margin: 6px 0 4px; }
+.trip-hero .route { color: #C9D4E4; font-size: 0.92rem; }
+
+.day-nav {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-bottom: 24px;
+}
+.day-nav a {
+  font-family: var(--mono);
+  font-size: 0.78rem;
+  padding: 5px 10px;
+  border: 1px solid var(--line);
+  border-radius: 3px;
+  text-decoration: none;
+  color: var(--navy);
+  background: #fff;
+}
+.day-nav a:hover { border-color: var(--gold); }
+
+.day-block {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-left: 4px solid var(--gold);
+  border-radius: 3px;
+  padding: 16px 18px;
+  margin-bottom: 16px;
+}
+.day-block h3 { font-family: var(--serif); margin: 0 0 4px; color: var(--navy); font-size: 1.15rem; }
+.day-block .day-sub { font-size: 0.8rem; color: var(--gray); margin-bottom: 10px; }
+.day-block .entry { margin-bottom: 8px; font-size: 0.92rem; }
+.day-block .entry .t { font-family: var(--mono); font-weight: 700; color: var(--navy); margin-right: 8px; }
+
+/* ---- Memories / photo log ---- */
+.memory {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 3px;
+  padding: 14px 16px;
+  margin-bottom: 12px;
+}
+.memory .meta { font-family: var(--mono); font-size: 0.72rem; color: var(--gray); margin-bottom: 6px; }
+.memory img { max-width: 100%; border-radius: 3px; margin-top: 8px; }
+
+.photo-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 8px;
+  margin: 14px 0;
+}
+.photo-grid img { width: 100%; height: 140px; object-fit: cover; border-radius: 3px; }
+
+footer.site-footer {
+  text-align: center;
+  font-size: 0.78rem;
+  color: var(--gray);
+  padding: 24px 20px 40px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .trip-card { transition: none; }
+}

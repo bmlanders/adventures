@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>{% if page.title %}{{ page.title }} · {% endif %}{{ site.title }}</title>
+  <link rel="stylesheet" href="{{ '/assets/css/main.css' | relative_url }}">
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <a class="brand" href="{{ '/' | relative_url }}">{{ site.title }}</a>
+      <span class="tag">Family archive · unlisted</span>
+    </div>
+  </header>
+  <main>
+    {{ content }}
+  </main>
+  <footer class="site-footer">
+    Landers On Tour — built with Jekyll &amp; GitHub Pages.
+  </footer>
+</body>
+</html>

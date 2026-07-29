@@ -1,0 +1,27 @@
+title: "Landers On Tour"
+description: "Brendan & Jen's trip archive — plans, memories, and everything in between."
+baseurl: ""
+url: ""
+
+# Collections
+collections:
+  trips:
+    output: true
+    permalink: /trips/:path/
+
+defaults:
+  - scope:
+      path: ""
+      type: "trips"
+    values:
+      layout: "trip"
+
+markdown: kramdown
+theme: null
+plugins:
+  - jekyll-feed
+
+exclude:
+  - README.md
+  - Gemfile
+  - Gemfile.lock
