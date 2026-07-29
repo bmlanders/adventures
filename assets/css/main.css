@@ -339,6 +339,18 @@ main { max-width: 900px; margin: 0 auto; padding: 0 24px 80px; position: relativ
 .stop .body .addr { font-size: 0.78rem; color: var(--stone); font-style: italic; margin-bottom: 6px; }
 .stop .body p { margin: 0; font-size: 0.91rem; color: var(--ink-soft); }
 
+/* what to actually order once you're there */
+.order {
+  margin-top: 8px; padding: 8px 12px;
+  background: var(--green-pale); border-radius: 6px;
+  font-size: 0.87rem; color: var(--ink-soft);
+}
+.order b {
+  color: var(--green-deep); font-weight: 700;
+  font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase;
+  display: block; margin-bottom: 2px;
+}
+
 /* local-tip callout */
 .tip {
   border-left: 3px solid var(--gold);
@@ -383,12 +395,14 @@ main { max-width: 900px; margin: 0 auto; padding: 0 24px 80px; position: relativ
   background: var(--card); border: 1px solid var(--line);
   border-radius: var(--radius-sm); padding: 15px 17px;
 }
-.rec .cat {
+/* category chip — used in the recommendation grid and on route stops */
+.cat {
   display: inline-block; font-size: 0.62rem; font-weight: 700;
   letter-spacing: 0.12em; text-transform: uppercase;
   color: var(--green); background: var(--green-pale);
   padding: 3px 8px; border-radius: 4px; margin-bottom: 8px;
 }
+.cat.beer { color: var(--gold-deep); background: var(--gold-soft); }
 .rec h4 { font-family: var(--serif); font-size: 1rem; font-weight: 600; margin: 0 0 2px; }
 .rec .addr { font-size: 0.76rem; color: var(--stone); font-style: italic; margin-bottom: 6px; }
 .rec p { margin: 0; font-size: 0.86rem; color: var(--ink-soft); }
