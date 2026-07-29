@@ -7,11 +7,18 @@ route: "Las Vegas · group trip"
 blurb: "The Sphere, The Palazzo, and Goose in Birmingham on the way."
 ---
 
-<p style="color:var(--gray); font-size:0.9rem;">Placeholder — drop in details whenever.</p>
+<!-- DAYS_START -->
+<div class="day-block">
+  <h3>The trip</h3>
+  <div class="day-sub">The Palazzo · The Sphere · Goose in Birmingham en route</div>
+  <div class="entry">Group trip to Vegas — details to be filled in whenever there's a minute.</div>
+</div>
+<!-- DAYS_END -->
 
-## Memories {#memories}
-
-<div class="memory">
-  <div class="meta">April 2026 · Las Vegas</div>
-  <p><em>Add memories, photos, and notes from the trip here.</em></p>
+<div class="memories-section" id="memories">
+  <h2>Memories</h2>
+  <p class="lede" style="margin-bottom:16px;">Add updates and photos from the <a href="{{ '/admin/' | relative_url }}">admin page</a>.</p>
+  <!-- MEMORIES_START -->
+  <p class="memory-empty">Nothing posted yet.</p>
+  <!-- MEMORIES_END -->
 </div>
