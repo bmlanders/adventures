@@ -2,21 +2,18 @@
 layout: default
 title: null
 ---
-<p style="color:var(--gray); font-size:0.92rem; max-width:60ch;">
-  Every trip, one place. Plans before we leave, updates while we're out there, memories after.
-</p>
+<p class="lede">Every trip, one place. Plans before we leave, updates while we're out there, memories after.</p>
 
-<div class="trip-grid">
+<div class="timeline">
   {% assign trips = site.trips | sort: 'sort_date' | reverse %}
   {% for trip in trips %}
-  <a class="trip-card status-{{ trip.status }}" href="{{ trip.url | relative_url }}">
-    <div class="stripe"></div>
-    <div class="card-body">
-      <div class="status">{{ trip.status }}</div>
+  <div class="timeline-item status-{{ trip.status }}">
+    <a class="trip-card status-{{ trip.status }}" href="{{ trip.url | relative_url }}">
+      <span class="pill">{{ trip.status }}</span>
       <h2>{{ trip.title }}</h2>
       <div class="dates">{{ trip.dates }}</div>
       <div class="blurb">{{ trip.blurb }}</div>
-    </div>
-  </a>
+    </a>
+  </div>
   {% endfor %}
 </div>

@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Trip Admin · Landers On Tour</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/adventures/assets/css/main.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <a class="brand" href="/adventures/">Landers On Tour</a>
+      <span class="tag">Admin — just you</span>
+    </div>
+  </header>
+  <main>
+    <p class="lede">Add memories, update itineraries, or start a new trip. This page talks straight to GitHub — nothing runs on a server, and only someone with your access token can save changes here.</p>
+
+    <!-- ===== Connect ===== -->
+    <div class="card-block" id="connect-block">
+      <h2 style="font-size:1.15rem; margin:0 0 4px;">1. Connect</h2>
+      <p class="hint" style="margin-bottom:10px;">Paste your GitHub token below. It's saved only in this browser (never sent anywhere but GitHub) so you'll only need to do this once per device. See the README for how to create one — takes two minutes.</p>
+      <label for="repo-field">Repository</label>
+      <input type="text" id="repo-field" value="bmlanders/adventures">
+      <label for="token-field">GitHub token</label>
+      <input type="password" id="token-field" placeholder="ghp_...">
+      <button class="btn" id="connect-btn" style="margin-top:14px;">Connect</button>
+      <span id="connect-status" class="status-msg"></span>
+    </div>
+
+    <div id="app" style="display:none;">
+
+      <!-- ===== Add a memory ===== -->
+      <div class="card-block">
+        <h2 style="font-size:1.15rem; margin:0 0 4px;">2. Add a memory</h2>
+        <p class="hint">A quick update, a caption, and optionally a link to a Google Photos album. Get a shareable link in Google Photos: open the album → Share → Create link, then paste it below.</p>
+
+        <label for="mem-trip">Trip</label>
+        <select id="mem-trip"></select>
+
+        <label for="mem-when">When (optional label, e.g. "Day 2, evening")</label>
+        <input type="text" id="mem-when" placeholder="Aug 21, evening">
+
+        <label for="mem-text">What happened</label>
+        <textarea id="mem-text" placeholder="Sound was unreal tonight, sat-in on..."></textarea>
+
+        <label for="mem-photos">Google Photos album link (optional)</label>
+        <input type="url" id="mem-photos" placeholder="https://photos.app.goo.gl/...">
+
+        <button class="btn" id="mem-submit" style="margin-top:14px;">Add memory</button>
+        <span id="mem-status" class="status-msg"></span>
+      </div>
+
+      <!-- ===== Add / update itinerary ===== -->
+      <div class="card-block">
+        <h2 style="font-size:1.15rem; margin:0 0 4px;">3. Add an itinerary entry</h2>
+        <p class="hint">Adds a new day block to a trip. One line per stop, formatted as <code>TIME | what happens</code>.</p>
+
+        <label for="day-trip">Trip</label>
+        <select id="day-trip"></select>
+
+        <label for="day-title">Day heading</label>
+        <input type="text" id="day-title" placeholder="Saturday, Sept 5 — Home">
+
+        <label for="day-sub">Subheading (hotel, key logistics)</label>
+        <input type="text" id="day-sub" placeholder="Residence Inn · flight out 9am">
+
+        <label for="day-entries">Entries — one per line, TIME | text</label>
+        <textarea id="day-entries" placeholder="9:00 AM | Depart for the airport&#10;12:30 PM | Land home"></textarea>
+
+        <button class="btn" id="day-submit" style="margin-top:14px;">Add day</button>
+        <span id="day-status" class="status-msg"></span>
+      </div>
+
+      <!-- ===== New trip ===== -->
+      <div class="card-block">
+        <h2 style="font-size:1.15rem; margin:0 0 4px;">4. Start a new trip</h2>
+        <label for="new-title">Trip title</label>
+        <input type="text" id="new-title" placeholder="Tahoe with the Girls">
+
+        <label for="new-slug">URL slug (auto-fills, edit if you want)</label>
+        <input type="text" id="new-slug" placeholder="tahoe-2027">
+
+        <label for="new-dates">Dates (display text)</label>
+        <input type="text" id="new-dates" placeholder="July 2027">
+
+        <label for="new-sortdate">Sort date (for ordering — use the trip's start date)</label>
+        <input type="date" id="new-sortdate">
+
+        <label for="new-status">Status</label>
+        <select id="new-status">
+          <option value="upcoming">Upcoming</option>
+          <option value="live">Live (currently on the trip)</option>
+          <option value="complete">Complete</option>
+        </select>
+
+        <label for="new-route">Route / one-liner</label>
+        <input type="text" id="new-route" placeholder="Lake Tahoe · long weekend">
+
+        <label for="new-blurb">Blurb (shows on the homepage card)</label>
+        <input type="text" id="new-blurb" placeholder="Whatever this trip deserves as a tagline.">
+
+        <button class="btn" id="new-submit" style="margin-top:14px;">Create trip</button>
+        <span id="new-status-msg" class="status-msg"></span>
+      </div>
+
+    </div>
+  </main>
+  <footer class="site-footer">
+    <a href="/adventures/">&larr; Back to the site</a>
+  </footer>
+
+<script>
+const $ = (id) => document.getElementById(id);
+let REPO = '', TOKEN = '';
+
+// ---- base64 helpers (UTF-8 safe) ----
+function b64encode(str) {
+  return btoa(String.fromCharCode(...new TextEncoder().encode(str)));
+}
+function b64decode(b64) {
+  return new TextDecoder().decode(Uint8Array.from(atob(b64.replace(/\n/g,'')), c => c.charCodeAt(0)));
+}
+
+// ---- GitHub API ----
+async function ghGet(path) {
+  const res = await fetch(`https://api.github.com/repos/${REPO}/contents/${path}`, {
+    headers: { Authorization: `token ${TOKEN}`, Accept: 'application/vnd.github+json' }
+  });
+  if (!res.ok) throw new Error(`GET ${path} failed: ${res.status}`);
+  const data = await res.json();
+  return { content: b64decode(data.content), sha: data.sha };
+}
+async function ghList(path) {
+  const res = await fetch(`https://api.github.com/repos/${REPO}/contents/${path}`, {
+    headers: { Authorization: `token ${TOKEN}`, Accept: 'application/vnd.github+json' }
+  });
+  if (!res.ok) throw new Error(`LIST ${path} failed: ${res.status}`);
+  return res.json();
+}
+async function ghPut(path, content, sha, message) {
+  const body = { message, content: b64encode(content), branch: 'main' };
+  if (sha) body.sha = sha;
+  const res = await fetch(`https://api.github.com/repos/${REPO}/contents/${path}`, {
+    method: 'PUT',
+    headers: { Authorization: `token ${TOKEN}`, Accept: 'application/vnd.github+json', 'Content-Type': 'application/json' },
+    body: JSON.stringify(body)
+  });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err.message || `PUT ${path} failed: ${res.status}`);
+  }
+  return res.json();
+}
+
+function escapeHtml(s) {
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function insertIntoMarkers(content, markerStart, markerEnd, newBlock, mode) {
+  const startIdx = content.indexOf(markerStart);
+  const endIdx = content.indexOf(markerEnd);
+  if (startIdx === -1 || endIdx === -1) throw new Error(`Markers ${markerStart} not found in file`);
+  const before = content.slice(0, startIdx + markerStart.length);
+  let middle = content.slice(startIdx + markerStart.length, endIdx);
+  const after = content.slice(endIdx);
+  // strip the empty-state placeholder if present
+  middle = middle.replace(/\s*<p class="memory-empty">[^<]*<\/p>\s*/,'\n');
+  if (mode === 'prepend') {
+    middle = `\n${newBlock}\n` + middle;
+  } else {
+    middle = middle + `\n${newBlock}\n`;
+  }
+  return before + middle + after;
+}
+
+// ---- Trip list population ----
+async function loadTrips() {
+  const files = await ghList('_trips');
+  const trips = [];
+  for (const f of files) {
+    if (!f.name.endsWith('.md')) continue;
+    const { content } = await ghGet(`_trips/${f.name}`);
+    const titleMatch = content.match(/^title:\s*"?(.*?)"?\s*$/m);
+    trips.push({ slug: f.name.replace(/\.md$/,''), title: titleMatch ? titleMatch[1] : f.name });
+  }
+  trips.sort((a,b) => a.title.localeCompare(b.title));
+  for (const sel of [$('mem-trip'), $('day-trip')]) {
+    sel.innerHTML = trips.map(t => `<option value="${t.slug}">${escapeHtml(t.title)}</option>`).join('');
+  }
+}
+
+// ---- Connect ----
+$('connect-btn').addEventListener('click', async () => {
+  REPO = $('repo-field').value.trim();
+  TOKEN = $('token-field').value.trim();
+  const status = $('connect-status');
+  if (!REPO || !TOKEN) { status.textContent = 'Enter both fields.'; status.className = 'status-msg err'; return; }
+  status.textContent = 'Connecting...'; status.className = 'status-msg';
+  try {
+    await ghList('_trips');
+    localStorage.setItem('lot_repo', REPO);
+    localStorage.setItem('lot_token', TOKEN);
+    status.textContent = 'Connected.'; status.className = 'status-msg ok';
+    await loadTrips();
+    $('app').style.display = 'block';
+  } catch (e) {
+    status.textContent = 'Could not connect — check the token and repo name. ' + e.message;
+    status.className = 'status-msg err';
+  }
+});
+
+// ---- Add memory ----
+$('mem-submit').addEventListener('click', async () => {
+  const status = $('mem-status');
+  const slug = $('mem-trip').value;
+  const when = $('mem-when').value.trim();
+  const text = $('mem-text').value.trim();
+  const photos = $('mem-photos').value.trim();
+  if (!slug || !text) { status.textContent = 'Pick a trip and write something.'; status.className = 'status-msg err'; return; }
+  status.textContent = 'Saving...'; status.className = 'status-msg';
+  try {
+    const path = `_trips/${slug}.md`;
+    const { content, sha } = await ghGet(path);
+    let block = `<div class="memory">\n  <div class="meta">${escapeHtml(when || 'Update')}</div>\n  <p>${escapeHtml(text)}</p>`;
+    if (photos) block += `\n  <a class="photo-link" href="${escapeHtml(photos)}" target="_blank" rel="noopener">📷 View photos</a>`;
+    block += `\n</div>`;
+    const updated = insertIntoMarkers(content, '<!-- MEMORIES_START -->', '<!-- MEMORIES_END -->', block, 'prepend');
+    await ghPut(path, updated, sha, `Add memory to ${slug}`);
+    status.textContent = 'Added! Live in about a minute.'; status.className = 'status-msg ok';
+    $('mem-when').value = ''; $('mem-text').value = ''; $('mem-photos').value = '';
+  } catch (e) {
+    status.textContent = 'Failed: ' + e.message; status.className = 'status-msg err';
+  }
+});
+
+// ---- Add day ----
+$('day-submit').addEventListener('click', async () => {
+  const status = $('day-status');
+  const slug = $('day-trip').value;
+  const title = $('day-title').value.trim();
+  const sub = $('day-sub').value.trim();
+  const lines = $('day-entries').value.split('\n').map(l => l.trim()).filter(Boolean);
+  if (!slug || !title || lines.length === 0) { status.textContent = 'Fill in the day heading and at least one entry.'; status.className = 'status-msg err'; return; }
+  status.textContent = 'Saving...'; status.className = 'status-msg';
+  try {
+    const path = `_trips/${slug}.md`;
+    const { content, sha } = await ghGet(path);
+    const entries = lines.map(line => {
+      const [t, ...rest] = line.split('|');
+      const body = rest.join('|').trim();
+      return body
+        ? `  <div class="entry"><span class="t">${escapeHtml(t.trim())}</span> ${escapeHtml(body)}</div>`
+        : `  <div class="entry">${escapeHtml(t.trim())}</div>`;
+    }).join('\n');
+    const block = `<div class="day-block">\n  <h3>${escapeHtml(title)}</h3>\n  ${sub ? `<div class="day-sub">${escapeHtml(sub)}</div>\n` : ''}${entries}\n</div>`;
+    const updated = insertIntoMarkers(content, '<!-- DAYS_START -->', '<!-- DAYS_END -->', block, 'append');
+    await ghPut(path, updated, sha, `Add day to ${slug}`);
+    status.textContent = 'Added! Live in about a minute.'; status.className = 'status-msg ok';
+    $('day-title').value = ''; $('day-sub').value = ''; $('day-entries').value = '';
+  } catch (e) {
+    status.textContent = 'Failed: ' + e.message; status.className = 'status-msg err';
+  }
+});
+
+// ---- New trip ----
+$('new-title').addEventListener('input', () => {
+  const slugField = $('new-slug');
+  if (slugField.dataset.touched) return;
+  slugField.value = $('new-title').value.toLowerCase().trim()
+    .replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+});
+$('new-slug').addEventListener('input', () => { $('new-slug').dataset.touched = '1'; });
+
+$('new-submit').addEventListener('click', async () => {
+  const status = $('new-status-msg');
+  const title = $('new-title').value.trim();
+  const slug = $('new-slug').value.trim();
+  const dates = $('new-dates').value.trim();
+  const sortdate = $('new-sortdate').value;
+  const statusVal = $('new-status').value;
+  const route = $('new-route').value.trim();
+  const blurb = $('new-blurb').value.trim();
+  if (!title || !slug || !sortdate) { status.textContent = 'Title, slug, and sort date are required.'; status.className = 'status-msg err'; return; }
+  status.textContent = 'Creating...'; status.className = 'status-msg';
+  try {
+    const path = `_trips/${slug}.md`;
+    const fm = `---\ntitle: "${title.replace(/"/g,'\\"')}"\nstatus: ${statusVal}\ndates: "${dates}"\nsort_date: ${sortdate}\nroute: "${route.replace(/"/g,'\\"')}"\nblurb: "${blurb.replace(/"/g,'\\"')}"\n---\n\n`;
+    const body =
+`<!-- DAYS_START -->
+<div class="day-block">
+  <h3>The trip</h3>
+  <div class="entry">Add the itinerary from the admin page whenever you're ready.</div>
+</div>
+<!-- DAYS_END -->
+
+<div class="memories-section" id="memories">
+  <h2>Memories</h2>
+  <!-- MEMORIES_START -->
+  <p class="memory-empty">Nothing posted yet.</p>
+  <!-- MEMORIES_END -->
+</div>
+`;
+    await ghPut(path, fm + body, null, `Create trip: ${title}`);
+    status.textContent = 'Trip created! Live in about a minute.'; status.className = 'status-msg ok';
+    await loadTrips();
+    $('new-title').value = ''; $('new-slug').value = ''; $('new-slug').dataset.touched = '';
+    $('new-dates').value = ''; $('new-sortdate').value = ''; $('new-route').value = ''; $('new-blurb').value = '';
+  } catch (e) {
+    status.textContent = 'Failed: ' + e.message; status.className = 'status-msg err';
+  }
+});
+
+// ---- Auto-connect if we have a saved token ----
+window.addEventListener('DOMContentLoaded', async () => {
+  const savedRepo = localStorage.getItem('lot_repo');
+  const savedToken = localStorage.getItem('lot_token');
+  if (savedRepo && savedToken) {
+    $('repo-field').value = savedRepo;
+    $('token-field').value = savedToken;
+    $('connect-btn').click();
+  }
+});
+</script>
+</body>
+</html>
