@@ -309,6 +309,19 @@ main { max-width: 900px; margin: 0 auto; padding: 0 24px 80px; position: relativ
   letter-spacing: 0.03em;
   min-width: 60px;
 }
+/* wrapper so an entry can hold a paragraph plus a place list */
+.day-block .entry .entry-body { flex: 1 1 auto; min-width: 0; }
+
+/* place-name pills for "what to see" lists */
+.places { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 9px; }
+.places span {
+  font-size: 0.79rem; padding: 3px 10px;
+  background: var(--paper-deep); border: 1px solid var(--line);
+  border-radius: 20px; color: var(--ink-soft);
+}
+
+/* single full-width evening slot (a show with no paired dinner) */
+.tonight.single { grid-template-columns: 1fr; }
 
 /* ===== Itinerary detail components ===== */
 

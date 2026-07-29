@@ -1,14 +1,14 @@
 ---
-title: "NYC Food & Beer Tour"
+title: "Jason Isbell at Radio City"
 status: complete
-dates: "2026"
-sort_date: 2026-07-01
-route: "New York City · West Village + Nolita · Renaissance Times Square"
-blurb: "Two days on foot through the West Village and Little Italy, chasing slices and taps."
+dates: "Feb 20–21, 2026"
+sort_date: 2026-02-20
+route: "New York City · Radio City Music Hall · Renaissance Times Square"
+blurb: "Isbell at Radio City, bracketed by two days of eating and drinking across the Village and Little Italy."
 ---
 
 <div class="day-nav">
-  <a href="#friday">Friday</a><a href="#saturday">Saturday</a><a href="#memories">Memories</a>
+  <a href="#friday">Fri, Feb 20</a><a href="#saturday">Sat, Feb 21</a><a href="#memories">Memories</a>
 </div>
 
 <!-- DAYS_START -->
@@ -116,6 +116,19 @@ blurb: "Two days on foot through the West Village and Little Italy, chasing slic
     <span class="txt"><span class="h">Friday map</span><span class="s">All eight stops in Google Maps</span></span>
     <span class="go"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M7 17L17 7M7 7h10v10"/></svg></span>
   </a>
+</div>
+
+<div class="day-block">
+  <h3>Friday night · Radio City</h3>
+  <div class="day-sub">The reason for the whole weekend</div>
+  <div class="tonight single">
+    <div class="slot show">
+      <div class="lbl">The show</div>
+      <h4>Jason Isbell</h4>
+      <div class="addr">Radio City Music Hall, 1260 6th Ave</div>
+      <p>Back at the hotel by 4:00, which is exactly why the walking tour was built to end when it did. Six blocks up 6th Ave and you're there.</p>
+    </div>
+  </div>
 </div>
 
 <div class="day-block" id="saturday">
