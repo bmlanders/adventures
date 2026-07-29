@@ -1,5 +1,8 @@
 title: "Landers On Tour"
 description: "Brendan & Jen's trip archive — plans, memories, and everything in between."
+# Serving from bmlanders.github.io/adventures/, so baseurl is the subfolder.
+# Pointing a custom domain here? baseurl must become "" and url your domain —
+# see "Using your own domain" in the README.
 baseurl: "/adventures"
 url: "https://bmlanders.github.io"
 

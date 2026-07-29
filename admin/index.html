@@ -8,21 +8,54 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/adventures/assets/css/main.css">
+  <link rel="stylesheet" href="../assets/css/main.css">
+  <style>
+    /* admin-only layout bits — small enough not to warrant a second stylesheet */
+    .admin-lede { color: var(--stone); max-width: 62ch; margin: 28px 0 30px; }
+    .step-list { counter-reset: step; }
+    .pdf-drop {
+      border: 2px dashed var(--line);
+      border-radius: var(--radius-sm);
+      padding: 22px;
+      text-align: center;
+      background: var(--paper-deep);
+      cursor: pointer;
+      transition: border-color 0.15s ease, background 0.15s ease;
+    }
+    .pdf-drop:hover, .pdf-drop.drag { border-color: var(--pine); background: var(--amber-soft); }
+    .pdf-drop input[type=file] { display: none; }
+    .pdf-drop .icn { margin-bottom: 8px; opacity: 0.75; }
+    .pdf-drop .lbl { font-weight: 600; font-size: 0.92rem; }
+    .pdf-drop .sub { font-size: 0.8rem; color: var(--stone); margin-top: 2px; }
+    .theme-chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+    .theme-chip {
+      font-size: 0.72rem; font-weight: 700; letter-spacing: 0.03em;
+      padding: 4px 10px; border-radius: 20px;
+      background: var(--pine); color: #fff;
+    }
+    .divider-or {
+      display: flex; align-items: center; gap: 12px;
+      margin: 20px 0; color: var(--stone-soft); font-size: 0.78rem;
+      font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
+    }
+    .divider-or::before, .divider-or::after { content: ""; flex: 1; height: 1px; background: var(--line); }
+    .parsed-preview { margin-top: 14px; }
+    .parsed-preview.hidden { display: none; }
+  </style>
 </head>
 <body>
   <header class="site-header">
     <div class="wrap">
-      <a class="brand" href="/adventures/">Landers On Tour</a>
+      <a class="brand" href="../"><span class="mark"></span>Landers On Tour</a>
       <span class="tag">Admin — just you</span>
     </div>
   </header>
   <main>
-    <p class="lede">Add memories, update itineraries, or start a new trip. This page talks straight to GitHub — nothing runs on a server, and only someone with your access token can save changes here.</p>
+    <p class="admin-lede">Add memories, update itineraries, or start a new trip. This page talks straight to GitHub — nothing runs on a server, and only someone with your access token can save changes here.</p>
 
     <!-- ===== Connect ===== -->
     <div class="card-block" id="connect-block">
-      <h2 style="font-size:1.15rem; margin:0 0 4px;">1. Connect</h2>
+      <h2 style="font-size:1.15rem; margin:0 0 4px;"><span class="step-n">1</span>Connect</h2>
       <p class="hint" style="margin-bottom:10px;">Paste your GitHub token below. It's saved only in this browser (never sent anywhere but GitHub) so you'll only need to do this once per device. See the README for how to create one — takes two minutes.</p>
       <label for="repo-field">Repository</label>
       <input type="text" id="repo-field" value="bmlanders/adventures">
@@ -36,7 +69,7 @@
 
       <!-- ===== Add a memory ===== -->
       <div class="card-block">
-        <h2 style="font-size:1.15rem; margin:0 0 4px;">2. Add a memory</h2>
+        <h2 style="font-size:1.15rem; margin:0 0 4px;"><span class="step-n">2</span>Add a memory</h2>
         <p class="hint">A quick update, a caption, and optionally a link to a Google Photos album. Get a shareable link in Google Photos: open the album → Share → Create link, then paste it below.</p>
 
         <label for="mem-trip">Trip</label>
@@ -50,6 +83,7 @@
 
         <label for="mem-photos">Google Photos album link (optional)</label>
         <input type="url" id="mem-photos" placeholder="https://photos.app.goo.gl/...">
+        <p class="hint">Google Photos won't let us embed the album itself, so this renders as a tap-through gallery card on the trip page — a link is "anyone who has it can view," same as clicking through, so there's no extra exposure either way.</p>
 
         <button class="btn" id="mem-submit" style="margin-top:14px;">Add memory</button>
         <span id="mem-status" class="status-msg"></span>
@@ -57,8 +91,8 @@
 
       <!-- ===== Add / update itinerary ===== -->
       <div class="card-block">
-        <h2 style="font-size:1.15rem; margin:0 0 4px;">3. Add an itinerary entry</h2>
-        <p class="hint">Adds a new day block to a trip. One line per stop, formatted as <code>TIME | what happens</code>.</p>
+        <h2 style="font-size:1.15rem; margin:0 0 4px;"><span class="step-n">3</span>Add an itinerary entry</h2>
+        <p class="hint">Adds a new day block to an existing trip. One line per stop, formatted as <code>TIME | what happens</code>.</p>
 
         <label for="day-trip">Trip</label>
         <select id="day-trip"></select>
@@ -78,7 +112,20 @@
 
       <!-- ===== New trip ===== -->
       <div class="card-block">
-        <h2 style="font-size:1.15rem; margin:0 0 4px;">4. Start a new trip</h2>
+        <h2 style="font-size:1.15rem; margin:0 0 4px;"><span class="step-n">4</span>Start a new trip</h2>
+
+        <p class="hint" style="margin-bottom:10px;">Upload a trip PDF (a confirmation packet, a run-of-show, whatever you've got) and this will pull out a title, dates, and a day-by-day itinerary to get you started. It's a text-pattern reader, not magic — always check its work below before creating the trip.</p>
+        <div class="pdf-drop" id="pdf-drop">
+          <input type="file" id="pdf-file" accept="application/pdf">
+          <div class="icn"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#2B5A4C" stroke-width="1.6"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg></div>
+          <div class="lbl">Drop a trip PDF here, or click to choose one</div>
+          <div class="sub">Parsed locally in your browser — the file itself is never uploaded anywhere</div>
+        </div>
+        <div id="pdf-status" class="status-msg"></div>
+        <div id="theme-chips" class="theme-chips"></div>
+
+        <div class="divider-or">or fill in by hand</div>
+
         <label for="new-title">Trip title</label>
         <input type="text" id="new-title" placeholder="Tahoe with the Girls">
 
@@ -104,6 +151,12 @@
         <label for="new-blurb">Blurb (shows on the homepage card)</label>
         <input type="text" id="new-blurb" placeholder="Whatever this trip deserves as a tagline.">
 
+        <div class="parsed-preview hidden" id="parsed-preview">
+          <label for="new-itinerary">Parsed itinerary (edit freely — this becomes the trip's day-by-day)</label>
+          <textarea id="new-itinerary" style="min-height:220px; font-family:'SFMono-Regular',Consolas,monospace; font-size:0.86rem;" placeholder="## Wednesday, Aug 19 — Seattle | citizenM South Lake&#10;12:45 PM | Lunch at Serious Pie&#10;6:00 PM | Doors, Greensky opens&#10;&#10;## Thursday, Aug 20 — Portland | Moxy Portland Downtown&#10;11:00 AM | Depart Seattle"></textarea>
+          <p class="hint">Format: a line starting with <code>##</code> starts a new day (<code>## Heading | Subheading</code>), then one <code>TIME | text</code> line per stop.</p>
+        </div>
+
         <button class="btn" id="new-submit" style="margin-top:14px;">Create trip</button>
         <span id="new-status-msg" class="status-msg"></span>
       </div>
@@ -111,12 +164,21 @@
     </div>
   </main>
   <footer class="site-footer">
-    <a href="/adventures/">&larr; Back to the site</a>
+    <a href="../">&larr; Back to the site</a>
   </footer>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script src="../assets/js/pdf-import.js"></script>
 <script>
 const $ = (id) => document.getElementById(id);
 let REPO = '', TOKEN = '';
+
+if (window['pdfjs-dist/build/pdf']) {
+  // no-op, kept for clarity when reading this file
+}
+if (window.pdfjsLib) {
+  pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+}
 
 // ---- base64 helpers (UTF-8 safe) ----
 function b64encode(str) {
@@ -227,7 +289,13 @@ $('mem-submit').addEventListener('click', async () => {
     const path = `_trips/${slug}.md`;
     const { content, sha } = await ghGet(path);
     let block = `<div class="memory">\n  <div class="meta">${escapeHtml(when || 'Update')}</div>\n  <p>${escapeHtml(text)}</p>`;
-    if (photos) block += `\n  <a class="photo-link" href="${escapeHtml(photos)}" target="_blank" rel="noopener">📷 View photos</a>`;
+    if (photos) {
+      block += `\n  <a class="photo-link" href="${escapeHtml(photos)}" target="_blank" rel="noopener">` +
+        `<span class="ico"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg></span>` +
+        `<span class="txt"><span class="h">Photos</span><span class="s">View album on Google Photos</span></span>` +
+        `<span class="go"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M7 17L17 7M7 7h10v10"/></svg></span>` +
+        `</a>`;
+    }
     block += `\n</div>`;
     const updated = insertIntoMarkers(content, '<!-- MEMORIES_START -->', '<!-- MEMORIES_END -->', block, 'prepend');
     await ghPut(path, updated, sha, `Add memory to ${slug}`);
@@ -237,6 +305,17 @@ $('mem-submit').addEventListener('click', async () => {
     status.textContent = 'Failed: ' + e.message; status.className = 'status-msg err';
   }
 });
+
+// ---- shared: turn "TIME | text" lines into .entry markup ----
+function entriesToHtml(lines) {
+  return lines.map(line => {
+    const [t, ...rest] = line.split('|');
+    const body = rest.join('|').trim();
+    return body
+      ? `  <div class="entry"><span class="t">${escapeHtml(t.trim())}</span> ${escapeHtml(body)}</div>`
+      : `  <div class="entry">${escapeHtml(t.trim())}</div>`;
+  }).join('\n');
+}
 
 // ---- Add day ----
 $('day-submit').addEventListener('click', async () => {
@@ -250,13 +329,7 @@ $('day-submit').addEventListener('click', async () => {
   try {
     const path = `_trips/${slug}.md`;
     const { content, sha } = await ghGet(path);
-    const entries = lines.map(line => {
-      const [t, ...rest] = line.split('|');
-      const body = rest.join('|').trim();
-      return body
-        ? `  <div class="entry"><span class="t">${escapeHtml(t.trim())}</span> ${escapeHtml(body)}</div>`
-        : `  <div class="entry">${escapeHtml(t.trim())}</div>`;
-    }).join('\n');
+    const entries = entriesToHtml(lines);
     const block = `<div class="day-block">\n  <h3>${escapeHtml(title)}</h3>\n  ${sub ? `<div class="day-sub">${escapeHtml(sub)}</div>\n` : ''}${entries}\n</div>`;
     const updated = insertIntoMarkers(content, '<!-- DAYS_START -->', '<!-- DAYS_END -->', block, 'append');
     await ghPut(path, updated, sha, `Add day to ${slug}`);
@@ -276,6 +349,27 @@ $('new-title').addEventListener('input', () => {
 });
 $('new-slug').addEventListener('input', () => { $('new-slug').dataset.touched = '1'; });
 
+// parses our own "## Heading | Sub" + "TIME | text" mini-format into day-block HTML
+function parseItineraryText(text) {
+  const lines = text.split('\n').map(l => l.trim());
+  const days = [];
+  let current = null;
+  for (const line of lines) {
+    if (!line) continue;
+    if (line.startsWith('##')) {
+      const [h, ...rest] = line.slice(2).trim().split('|');
+      current = { heading: h.trim(), sub: rest.join('|').trim(), entryLines: [] };
+      days.push(current);
+    } else if (current) {
+      current.entryLines.push(line);
+    }
+  }
+  return days.map(d => {
+    const entries = entriesToHtml(d.entryLines);
+    return `<div class="day-block">\n  <h3>${escapeHtml(d.heading)}</h3>\n  ${d.sub ? `<div class="day-sub">${escapeHtml(d.sub)}</div>\n` : ''}${entries}\n</div>`;
+  }).join('\n\n');
+}
+
 $('new-submit').addEventListener('click', async () => {
   const status = $('new-status-msg');
   const title = $('new-title').value.trim();
@@ -290,12 +384,13 @@ $('new-submit').addEventListener('click', async () => {
   try {
     const path = `_trips/${slug}.md`;
     const fm = `---\ntitle: "${title.replace(/"/g,'\\"')}"\nstatus: ${statusVal}\ndates: "${dates}"\nsort_date: ${sortdate}\nroute: "${route.replace(/"/g,'\\"')}"\nblurb: "${blurb.replace(/"/g,'\\"')}"\n---\n\n`;
+    const itineraryText = $('new-itinerary').value.trim();
+    const daysHtml = itineraryText
+      ? parseItineraryText(itineraryText)
+      : `<div class="day-block">\n  <h3>The trip</h3>\n  <div class="entry">Add the itinerary from the admin page whenever you're ready.</div>\n</div>`;
     const body =
 `<!-- DAYS_START -->
-<div class="day-block">
-  <h3>The trip</h3>
-  <div class="entry">Add the itinerary from the admin page whenever you're ready.</div>
-</div>
+${daysHtml}
 <!-- DAYS_END -->
 
 <div class="memories-section" id="memories">
@@ -310,10 +405,58 @@ $('new-submit').addEventListener('click', async () => {
     await loadTrips();
     $('new-title').value = ''; $('new-slug').value = ''; $('new-slug').dataset.touched = '';
     $('new-dates').value = ''; $('new-sortdate').value = ''; $('new-route').value = ''; $('new-blurb').value = '';
+    $('new-itinerary').value = ''; $('parsed-preview').classList.add('hidden');
+    $('theme-chips').innerHTML = '';
   } catch (e) {
     status.textContent = 'Failed: ' + e.message; status.className = 'status-msg err';
   }
 });
+
+// ==========================================================================
+// PDF import — the parsing heuristics live in assets/js/pdf-import.js so the
+// same code can be exercised by the test harness. Everything it produces is
+// a guess, surfaced in editable fields for review before anything is saved.
+// ==========================================================================
+
+const { extractPdfLines, guessFromLines, daysToItineraryText } = window.TripPdfImport;
+
+async function handlePdfFile(file) {
+  const status = $('pdf-status');
+  if (!file || file.type !== 'application/pdf') {
+    status.textContent = 'That doesn\'t look like a PDF.'; status.className = 'status-msg err'; return;
+  }
+  status.textContent = 'Reading PDF…'; status.className = 'status-msg';
+  try {
+    const lines = await extractPdfLines(file);
+    if (!lines.length) throw new Error('Could not find any text in this PDF (is it a scanned image?).');
+    const guess = guessFromLines(lines);
+
+    if (guess.title && !$('new-title').value) { $('new-title').value = guess.title; $('new-title').dispatchEvent(new Event('input')); }
+    if (guess.dates && !$('new-dates').value) $('new-dates').value = guess.dates;
+    if (guess.sortdate && !$('new-sortdate').value) $('new-sortdate').value = guess.sortdate;
+    if (guess.route && !$('new-route').value) $('new-route').value = guess.route;
+
+    if (guess.days.length) {
+      $('new-itinerary').value = daysToItineraryText(guess.days);
+      $('parsed-preview').classList.remove('hidden');
+    }
+
+    $('theme-chips').innerHTML = guess.themes.map(t => `<span class="theme-chip">${escapeHtml(t)}</span>`).join('');
+
+    const dayNote = guess.days.length ? `${guess.days.length} day${guess.days.length === 1 ? '' : 's'} of itinerary` : 'no clear day-by-day structure';
+    status.textContent = `Parsed "${file.name}" — found ${dayNote}. Check everything below before creating the trip.`;
+    status.className = 'status-msg ok';
+  } catch (e) {
+    status.textContent = 'Could not read that PDF: ' + e.message; status.className = 'status-msg err';
+  }
+}
+
+const pdfDrop = $('pdf-drop');
+pdfDrop.addEventListener('click', () => $('pdf-file').click());
+$('pdf-file').addEventListener('change', (e) => { if (e.target.files[0]) handlePdfFile(e.target.files[0]); });
+['dragover', 'dragenter'].forEach(evt => pdfDrop.addEventListener(evt, (e) => { e.preventDefault(); pdfDrop.classList.add('drag'); }));
+['dragleave', 'drop'].forEach(evt => pdfDrop.addEventListener(evt, (e) => { e.preventDefault(); pdfDrop.classList.remove('drag'); }));
+pdfDrop.addEventListener('drop', (e) => { const f = e.dataTransfer.files[0]; if (f) handlePdfFile(f); });
 
 // ---- Auto-connect if we have a saved token ----
 window.addEventListener('DOMContentLoaded', async () => {

@@ -2,16 +2,45 @@
 layout: default
 title: null
 ---
-<p class="lede">Every trip, one place. Plans before we leave, updates while we're out there, memories after.</p>
+{% assign trips = site.trips | sort: 'sort_date' | reverse %}
+{% assign upcoming_count = 0 %}
+{% assign complete_count = 0 %}
+{% for trip in trips %}
+  {% if trip.status == 'complete' %}{% assign complete_count = complete_count | plus: 1 %}{% endif %}
+  {% if trip.status != 'complete' %}{% assign upcoming_count = upcoming_count | plus: 1 %}{% endif %}
+{% endfor %}
+{% assign next_trip = nil %}
+{% assign trips_asc = site.trips | sort: 'sort_date' %}
+{% for trip in trips_asc %}
+  {% if trip.status != 'complete' %}
+    {% assign next_trip = trip %}
+    {% break %}
+  {% endif %}
+{% endfor %}
+
+<div class="masthead">
+  <div class="inner">
+    <div class="eyebrow">The archive</div>
+    <h1>Every trip, one place — before, during, and after.</h1>
+    <p class="lede">Plans before we leave, updates while we're out there, memories once we're home. Goose runs, Greensky sits-in, lake weekends, and whatever's next.</p>
+    <div class="stats">
+      <div class="stat"><div class="n">{{ trips.size }}</div><div class="l">Trips logged</div></div>
+      <div class="stat"><div class="n">{{ complete_count }}</div><div class="l">In the books</div></div>
+      {% if next_trip %}<div class="stat"><div class="n">{{ next_trip.dates | split: ' ' | first }}</div><div class="l">Next up</div></div>{% endif %}
+    </div>
+  </div>
+</div>
 
 <div class="timeline">
-  {% assign trips = site.trips | sort: 'sort_date' | reverse %}
   {% for trip in trips %}
   <div class="timeline-item status-{{ trip.status }}">
     <a class="trip-card status-{{ trip.status }}" href="{{ trip.url | relative_url }}">
       <span class="pill">{{ trip.status }}</span>
       <h2>{{ trip.title }}</h2>
-      <div class="dates">{{ trip.dates }}</div>
+      <div class="dates">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="3"/><path d="M3 9h18M8 2v4M16 2v4"/></svg>
+        {{ trip.dates }}
+      </div>
       <div class="blurb">{{ trip.blurb }}</div>
     </a>
   </div>

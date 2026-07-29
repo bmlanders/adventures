@@ -2,11 +2,39 @@
 layout: default
 ---
 <div class="trip-hero">
-  <div class="eyebrow">{{ page.status }}{% if page.dates %} · {{ page.dates }}{% endif %}</div>
-  <h1>{{ page.title }}</h1>
-  {% if page.route %}<div class="route">{{ page.route }}</div>{% endif %}
+  <div class="inner">
+    <div class="eyebrow">{{ page.status }}{% if page.dates %} · {{ page.dates }}{% endif %}</div>
+    <h1>{{ page.title }}</h1>
+    {% if page.route %}<div class="route">{{ page.route }}</div>{% endif %}
+  </div>
 </div>
 
 {{ content }}
 
 <p style="margin-top:28px;"><a href="{{ '/' | relative_url }}">&larr; All trips</a></p>
+
+<script>
+// Highlight the current day in the sticky day-nav as you scroll.
+(function () {
+  var nav = document.querySelector('.day-nav');
+  if (!nav) return;
+  var links = Array.from(nav.querySelectorAll('a[href^="#"]'));
+  var sections = links
+    .map(function (a) { return document.getElementById(a.getAttribute('href').slice(1)); })
+    .filter(Boolean);
+  if (!sections.length || !('IntersectionObserver' in window)) return;
+  var byId = {};
+  links.forEach(function (a) { byId[a.getAttribute('href').slice(1)] = a; });
+  var observer = new IntersectionObserver(function (entries) {
+    entries.forEach(function (entry) {
+      var link = byId[entry.target.id];
+      if (!link) return;
+      if (entry.isIntersecting) {
+        links.forEach(function (a) { a.classList.remove('active'); });
+        link.classList.add('active');
+      }
+    });
+  }, { rootMargin: '-15% 0px -70% 0px' });
+  sections.forEach(function (s) { observer.observe(s); });
+})();
+</script>
