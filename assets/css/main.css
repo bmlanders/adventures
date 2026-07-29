@@ -265,8 +265,13 @@ main { max-width: 900px; margin: 0 auto; padding: 0 24px 80px; position: relativ
 
 .day-nav {
   display: flex; gap: 8px; flex-wrap: wrap;
-  margin-bottom: 28px;
-  position: sticky; top: 12px; z-index: 3;
+  position: sticky; top: 0; z-index: 3;
+  /* Opaque band so page text can't show through the gaps between pills,
+     fading out at the bottom instead of cutting off on a hard edge. */
+  padding: 13px 0 15px;
+  margin-bottom: 14px;
+  background: linear-gradient(to bottom,
+    var(--paper) 0%, var(--paper) 72%, rgba(250, 247, 239, 0) 100%);
 }
 .day-nav a {
   font-family: var(--sans);
