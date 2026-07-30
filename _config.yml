@@ -26,5 +26,8 @@ plugins:
 
 exclude:
   - README.md
+  - PROJECT_NOTES.md
   - Gemfile
   - Gemfile.lock
+  - tools/
+  - node_modules/

@@ -1,0 +1,19 @@
+{
+  "name": "adventures-preview",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Local preview and validation for the Landers On Tour site, without needing Ruby or Jekyll installed.",
+  "scripts": {
+    "start": "node server.js",
+    "check": "node check.js"
+  },
+  "dependencies": {
+    "express": "^4.21.2",
+    "gray-matter": "^4.0.3",
+    "js-yaml": "^4.1.0",
+    "liquidjs": "^10.21.1"
+  },
+  "optionalDependencies": {
+    "pdfjs-dist": "3.11.174"
+  }
+}

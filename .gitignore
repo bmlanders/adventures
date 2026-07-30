@@ -1,0 +1,14 @@
+# Jekyll build output
+_site/
+.jekyll-cache/
+.jekyll-metadata
+Gemfile.lock
+
+# local preview tooling
+node_modules/
+tools/preview/package-lock.json
+
+# scratch
+*.log
+ros-dump.txt
+portugal-dump.txt
