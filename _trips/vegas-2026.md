@@ -11,7 +11,7 @@ blurb: "The Sphere, The Palazzo, and Goose in Birmingham on the way."
 <div class="day-block">
   <h3>The trip</h3>
   <div class="day-sub">The Palazzo · The Sphere · Goose in Birmingham en route</div>
-  <div class="entry">Group trip to Vegas — details to be filled in whenever there's a minute.</div>
+  <div class="entry">Group trip to Vegas, details to be filled in whenever there's a minute.</div>
 </div>
 <!-- DAYS_END -->
 
