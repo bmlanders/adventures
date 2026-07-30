@@ -5,6 +5,8 @@ dates: "June 23–30, 2024"
 sort_date: 2024-06-23
 route: "Punta Mita, Mexico · 25th anniversary trip"
 blurb: "A week in Punta Mita to celebrate 25 years since our wedding day, June 25, 1999."
+map:
+  - { name: "Punta Mita", lat: 20.7729, lng: -105.5342 }
 ---
 
 <!-- DAYS_START -->

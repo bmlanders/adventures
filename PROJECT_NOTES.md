@@ -62,12 +62,30 @@ everything else.
 what-to-see lists · `.tip` gold callout · `.tonight` dinner-and-show pair
 (`.tonight.single` for a show alone) · `.recs`/`.rec` recommendation grid ·
 `.photo-link` tap-through card for photo albums and maps · `.quote` pull quote
-· `.sign-off` per-day closer.
+· `.sign-off` per-day closer · `.trip-map` the Leaflet route map (see below).
+
+### Trip route map
+
+Every trip's layout (`_layouts/trip.html`) renders a `.trip-map` under the
+hero if the trip's front matter has a `map:` list. Leaflet + OpenStreetMap
+tiles via cdnjs, no API key, no backend — one marker per waypoint, a dashed
+line connecting them in the order listed (or just a centered marker if
+there's only one). `default.html` only loads the Leaflet CSS when
+`page.map` is set, so pages without a map don't pay for it.
+
+Coordinates are deliberately **city or place level**, hand-picked from
+general geographic knowledge, not a geocoding API — there's no key for one
+and no backend to call it from. Good enough to show the shape of a route
+(Lisbon to Porto, island to island in the Grenadines); not meant to pin an
+exact restaurant. Keep new trips' `map:` entries at that same precision
+rather than guessing a specific street address.
 
 ## Trips
 
 | Slug | Trip | Status |
 |---|---|---|
+| `maui-2018` | A week in Maui, family trip, July | complete, stub |
+| `punta-mita-2024` | 25th anniversary, Punta Mita, June | complete, stub |
 | `portugal-2025` | Ten days, Lisbon → Aveiro → Porto | complete |
 | `isbell-radio-city-2026` | Jason Isbell at Radio City, Feb 20–21 | complete |
 | `vegas-2026` | The Sphere and The Palazzo, April | complete, stub |
@@ -79,7 +97,9 @@ Every trip file must keep all four marker comments (`DAYS_START`, `DAYS_END`,
 `MEMORIES_START`, `MEMORIES_END`) — the admin page finds them to know where to
 insert. `check.js` verifies this.
 
-`vegas-2026` is still a placeholder if a source itinerary ever turns up.
+`vegas-2026`, `maui-2018`, and `punta-mita-2024` are still stubs: dates,
+route, and (for the first two) a linked photo album, but no day-by-day
+itinerary since there wasn't one to import.
 
 ## Traps and findings
 

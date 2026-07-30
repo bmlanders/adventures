@@ -5,6 +5,13 @@ dates: "Jan 22 – Feb 1, 2025"
 sort_date: 2025-01-22
 route: "Lisbon → Évora → Cascais → Aveiro → Porto → Douro Valley · 9 nights"
 blurb: "Fado houses, pastéis de nata, and a slow crawl north from Lisbon to Porto."
+map:
+  - { name: "Lisbon", lat: 38.7223, lng: -9.1393 }
+  - { name: "Évora", lat: 38.5714, lng: -7.9135 }
+  - { name: "Cascais", lat: 38.6979, lng: -9.4215 }
+  - { name: "Aveiro", lat: 40.6443, lng: -8.6455 }
+  - { name: "Porto", lat: 41.1579, lng: -8.6291 }
+  - { name: "Douro Valley", lat: 41.1621, lng: -7.7897 }
 ---
 
 <div class="day-nav">

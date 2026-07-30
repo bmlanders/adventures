@@ -9,6 +9,41 @@ layout: default
   </div>
 </div>
 
+{% if page.map %}
+<div class="trip-map" id="trip-map" data-points="[{% for p in page.map %}{&quot;name&quot;:&quot;{{ p.name }}&quot;,&quot;lat&quot;:{{ p.lat }},&quot;lng&quot;:{{ p.lng }}}{% unless forloop.last %},{% endunless %}{% endfor %}]"></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js"></script>
+<script>
+// Lightweight route map, plotting the trip's stops at city/place level (no
+// geocoding API involved, so precision is deliberately coarse) with a
+// dashed line tracing the order they were visited in.
+(function () {
+  var el = document.getElementById('trip-map');
+  if (!el || !window.L) return;
+  var points = JSON.parse(el.dataset.points || '[]');
+  if (!points.length) return;
+
+  var map = L.map(el, { scrollWheelZoom: false });
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+    maxZoom: 17
+  }).addTo(map);
+
+  var pinIcon = L.divIcon({ className: 'trip-map-pin', html: '<span></span>', iconSize: [14, 14], iconAnchor: [7, 7] });
+  var latlngs = points.map(function (p) { return [p.lat, p.lng]; });
+  points.forEach(function (p) {
+    L.marker([p.lat, p.lng], { icon: pinIcon }).addTo(map).bindTooltip(p.name, { direction: 'top', offset: [0, -8] });
+  });
+
+  if (points.length > 1) {
+    L.polyline(latlngs, { color: '#007A33', weight: 2.5, opacity: 0.8, dashArray: '1,7', lineCap: 'round' }).addTo(map);
+    map.fitBounds(latlngs, { padding: [28, 28] });
+  } else {
+    map.setView(latlngs[0], 10);
+  }
+})();
+</script>
+{% endif %}
+
 {{ content }}
 
 <p style="margin-top:28px;"><a href="{{ '/' | relative_url }}">&larr; All trips</a></p>

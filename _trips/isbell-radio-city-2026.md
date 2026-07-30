@@ -5,6 +5,10 @@ dates: "Feb 20–21, 2026"
 sort_date: 2026-02-20
 route: "New York City · Radio City Music Hall · Renaissance Times Square"
 blurb: "Isbell at Radio City, bracketed by two days of eating and drinking across the Village and Little Italy."
+map:
+  - { name: "West Village", lat: 40.7336, lng: -74.0027 }
+  - { name: "Radio City Music Hall", lat: 40.7600, lng: -73.9800 }
+  - { name: "Nolita & Little Italy", lat: 40.7205, lng: -73.9965 }
 ---
 
 <div class="day-nav">

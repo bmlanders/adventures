@@ -5,6 +5,9 @@ dates: "April 2026"
 sort_date: 2026-04-01
 route: "Las Vegas · group trip"
 blurb: "The Sphere, The Palazzo, and Goose in Birmingham on the way."
+map:
+  - { name: "Birmingham", lat: 33.5186, lng: -86.8104 }
+  - { name: "Las Vegas", lat: 36.1699, lng: -115.1398 }
 ---
 
 <!-- DAYS_START -->

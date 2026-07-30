@@ -5,6 +5,13 @@ dates: "May 2–8, 2026"
 sort_date: 2026-05-02
 route: "St. Vincent & the Grenadines · Mayreau, Mustique, Bequia · sailing charter"
 blurb: "A week on the water with a boatload of jam-band royalty."
+map:
+  - { name: "St. Vincent", lat: 13.1350, lng: -61.2100 }
+  - { name: "Young Island Cut", lat: 13.1258, lng: -61.2179 }
+  - { name: "Mayreau", lat: 12.6378, lng: -61.4013 }
+  - { name: "Mustique", lat: 12.8790, lng: -61.1811 }
+  - { name: "Bequia", lat: 13.0050, lng: -61.2418 }
+  - { name: "Young Island Cut", lat: 13.1258, lng: -61.2179 }
 ---
 
 <div class="day-nav">
