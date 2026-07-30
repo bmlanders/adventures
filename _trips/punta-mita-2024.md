@@ -19,6 +19,14 @@ blurb: "A week in Punta Mita to celebrate 25 years since our wedding day, June 2
   <h2>Memories</h2>
   <p class="lede" style="margin-bottom:16px;">Add updates and photos from the <a href="{{ '/admin/' | relative_url }}">admin page</a>.</p>
   <!-- MEMORIES_START -->
-  <p class="memory-empty">Nothing posted yet.</p>
+  <div class="memory">
+    <div class="meta">25th Anniversary Week</div>
+    <p>Photos from the week in Punta Mita, celebrating 25 years together.</p>
+    <a class="photo-link" href="https://photos.google.com/share/AF1QipNasGlOv_AB7F8hkeshNsAw8vrm7RXQWbev_k0CPiffuI-kZNtZzZnujHMcSHDQhA" target="_blank" rel="noopener">
+      <span class="ico"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg></span>
+      <span class="txt"><span class="h">Photos</span><span class="s">View album on Google Photos</span></span>
+      <span class="go"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M7 17L17 7M7 7h10v10"/></svg></span>
+    </a>
+  </div>
   <!-- MEMORIES_END -->
 </div>
