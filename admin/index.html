@@ -22,16 +22,16 @@
       cursor: pointer;
       transition: border-color 0.15s ease, background 0.15s ease;
     }
-    .pdf-drop:hover, .pdf-drop.drag { border-color: var(--pine); background: var(--amber-soft); }
+    .pdf-drop:hover, .pdf-drop.drag { border-color: var(--green); background: var(--gold-soft); }
     .pdf-drop input[type=file] { display: none; }
-    .pdf-drop .icn { margin-bottom: 8px; opacity: 0.75; }
+    .pdf-drop .icn { margin-bottom: 8px; opacity: 0.8; color: var(--green); }
     .pdf-drop .lbl { font-weight: 600; font-size: 0.92rem; }
     .pdf-drop .sub { font-size: 0.8rem; color: var(--stone); margin-top: 2px; }
     .theme-chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
     .theme-chip {
       font-size: 0.72rem; font-weight: 700; letter-spacing: 0.03em;
       padding: 4px 10px; border-radius: 20px;
-      background: var(--pine); color: #fff;
+      background: var(--green); color: #fff;
     }
     .divider-or {
       display: flex; align-items: center; gap: 12px;
@@ -46,7 +46,10 @@
 <body>
   <header class="site-header">
     <div class="wrap">
-      <a class="brand" href="../"><span class="mark"></span>Landers On Tour</a>
+      <a class="brand" href="../">
+        <svg class="brand-mark" viewBox="0 0 36 36" width="21" height="21" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="10.8" r="9"/><circle cx="12.2" cy="21.6" r="9"/><circle cx="23.8" cy="21.6" r="9"/></svg>
+        Landers On Tour
+      </a>
       <span class="tag">Admin — just you</span>
     </div>
   </header>
@@ -117,7 +120,7 @@
         <p class="hint" style="margin-bottom:10px;">Upload a trip PDF (a confirmation packet, a run-of-show, whatever you've got) and this will pull out a title, dates, and a day-by-day itinerary to get you started. It's a text-pattern reader, not magic — always check its work below before creating the trip.</p>
         <div class="pdf-drop" id="pdf-drop">
           <input type="file" id="pdf-file" accept="application/pdf">
-          <div class="icn"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#2B5A4C" stroke-width="1.6"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg></div>
+          <div class="icn"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg></div>
           <div class="lbl">Drop a trip PDF here, or click to choose one</div>
           <div class="sub">Parsed locally in your browser — the file itself is never uploaded anywhere</div>
         </div>
@@ -159,6 +162,25 @@
 
         <button class="btn" id="new-submit" style="margin-top:14px;">Create trip</button>
         <span id="new-status-msg" class="status-msg"></span>
+      </div>
+
+      <!-- ===== Edit a page directly ===== -->
+      <div class="card-block">
+        <h2 style="font-size:1.15rem; margin:0 0 4px;"><span class="step-n">5</span>Edit a page directly</h2>
+        <p class="hint" style="margin-bottom:10px;">For when plans change and the itinerary on the page no longer matches what actually happened. This loads the trip's full page source, front matter and all the HTML below it, so you can edit or delete anything by hand, then saves it straight back. Keep the <code>DAYS_START</code>/<code>DAYS_END</code> and <code>MEMORIES_START</code>/<code>MEMORIES_END</code> comment markers in place if you still want the tools above to keep working on this page.</p>
+
+        <label for="edit-trip">Trip</label>
+        <select id="edit-trip"></select>
+        <button class="btn secondary" id="edit-load" style="margin-top:12px;">Load page HTML</button>
+        <span id="edit-load-status" class="status-msg"></span>
+
+        <div id="edit-editor" style="display:none; margin-top:6px;">
+          <label for="edit-source">Page source</label>
+          <textarea id="edit-source" style="min-height:360px; font-family:'SFMono-Regular',Consolas,monospace; font-size:0.86rem; white-space:pre;"></textarea>
+          <p class="hint">Saves back to whichever trip was loaded above, even if you change the dropdown afterward. Load again if you switch trips.</p>
+          <button class="btn" id="edit-save" style="margin-top:6px;">Save changes</button>
+          <span id="edit-save-status" class="status-msg"></span>
+        </div>
       </div>
 
     </div>
@@ -251,7 +273,7 @@ async function loadTrips() {
     trips.push({ slug: f.name.replace(/\.md$/,''), title: titleMatch ? titleMatch[1] : f.name });
   }
   trips.sort((a,b) => a.title.localeCompare(b.title));
-  for (const sel of [$('mem-trip'), $('day-trip')]) {
+  for (const sel of [$('mem-trip'), $('day-trip'), $('edit-trip')]) {
     sel.innerHTML = trips.map(t => `<option value="${t.slug}">${escapeHtml(t.title)}</option>`).join('');
   }
 }
@@ -407,6 +429,38 @@ ${daysHtml}
     $('new-dates').value = ''; $('new-sortdate').value = ''; $('new-route').value = ''; $('new-blurb').value = '';
     $('new-itinerary').value = ''; $('parsed-preview').classList.add('hidden');
     $('theme-chips').innerHTML = '';
+  } catch (e) {
+    status.textContent = 'Failed: ' + e.message; status.className = 'status-msg err';
+  }
+});
+
+// ---- Edit a page directly ----
+let editSha = null, editSlug = null;
+$('edit-load').addEventListener('click', async () => {
+  const status = $('edit-load-status');
+  const slug = $('edit-trip').value;
+  if (!slug) { status.textContent = 'Pick a trip.'; status.className = 'status-msg err'; return; }
+  status.textContent = 'Loading...'; status.className = 'status-msg';
+  try {
+    const path = `_trips/${slug}.md`;
+    const { content, sha } = await ghGet(path);
+    editSha = sha; editSlug = slug;
+    $('edit-source').value = content;
+    $('edit-editor').style.display = 'block';
+    status.textContent = `Loaded ${slug}. Edit below, then save.`; status.className = 'status-msg ok';
+  } catch (e) {
+    status.textContent = 'Failed: ' + e.message; status.className = 'status-msg err';
+  }
+});
+$('edit-save').addEventListener('click', async () => {
+  const status = $('edit-save-status');
+  if (!editSlug || !editSha) { status.textContent = 'Load a page first.'; status.className = 'status-msg err'; return; }
+  status.textContent = 'Saving...'; status.className = 'status-msg';
+  try {
+    const path = `_trips/${editSlug}.md`;
+    const result = await ghPut(path, $('edit-source').value, editSha, `Edit ${editSlug} page HTML`);
+    editSha = result.content.sha;
+    status.textContent = 'Saved! Live in about a minute.'; status.className = 'status-msg ok';
   } catch (e) {
     status.textContent = 'Failed: ' + e.message; status.className = 'status-msg err';
   }
