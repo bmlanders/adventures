@@ -3,10 +3,11 @@ title: "Goosemas in Atlantic City"
 status: upcoming
 dates: "Dec 10–13, 2026"
 sort_date: 2026-12-10
-route: "Atlantic City, NJ · four days"
-blurb: "Four days down the shore for Goosemas."
+route: "Atlantic City, NJ · Jim Whelan Boardwalk Hall · four days"
+blurb: "Down the shore for the 13th annual Goosemas, Goose's first-ever Atlantic City shows."
 map:
   - { name: "Atlantic City", lat: 39.3643, lng: -74.4229 }
+  - { name: "Jim Whelan Boardwalk Hall", lat: 39.3549, lng: -74.4372 }
 ---
 
 <!-- DAYS_START -->
@@ -17,7 +18,23 @@ map:
     <div><dt>Flight</dt><dd>UA 729, ORD &rarr; PHL &middot; departs 9:06 AM CST, arrives 12:25 PM EST</dd></div>
     <div><dt>Hotel</dt><dd>Courtyard by Marriott Atlantic City Beach Block, 1212 Pacific Ave &middot; check-in 4:00 PM</dd></div>
   </dl>
-  <div class="entry">Two travel days locked in from the flights. What happens in between is still open.</div>
+</div>
+
+<div class="day-block">
+  <h3>Friday, Dec 11 · Goosemas Night One</h3>
+  <div class="day-sub">Jim Whelan Boardwalk Hall, first of two</div>
+  <dl class="facts">
+    <div><dt>Show</dt><dd>Goosemas Night One &middot; Jim Whelan Boardwalk Hall</dd></div>
+  </dl>
+  <div class="entry">Goose's first-ever shows in Atlantic City, and the 13th annual Goosemas run, always themed, always a batch of cover debuts nobody saw coming.</div>
+</div>
+
+<div class="day-block">
+  <h3>Saturday, Dec 12 · Goosemas Night Two</h3>
+  <div class="day-sub">Jim Whelan Boardwalk Hall, second of two</div>
+  <dl class="facts">
+    <div><dt>Show</dt><dd>Goosemas Night Two &middot; Jim Whelan Boardwalk Hall</dd></div>
+  </dl>
 </div>
 
 <div class="day-block">
