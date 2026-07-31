@@ -175,13 +175,15 @@ Never handle the user's GitHub token. The admin page's whole security model is
 that the token stays in their browser's localStorage and only ever talks to
 GitHub.
 
-## Not yet verified
+## Verified
 
-**The admin save round-trip has never been tested end to end.** It needs the
-user's personal access token, which no assistant should hold. The unverified
-path: open `/adventures/admin/`, connect, add a memory, confirm it appears.
-The underlying GitHub API code is unchanged from a working earlier version,
-but nobody has run it since the redesign.
+**The admin save round-trip works.** Confirmed 2026-07-31: the user logged a
+real show (Goose, MSG, June 19) from `/adventures/admin/` with their own
+token, and it landed as a real commit on `main`. Covers connect, ghGet/ghPut,
+and the prepend-into-markers logic, at least for the "Log a show" form; the
+memory/day/new-trip/edit-page forms share the same helpers so there's no
+reason to think they'd behave differently, but only "Log a show" has
+actually been exercised by a human with a token.
 
 ## Ideas not yet built
 
