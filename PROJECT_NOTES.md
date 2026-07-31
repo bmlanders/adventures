@@ -62,7 +62,33 @@ everything else.
 what-to-see lists · `.tip` gold callout · `.tonight` dinner-and-show pair
 (`.tonight.single` for a show alone) · `.recs`/`.rec` recommendation grid ·
 `.photo-link` tap-through card for photo albums and maps · `.quote` pull quote
-· `.sign-off` per-day closer · `.trip-map` the Leaflet route map (see below).
+· `.sign-off` per-day closer · `.trip-map` the Leaflet route map (see below)
+· `.show-entry`/`.setlist` concert log cards (see "Shows" below).
+
+### Shows (`/shows/`)
+
+A running concert log, separate from `_trips` since not every show has a
+whole trip built around it. `shows/index.html` is a single page (not a
+collection) with `<!-- SHOWS_START -->`/`<!-- SHOWS_END -->` markers, same
+prepend-on-save pattern as a trip's Memories section. The admin page's "Log a
+show" step writes `.show-entry` blocks there: artist, venue, date, optional
+notes, an optional link back to a related trip (embeds a literal
+`{{ '/trips/SLUG/' | relative_url }}` Liquid tag in the generated HTML, same
+trick the "Start a new trip" flow uses for its admin-page link), an optional
+pasted setlist (one song per line, rendered as a two-column numbered list,
+no attempt to detect set breaks or encores), and an optional link out to the
+source (setlist.fm, elgoose.net, etc.).
+
+Setlists are pasted in by hand, not fetched live. A real integration would
+need an API key and a backend to call it from (this site has neither), and a
+plain `fetch()` to most setlist sites gets blocked by their bot protection
+even with a key. elgoose.net specifically 403s a bare fetch but loads fine
+in an actual browser, so pulling one over is a copy/paste-assisted job, not
+an automated one.
+
+`shows/index.html` needs its own route in `tools/preview/server.js` and its
+own entry in `check.js`'s render targets — it isn't picked up by the trips
+loop since it isn't a collection file.
 
 ### Trip route map
 

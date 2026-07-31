@@ -14,10 +14,13 @@
 <body>
   <header class="site-header">
     <div class="wrap">
-      <a class="brand" href="{{ '/' | relative_url }}">
-        <svg class="brand-mark" viewBox="0 0 36 36" width="21" height="21" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="10.8" r="9"/><circle cx="12.2" cy="21.6" r="9"/><circle cx="23.8" cy="21.6" r="9"/></svg>
-        Landers On Tour
-      </a>
+      <div class="wrap-left">
+        <a class="brand" href="{{ '/' | relative_url }}">
+          <svg class="brand-mark" viewBox="0 0 36 36" width="21" height="21" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="10.8" r="9"/><circle cx="12.2" cy="21.6" r="9"/><circle cx="23.8" cy="21.6" r="9"/></svg>
+          Landers On Tour
+        </a>
+        <nav class="site-nav"><a href="{{ '/shows/' | relative_url }}">Shows</a></nav>
+      </div>
       <span class="tag">Family archive · unlisted</span>
     </div>
   </header>

@@ -183,6 +183,36 @@
         </div>
       </div>
 
+      <!-- ===== Log a show ===== -->
+      <div class="card-block">
+        <h2 style="font-size:1.15rem; margin:0 0 4px;"><span class="step-n">6</span>Log a show</h2>
+        <p class="hint" style="margin-bottom:10px;">For any concert, whether or not it was part of a whole trip. Shows up on the <a href="../shows/">Shows</a> page, newest first.</p>
+
+        <label for="show-artist">Artist</label>
+        <input type="text" id="show-artist" placeholder="Goose">
+
+        <label for="show-venue">Venue</label>
+        <input type="text" id="show-venue" placeholder="Madison Square Garden, New York, NY">
+
+        <label for="show-date">Date</label>
+        <input type="date" id="show-date">
+
+        <label for="show-notes">Notes (optional)</label>
+        <textarea id="show-notes" placeholder="Second night of Big Modern!, Stuart Bogie sat in on woodwinds most of the show."></textarea>
+
+        <label for="show-trip">Related trip (optional)</label>
+        <select id="show-trip"><option value="">No related trip</option></select>
+
+        <label for="show-setlist-text">Setlist (optional, one song per line)</label>
+        <textarea id="show-setlist-text" style="min-height:140px;" placeholder="MEDIA&#10;Hot Tea&#10;Rockdale&#10;Wysteria Lane > Burn The Witch&#10;Slow Ready"></textarea>
+
+        <label for="show-setlist-link">Setlist link (optional)</label>
+        <input type="url" id="show-setlist-link" placeholder="https://elgoose.net/setlists/...">
+
+        <button class="btn" id="show-submit" style="margin-top:14px;">Log show</button>
+        <span id="show-status" class="status-msg"></span>
+      </div>
+
     </div>
   </main>
   <footer class="site-footer">
@@ -276,6 +306,8 @@ async function loadTrips() {
   for (const sel of [$('mem-trip'), $('day-trip'), $('edit-trip')]) {
     sel.innerHTML = trips.map(t => `<option value="${t.slug}">${escapeHtml(t.title)}</option>`).join('');
   }
+  $('show-trip').innerHTML = '<option value="">No related trip</option>' +
+    trips.map(t => `<option value="${t.slug}">${escapeHtml(t.title)}</option>`).join('');
 }
 
 // ---- Connect ----
@@ -461,6 +493,50 @@ $('edit-save').addEventListener('click', async () => {
     const result = await ghPut(path, $('edit-source').value, editSha, `Edit ${editSlug} page HTML`);
     editSha = result.content.sha;
     status.textContent = 'Saved! Live in about a minute.'; status.className = 'status-msg ok';
+  } catch (e) {
+    status.textContent = 'Failed: ' + e.message; status.className = 'status-msg err';
+  }
+});
+
+// ---- Log a show ----
+function setlistTextToHtml(text) {
+  const songs = text.split('\n').map(s => s.trim()).filter(Boolean);
+  if (!songs.length) return '';
+  const items = songs.map(s => `      <li>${escapeHtml(s)}</li>`).join('\n');
+  return `\n  <div class="setlist">\n    <div class="setlist-lbl">Setlist</div>\n    <ol class="setlist-list">\n${items}\n    </ol>\n  </div>`;
+}
+
+$('show-submit').addEventListener('click', async () => {
+  const status = $('show-status');
+  const artist = $('show-artist').value.trim();
+  const venue = $('show-venue').value.trim();
+  const date = $('show-date').value;
+  const notes = $('show-notes').value.trim();
+  const tripSel = $('show-trip');
+  const tripSlug = tripSel.value;
+  const tripTitle = tripSlug ? tripSel.selectedOptions[0].textContent : '';
+  const setlistText = $('show-setlist-text').value.trim();
+  const setlistLink = $('show-setlist-link').value.trim();
+
+  if (!artist || !venue || !date) { status.textContent = 'Artist, venue, and date are required.'; status.className = 'status-msg err'; return; }
+  status.textContent = 'Saving...'; status.className = 'status-msg';
+  try {
+    const path = 'shows/index.html';
+    const { content, sha } = await ghGet(path);
+    const dateLabel = new Date(date + 'T12:00:00').toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+
+    let block = `<div class="show-entry">\n  <div class="show-date">${escapeHtml(dateLabel)}</div>\n  <h3>${escapeHtml(artist)}</h3>\n  <div class="show-venue">${escapeHtml(venue)}</div>`;
+    if (notes) block += `\n  <p class="show-notes">${escapeHtml(notes)}</p>`;
+    if (tripSlug) block += `\n  <a class="show-trip-link" href="{{ '/trips/${tripSlug}/' | relative_url }}">Part of: ${escapeHtml(tripTitle)} &rarr;</a>`;
+    if (setlistText) block += setlistTextToHtml(setlistText);
+    if (setlistLink) block += `\n  <a class="show-trip-link" href="${escapeHtml(setlistLink)}" target="_blank" rel="noopener" style="margin-left:14px;">View full setlist &rarr;</a>`;
+    block += `\n</div>`;
+
+    const updated = insertIntoMarkers(content, '<!-- SHOWS_START -->', '<!-- SHOWS_END -->', block, 'prepend');
+    await ghPut(path, updated, sha, `Log show: ${artist} at ${venue}`);
+    status.textContent = 'Logged! Live in about a minute.'; status.className = 'status-msg ok';
+    $('show-artist').value = ''; $('show-venue').value = ''; $('show-date').value = '';
+    $('show-notes').value = ''; $('show-trip').value = ''; $('show-setlist-text').value = ''; $('show-setlist-link').value = '';
   } catch (e) {
     status.textContent = 'Failed: ' + e.message; status.className = 'status-msg err';
   }

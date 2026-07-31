@@ -110,6 +110,7 @@ h1, h2, h3 { font-family: var(--serif); color: var(--ink); font-weight: 600; let
   flex-wrap: wrap;
   gap: 8px;
 }
+.wrap-left { display: flex; align-items: center; gap: 26px; flex-wrap: wrap; }
 .site-header .brand {
   display: inline-flex;
   align-items: center;
@@ -122,6 +123,13 @@ h1, h2, h3 { font-family: var(--serif); color: var(--ink); font-weight: 600; let
 }
 .site-header .brand:hover { text-decoration: none; opacity: 0.88; }
 .brand-mark { flex: 0 0 auto; color: var(--gold); }
+.site-nav a {
+  font-family: var(--sans);
+  font-size: 0.84rem;
+  font-weight: 600;
+  color: rgba(255,255,255,0.72);
+}
+.site-nav a:hover { color: #fff; text-decoration: none; }
 .site-header .tag {
   font-size: 0.66rem;
   letter-spacing: 0.13em;
@@ -528,6 +536,39 @@ main { max-width: 960px; margin: 0 auto; padding: 0 24px 84px; position: relativ
 .photo-link .go { margin-left: auto; opacity: 0.8; flex: 0 0 auto; }
 
 .memory-empty { color: var(--stone); font-size: 0.9rem; font-style: italic; }
+
+/* ===== Shows / concert log ===== */
+.show-entry {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 21px 25px;
+  margin-bottom: 16px;
+  box-shadow: var(--shadow);
+}
+.show-entry .show-date {
+  font-size: 0.72rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--stone); margin-bottom: 6px;
+}
+.show-entry h3 { font-size: 1.26rem; margin: 0 0 3px; }
+.show-entry .show-venue { font-size: 0.88rem; color: var(--stone); font-style: italic; margin-bottom: 10px; }
+.show-entry .show-notes { margin: 0 0 4px; font-size: 0.94rem; color: var(--ink-soft); }
+.show-entry .show-trip-link { display: inline-block; margin-top: 6px; font-size: 0.83rem; font-weight: 600; }
+
+.setlist { margin-top: 15px; padding-top: 15px; border-top: 1px dashed var(--line); }
+.setlist .setlist-lbl {
+  font-size: 0.66rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--gold-deep); margin-bottom: 9px;
+}
+.setlist-list {
+  margin: 0; padding-left: 22px; columns: 2; column-gap: 26px;
+  font-size: 0.88rem; color: var(--ink-soft); line-height: 1.6;
+}
+.setlist-list li { break-inside: avoid; padding-left: 2px; }
+
+@media (max-width: 560px) {
+  .setlist-list { columns: 1; }
+}
 
 /* ===== Buttons / forms (shared with admin) ===== */
 .btn {

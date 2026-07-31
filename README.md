@@ -9,7 +9,8 @@ no database, no hosting bill.
 
 Go to `https://bmlanders.github.io/adventures/admin/` — bookmark it (or your own domain, if
 you've set one up; see "Using your own domain" below). From there you can add
-memories, add itinerary days, and start brand-new trips, all from a form. It saves directly to
+memories, add itinerary days, start brand-new trips, log a show to the [concert log](https://bmlanders.github.io/adventures/shows/),
+or edit a trip page's raw source directly, all from a form. It saves directly to
 this repo and the site rebuilds itself within about a minute.
 
 **One-time setup — create a GitHub token:**
@@ -30,6 +31,11 @@ GitHub account is at risk. You can revoke or regenerate it anytime from that sam
 so the admin page instead saves a link to the album — it shows up as a "View photos" button on
 the trip page that opens the album in a new tab. In Google Photos: open the album → **Share** →
 **Create link** → paste that link into the admin form.
+
+**Logging a show:** doesn't need a whole trip, just artist, venue, and date. Setlists aren't
+fetched automatically (no backend to call an API from, and most setlist sites block plain
+requests anyway), so copy the song list from wherever you found it, one song per line, and
+paste it into the "Setlist" field. A link to the source page is optional but nice to keep.
 
 ## Updating the site (manual / fallback)
 
