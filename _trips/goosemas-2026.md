@@ -8,6 +8,9 @@ blurb: "Down the shore for the 13th annual Goosemas, Goose's first-ever Atlantic
 map:
   - { name: "Atlantic City", lat: 39.3643, lng: -74.4229 }
   - { name: "Jim Whelan Boardwalk Hall", lat: 39.3549, lng: -74.4372 }
+shows:
+  - { id: "2026-12-11-goose", label: "Goose · December 11, 2026" }
+  - { id: "2026-12-12-goose", label: "Goose · December 12, 2026" }
 ---
 
 <!-- DAYS_START -->

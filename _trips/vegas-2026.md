@@ -8,6 +8,8 @@ blurb: "The Sphere, The Palazzo, and Goose in Birmingham on the way."
 map:
   - { name: "Birmingham", lat: 33.5186, lng: -86.8104 }
   - { name: "Las Vegas", lat: 36.1699, lng: -115.1398 }
+shows:
+  - { id: "2026-04-11-goose", label: "Goose · April 11, 2026" }
 ---
 
 <!-- DAYS_START -->

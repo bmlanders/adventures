@@ -9,6 +9,8 @@ map:
   - { name: "West Village", lat: 40.7336, lng: -74.0027 }
   - { name: "Radio City Music Hall", lat: 40.7600, lng: -73.9800 }
   - { name: "Nolita & Little Italy", lat: 40.7205, lng: -73.9965 }
+shows:
+  - { id: "2026-02-21-jason-isbell-and-the-400-unit", label: "Jason Isbell and the 400 Unit · February 21, 2026" }
 ---
 
 <div class="day-nav">
@@ -17,126 +19,7 @@ map:
 
 <!-- DAYS_START -->
 <div class="day-block" id="friday">
-  <h3>Friday · West Village</h3>
-  <div class="day-sub">1:00 – 4:30 PM · coffee, two delis' worth of Italian, the city's best slice, and a brewery next door to it</div>
-
-  <dl class="facts">
-    <div><dt>Start</dt><dd>Renaissance Times Square Hotel, 2 Times Square (W 48th St &amp; 7th Ave)</dd></div>
-    <div><dt>Distance</dt><dd>~1.8 miles</dd></div>
-    <div><dt>Duration</dt><dd>~3 hours</dd></div>
-    <div><dt>Transit</dt><dd>1 train, Times Sq → Christopher St (6 min)</dd></div>
-  </dl>
-
-  <div class="section-rule"><span class="eyebrow">The route, stop by stop</span></div>
-
-  <div class="stop">
-    <div class="num"><b>1</b><span class="at">1:00 PM</span></div>
-    <div class="body">
-      <span class="cat">Coffee</span>
-      <h4>Travelers Poets &amp; Friends</h4>
-      <div class="addr">65 W 8th St · 20 min</div>
-      <p>Italian-run local cafe with handmade pasta in the window.</p>
-      <div class="order"><b>Order</b> Cappuccino or macchiato, plus a small pastry.</div>
-    </div>
-  </div>
-
-  <div class="stop">
-    <div class="num"><b>2</b><span class="at">1:20 PM</span></div>
-    <div class="body">
-      <span class="cat">Italian deli</span>
-      <h4>Faicco's Italian Specialties</h4>
-      <div class="addr">260 Bleecker St · 15 min</div>
-      <p>Family-run since 1900. The real thing.</p>
-      <div class="order"><b>Order</b> Prosciutto bread ($4) and two arancini to split.</div>
-    </div>
-  </div>
-
-  <div class="stop">
-    <div class="num"><b>3</b><span class="at">1:35 PM</span></div>
-    <div class="body">
-      <span class="cat">Pizza</span>
-      <h4>L'Industrie Pizzeria</h4>
-      <div class="addr">104 Christopher St · 25 min, including the wait</div>
-      <p>Time Out's #1 pizza in NYC. Arrive by 1:35 to beat the rush.</p>
-      <div class="order"><b>Order</b> Prosciutto-burrata slice and a pepperoni slice.</div>
-    </div>
-  </div>
-
-  <div class="stop">
-    <div class="num"><b>4</b><span class="at">2:00 PM</span></div>
-    <div class="body">
-      <span class="cat beer">Brewery #1</span>
-      <h4>TALEA Beer Co.</h4>
-      <div class="addr">102 Christopher St · 35 min</div>
-      <p>Female-owned brewery, and it is <em>literally next door</em> to L'Industrie. Bring your slices in with you.</p>
-      <div class="order"><b>Order</b> Four-beer flight ($22): IPA, sour, lager, seasonal.</div>
-    </div>
-  </div>
-
-  <div class="stop">
-    <div class="num"><b>5</b><span class="at">2:35 PM</span></div>
-    <div class="body">
-      <span class="cat">Walk</span>
-      <h4>Village stroll</h4>
-      <div class="addr">Christopher St → Grove St → Bleecker St · 15 min</div>
-      <p>Tree-lined streets, window shopping, the classic West Village blocks.</p>
-    </div>
-  </div>
-
-  <div class="stop">
-    <div class="num"><b>6</b><span class="at">2:50 PM</span></div>
-    <div class="body">
-      <span class="cat beer">Beer bar #2</span>
-      <h4>Blind Tiger Ale House</h4>
-      <div class="addr">281 Bleecker St · 35 min</div>
-      <p>Legendary NYC craft beer bar. A serious geek destination.</p>
-      <div class="order"><b>Order</b> Half-pours (4–5 oz) of two or three beers off the 28 rotating taps.</div>
-    </div>
-  </div>
-
-  <div class="stop">
-    <div class="num"><b>7</b><span class="at">3:25 PM</span></div>
-    <div class="body">
-      <span class="cat">Dessert, optional</span>
-      <h4>Pasticceria Rocco</h4>
-      <div class="addr">243 Bleecker St · 15 min</div>
-      <p>Traditional Italian bakery, right there on Bleecker.</p>
-      <div class="order"><b>Order</b> One cannoli, filled to order.</div>
-    </div>
-  </div>
-
-  <div class="stop">
-    <div class="num"><b>8</b><span class="at">3:40 PM</span></div>
-    <div class="body">
-      <span class="cat">Back</span>
-      <h4>Return to the hotel</h4>
-      <div class="addr">1 train: Christopher St → Times Sq-42nd St · 6 min</div>
-      <p>Back by 4:00 PM.</p>
-    </div>
-  </div>
-
-  <a class="photo-link" href="https://www.google.com/maps/d/viewer?mid=10rzckx7gz2Y8M7bOsyIMHyYPjwkALYY" target="_blank" rel="noopener">
-    <span class="ico"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></span>
-    <span class="txt"><span class="h">Friday map</span><span class="s">All eight stops in Google Maps</span></span>
-    <span class="go"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M7 17L17 7M7 7h10v10"/></svg></span>
-  </a>
-</div>
-
-<div class="day-block">
-  <h3>Friday night · Radio City</h3>
-  <div class="day-sub">The reason for the whole weekend</div>
-  <div class="tonight single">
-    <div class="slot show">
-      <div class="lbl">The show</div>
-      <h4>Jason Isbell</h4>
-      <div class="addr">Radio City Music Hall, 1260 6th Ave</div>
-      <p>Back at the hotel by 4:00, which is exactly why the walking tour was built to end when it did. Six blocks up 6th Ave and you're there.</p>
-    </div>
-  </div>
-</div>
-
-<div class="day-block" id="saturday">
-  <h3>Saturday · Nolita and Little Italy</h3>
+  <h3>Friday · Nolita and Little Italy</h3>
   <div class="day-sub">10:00 AM – 4:00 PM · a longer day, a cave bar, and cheesecake to finish</div>
 
   <dl class="facts">
@@ -246,9 +129,128 @@ map:
 
   <a class="photo-link" href="https://www.google.com/maps/d/viewer?mid=1h6kVkmoLSIaff3gQX2Utvf7TmH22zfg" target="_blank" rel="noopener">
     <span class="ico"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></span>
-    <span class="txt"><span class="h">Saturday map</span><span class="s">All nine stops in Google Maps</span></span>
+    <span class="txt"><span class="h">Friday map</span><span class="s">All nine stops in Google Maps</span></span>
     <span class="go"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M7 17L17 7M7 7h10v10"/></svg></span>
   </a>
+</div>
+
+<div class="day-block" id="saturday">
+  <h3>Saturday · West Village</h3>
+  <div class="day-sub">1:00 – 4:30 PM · coffee, two delis' worth of Italian, the city's best slice, and a brewery next door to it</div>
+
+  <dl class="facts">
+    <div><dt>Start</dt><dd>Renaissance Times Square Hotel, 2 Times Square (W 48th St &amp; 7th Ave)</dd></div>
+    <div><dt>Distance</dt><dd>~1.8 miles</dd></div>
+    <div><dt>Duration</dt><dd>~3 hours</dd></div>
+    <div><dt>Transit</dt><dd>1 train, Times Sq → Christopher St (6 min)</dd></div>
+  </dl>
+
+  <div class="section-rule"><span class="eyebrow">The route, stop by stop</span></div>
+
+  <div class="stop">
+    <div class="num"><b>1</b><span class="at">1:00 PM</span></div>
+    <div class="body">
+      <span class="cat">Coffee</span>
+      <h4>Travelers Poets &amp; Friends</h4>
+      <div class="addr">65 W 8th St · 20 min</div>
+      <p>Italian-run local cafe with handmade pasta in the window.</p>
+      <div class="order"><b>Order</b> Cappuccino or macchiato, plus a small pastry.</div>
+    </div>
+  </div>
+
+  <div class="stop">
+    <div class="num"><b>2</b><span class="at">1:20 PM</span></div>
+    <div class="body">
+      <span class="cat">Italian deli</span>
+      <h4>Faicco's Italian Specialties</h4>
+      <div class="addr">260 Bleecker St · 15 min</div>
+      <p>Family-run since 1900. The real thing.</p>
+      <div class="order"><b>Order</b> Prosciutto bread ($4) and two arancini to split.</div>
+    </div>
+  </div>
+
+  <div class="stop">
+    <div class="num"><b>3</b><span class="at">1:35 PM</span></div>
+    <div class="body">
+      <span class="cat">Pizza</span>
+      <h4>L'Industrie Pizzeria</h4>
+      <div class="addr">104 Christopher St · 25 min, including the wait</div>
+      <p>Time Out's #1 pizza in NYC. Arrive by 1:35 to beat the rush.</p>
+      <div class="order"><b>Order</b> Prosciutto-burrata slice and a pepperoni slice.</div>
+    </div>
+  </div>
+
+  <div class="stop">
+    <div class="num"><b>4</b><span class="at">2:00 PM</span></div>
+    <div class="body">
+      <span class="cat beer">Brewery #1</span>
+      <h4>TALEA Beer Co.</h4>
+      <div class="addr">102 Christopher St · 35 min</div>
+      <p>Female-owned brewery, and it is <em>literally next door</em> to L'Industrie. Bring your slices in with you.</p>
+      <div class="order"><b>Order</b> Four-beer flight ($22): IPA, sour, lager, seasonal.</div>
+    </div>
+  </div>
+
+  <div class="stop">
+    <div class="num"><b>5</b><span class="at">2:35 PM</span></div>
+    <div class="body">
+      <span class="cat">Walk</span>
+      <h4>Village stroll</h4>
+      <div class="addr">Christopher St → Grove St → Bleecker St · 15 min</div>
+      <p>Tree-lined streets, window shopping, the classic West Village blocks.</p>
+    </div>
+  </div>
+
+  <div class="stop">
+    <div class="num"><b>6</b><span class="at">2:50 PM</span></div>
+    <div class="body">
+      <span class="cat beer">Beer bar #2</span>
+      <h4>Blind Tiger Ale House</h4>
+      <div class="addr">281 Bleecker St · 35 min</div>
+      <p>Legendary NYC craft beer bar. A serious geek destination.</p>
+      <div class="order"><b>Order</b> Half-pours (4–5 oz) of two or three beers off the 28 rotating taps.</div>
+    </div>
+  </div>
+
+  <div class="stop">
+    <div class="num"><b>7</b><span class="at">3:25 PM</span></div>
+    <div class="body">
+      <span class="cat">Dessert, optional</span>
+      <h4>Pasticceria Rocco</h4>
+      <div class="addr">243 Bleecker St · 15 min</div>
+      <p>Traditional Italian bakery, right there on Bleecker.</p>
+      <div class="order"><b>Order</b> One cannoli, filled to order.</div>
+    </div>
+  </div>
+
+  <div class="stop">
+    <div class="num"><b>8</b><span class="at">3:40 PM</span></div>
+    <div class="body">
+      <span class="cat">Back</span>
+      <h4>Return to the hotel</h4>
+      <div class="addr">1 train: Christopher St → Times Sq-42nd St · 6 min</div>
+      <p>Back by 4:00 PM.</p>
+    </div>
+  </div>
+
+  <a class="photo-link" href="https://www.google.com/maps/d/viewer?mid=10rzckx7gz2Y8M7bOsyIMHyYPjwkALYY" target="_blank" rel="noopener">
+    <span class="ico"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></span>
+    <span class="txt"><span class="h">Saturday map</span><span class="s">All eight stops in Google Maps</span></span>
+    <span class="go"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M7 17L17 7M7 7h10v10"/></svg></span>
+  </a>
+</div>
+
+<div class="day-block">
+  <h3>Saturday night · Radio City</h3>
+  <div class="day-sub">The reason for the whole weekend</div>
+  <div class="tonight single">
+    <div class="slot show">
+      <div class="lbl">The show</div>
+      <h4>Jason Isbell</h4>
+      <div class="addr">Radio City Music Hall, 1260 6th Ave</div>
+      <p>Back at the hotel by 4:00, which is exactly why the walking tour was built to end when it did. Six blocks up 6th Ave and you're there.</p>
+    </div>
+  </div>
 </div>
 <!-- DAYS_END -->
 
