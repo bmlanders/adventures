@@ -4,18 +4,15 @@ status: complete
 dates: "April 2026"
 sort_date: 2026-04-01
 route: "Las Vegas · group trip"
-blurb: "The Sphere, The Palazzo, and Goose in Birmingham on the way."
+blurb: "The Sphere and The Palazzo in Las Vegas."
 map:
-  - { name: "Birmingham", lat: 33.5186, lng: -86.8104 }
   - { name: "Las Vegas", lat: 36.1699, lng: -115.1398 }
-shows:
-  - { id: "2026-04-11-goose", label: "Goose · April 11, 2026" }
 ---
 
 <!-- DAYS_START -->
 <div class="day-block">
   <h3>The trip</h3>
-  <div class="day-sub">The Palazzo · The Sphere · Goose in Birmingham en route</div>
+  <div class="day-sub">The Palazzo · The Sphere</div>
   <div class="entry">Group trip to Vegas, details to be filled in whenever there's a minute.</div>
 </div>
 <!-- DAYS_END -->
