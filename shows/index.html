@@ -105,7 +105,29 @@ title: "Shows"
   <div class="show-date">June 17, 2026</div>
   <h3>Spafford</h3>
   <div class="show-venue">Hobart Art Theatre, Hobart, IN</div>
-  <p class="show-notes">Doors at 6:30, show at 7:30.</p>
+  <p class="show-notes">Doors at 6:30, show at 7:30. Tongue N' Groove nods to Steve Kimock, Mad World is a Tears for Fears cover.</p>
+  <div class="setlist">
+    <div class="setlist-lbl">Setlist</div>
+    <ol class="setlist-list">
+      <li class="setlist-set">Set One:</li>
+      <li>The Remedy</li>
+      <li>Soggy Froggy</li>
+      <li>Hollywood</li>
+      <li>Tongue N' Groove</li>
+      <li>Chuck's Dream</li>
+      <li class="setlist-set">Set Two:</li>
+      <li>Fake The Fate</li>
+      <li>Dissociation Assist</li>
+      <li>Mad World</li>
+      <li>America</li>
+      <li>Crowd</li>
+      <li class="setlist-set">Encore:</li>
+      <li>Banter</li>
+      <li>Diana</li>
+      <li>The Reprise</li>
+    </ol>
+  </div>
+  <a class="show-trip-link" href="https://www.nugs.net/live-download-of-spafford-the-hobart-art-theater-hobart-in-06-17-2026-mp3-flac-or-online-music-streaming/48905.html" target="_blank" rel="noopener">View full setlist &rarr;</a>
 </div>
 
 <div class="show-entry" id="2026-06-05-terrapin-flyer">
@@ -280,8 +302,8 @@ title: "Shows"
     <label for="qa-date">Date</label>
     <input type="date" id="qa-date">
 
-    <label for="qa-setlist">Setlist (optional &mdash; one song per line, paste the whole thing, or paste a phantasytour.com or setlist.fm link)</label>
-    <textarea id="qa-setlist" style="min-height:120px;" placeholder="Paste a setlist, a phantasytour.com or setlist.fm show link, or leave this blank"></textarea>
+    <label for="qa-setlist">Setlist (optional &mdash; one song per line, paste the whole thing, or paste a phantasytour.com, setlist.fm, or nugs.net link)</label>
+    <textarea id="qa-setlist" style="min-height:120px;" placeholder="Paste a setlist, a phantasytour.com, setlist.fm, or nugs.net show link, or leave this blank"></textarea>
 
     <button class="btn" id="qa-save" style="margin-top:14px;">Add show</button>
     <span id="qa-status" class="status-msg"></span>
@@ -520,13 +542,34 @@ title: "Shows"
     return { band, date, setlistText: songs.join('\n') };
   }
 
+  function parseNugs(text) {
+    const head = text.match(/^Title:\s*(.+?)\s+Live Concert Setlist at\s+.+?\s+on\s+(\d{2})-(\d{2})-(\d{4})/m);
+    if (!head) return null;
+    const band = head[1].trim();
+    const date = `${head[4]}-${head[2]}-${head[3]}`;
+
+    const setStart = text.search(/Setlist at /);
+    const shareIdx = text.indexOf('Share via', setStart === -1 ? 0 : setStart);
+    const section = setStart === -1 ? '' : text.slice(setStart, shareIdx === -1 ? text.length : shareIdx);
+    const songs = [];
+    for (const line of section.split('\n')) {
+      const trimmed = line.trim();
+      if (!trimmed || trimmed.startsWith('[Audio')) continue;
+      const header = trimmed.match(/^#{1,6}\s+(Set\s*\w+|Encore)\s*$/i);
+      if (header) { songs.push(header[1].trim() + ':'); continue; }
+      const song = trimmed.match(/^(.+?)\s+\d{1,2}:\d{2}$/);
+      if (song) songs.push(song[1].trim());
+    }
+    return { band, date, setlistText: songs.join('\n') };
+  }
+
   async function readFromLink(url) {
     let host = '';
     try { host = new URL(url).hostname; } catch (e) { /* leave blank */ }
     const res = await fetch('https://r.jina.ai/' + url);
     if (!res.ok) throw new Error(`the page fetch came back ${res.status}`);
     const text = await res.text();
-    const parsed = parsePhantasyTour(text) || parseSetlistFm(text);
+    const parsed = parsePhantasyTour(text) || parseSetlistFm(text) || parseNugs(text);
     if (parsed) return parsed;
     if (host.includes('elgoose.net')) {
       throw new Error("elgoose.net loads its setlists in after the page loads, so this can't read them — paste the setlist text instead");

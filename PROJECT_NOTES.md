@@ -115,6 +115,11 @@ afterward with its own JS:
   heading, a `_{Date} Setlist_` string, numbered list with segues marked
   `(->)`/`(>)` as separate tokens rather than inline arrows). Both parsers
   run in sequence; whichever matches wins.
+- **nugs.net** — works well too, live-download show pages. Title line
+  gives band, venue, and date (`{Band} Live Concert Setlist at {Venue} on
+  MM-DD-YYYY`) in one shot; the setlist section pairs an `[Audio N](…)`
+  clip link with a ` {Song} {MM:SS}` line per track, headed by `Set One`/
+  `Set Two`/`Encore`.
 - **elgoose.net** — confirmed broken, on both a query-filtered URL and a
   show's own permalink. Its setlist body loads in dynamically after the
   page renders, so the proxy's snapshot never contains it, only the nav
