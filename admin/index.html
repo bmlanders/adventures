@@ -499,11 +499,35 @@ $('edit-save').addEventListener('click', async () => {
 });
 
 // ---- Log a show ----
+function slugify(s) {
+  return s.toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+}
 function setlistTextToHtml(text) {
   const songs = text.split('\n').map(s => s.trim()).filter(Boolean);
   if (!songs.length) return '';
   const items = songs.map(s => `      <li>${escapeHtml(s)}</li>`).join('\n');
   return `\n  <div class="setlist">\n    <div class="setlist-lbl">Setlist</div>\n    <ol class="setlist-list">\n${items}\n    </ol>\n  </div>`;
+}
+// Adds this show to a trip's front matter (a `shows:` list of {id, label}), so
+// the trip page can link back to it. Plain string surgery, not a YAML parser —
+// front matter here is always simple flat keys plus occasional flow-mapping
+// lists (map: already works the same way), so this holds up fine.
+function addShowToTripFrontMatter(content, entryId, label) {
+  const fmMatch = content.match(/^---\n([\s\S]*?)\n---\n/);
+  if (!fmMatch) throw new Error('No front matter found in trip file');
+  let fm = fmMatch[1];
+  const line = `  - { id: "${entryId}", label: "${label.replace(/"/g, '\\"')}" }`;
+  if (/^shows:\s*$/m.test(fm)) {
+    const lines = fm.split('\n');
+    const idx = lines.findIndex(l => /^shows:\s*$/.test(l));
+    let insertAt = idx + 1;
+    while (insertAt < lines.length && /^\s*-\s*\{/.test(lines[insertAt])) insertAt++;
+    lines.splice(insertAt, 0, line);
+    fm = lines.join('\n');
+  } else {
+    fm = fm + `\nshows:\n${line}`;
+  }
+  return content.replace(fmMatch[0], `---\n${fm}\n---\n`);
 }
 
 $('show-submit').addEventListener('click', async () => {
@@ -524,8 +548,9 @@ $('show-submit').addEventListener('click', async () => {
     const path = 'shows/index.html';
     const { content, sha } = await ghGet(path);
     const dateLabel = new Date(date + 'T12:00:00').toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+    const showId = `${date}-${slugify(artist)}`;
 
-    let block = `<div class="show-entry">\n  <div class="show-date">${escapeHtml(dateLabel)}</div>\n  <h3>${escapeHtml(artist)}</h3>\n  <div class="show-venue">${escapeHtml(venue)}</div>`;
+    let block = `<div class="show-entry" id="${showId}">\n  <div class="show-date">${escapeHtml(dateLabel)}</div>\n  <h3>${escapeHtml(artist)}</h3>\n  <div class="show-venue">${escapeHtml(venue)}</div>`;
     if (notes) block += `\n  <p class="show-notes">${escapeHtml(notes)}</p>`;
     if (tripSlug) block += `\n  <a class="show-trip-link" href="{{ '/trips/${tripSlug}/' | relative_url }}">Part of: ${escapeHtml(tripTitle)} &rarr;</a>`;
     if (setlistText) block += setlistTextToHtml(setlistText);
@@ -537,6 +562,18 @@ $('show-submit').addEventListener('click', async () => {
     status.textContent = 'Logged! Live in about a minute.'; status.className = 'status-msg ok';
     $('show-artist').value = ''; $('show-venue').value = ''; $('show-date').value = '';
     $('show-notes').value = ''; $('show-trip').value = ''; $('show-setlist-text').value = ''; $('show-setlist-link').value = '';
+
+    if (tripSlug) {
+      try {
+        const tripPath = `_trips/${tripSlug}.md`;
+        const tripFile = await ghGet(tripPath);
+        const updatedTrip = addShowToTripFrontMatter(tripFile.content, showId, `${artist} · ${dateLabel}`);
+        await ghPut(tripPath, updatedTrip, tripFile.sha, `Link show to ${tripSlug}: ${artist} at ${venue}`);
+      } catch (e) {
+        status.textContent = 'Logged the show, but could not link it back to the trip page: ' + e.message;
+        status.className = 'status-msg err';
+      }
+    }
   } catch (e) {
     status.textContent = 'Failed: ' + e.message; status.className = 'status-msg err';
   }

@@ -288,6 +288,17 @@ main { max-width: 960px; margin: 0 auto; padding: 0 24px 84px; position: relativ
 }
 .trip-hero .route { color: #C6D3C9; font-size: 0.98rem; max-width: 56ch; }
 
+/* ===== Link back to the concert log, when a trip has a logged show ===== */
+.trip-shows {
+  display: flex; align-items: center; flex-wrap: wrap; gap: 10px 16px;
+  margin-bottom: 22px;
+}
+.trip-shows-lbl {
+  font-size: 0.66rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--stone);
+}
+.trip-shows-link { font-size: 0.86rem; font-weight: 600; }
+
 /* ===== Trip route map (Leaflet + OpenStreetMap, no API key) ===== */
 .trip-map {
   height: 300px;
