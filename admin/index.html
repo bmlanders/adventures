@@ -503,9 +503,14 @@ function slugify(s) {
   return s.toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
 }
 function setlistTextToHtml(text) {
-  const songs = text.split('\n').map(s => s.trim()).filter(Boolean);
-  if (!songs.length) return '';
-  const items = songs.map(s => `      <li>${escapeHtml(s)}</li>`).join('\n');
+  const lines = text.split('\n').map(s => s.trim()).filter(Boolean);
+  if (!lines.length) return '';
+  const items = lines.map(s => {
+    const isHeader = /^(Set\s*\d+|Encore)\s*:?\s*$/i.test(s);
+    return isHeader
+      ? `      <li class="setlist-set">${escapeHtml(s.replace(/:?\s*$/, ':'))}</li>`
+      : `      <li>${escapeHtml(s)}</li>`;
+  }).join('\n');
   return `\n  <div class="setlist">\n    <div class="setlist-lbl">Setlist</div>\n    <ol class="setlist-list">\n${items}\n    </ol>\n  </div>`;
 }
 // Adds this show to a trip's front matter (a `shows:` list of {id, label}), so

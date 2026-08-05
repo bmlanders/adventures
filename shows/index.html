@@ -46,16 +46,16 @@ title: "Shows"
   <div class="setlist">
     <div class="setlist-lbl">Setlist</div>
     <ol class="setlist-list">
-      <li>Set 1:</li>
+      <li class="setlist-set">Set 1:</li>
       <li>MEDIA</li>
       <li>Hot Tea</li>
       <li>Rockdale</li>
       <li>Wysteria Lane &gt; Burn The Witch</li>
       <li>Slow Ready</li>
-      <li>Set 2:</li>
+      <li class="setlist-set">Set 2:</li>
       <li>Arrow &gt; Fish In The Sea</li>
       <li>Big Modern! &gt; Good Times // End Times &gt; (((postplace))) -&gt; Big Modern!</li>
-      <li>Encore:</li>
+      <li class="setlist-set">Encore:</li>
       <li>SALT</li>
     </ol>
   </div>
@@ -65,8 +65,27 @@ title: "Shows"
 <div class="show-entry" id="2026-06-19-goose">
   <div class="show-date">June 19, 2026</div>
   <h3>Goose</h3>
-  <div class="show-venue">MSG</div>
+  <div class="show-venue">Madison Square Garden, New York, NY</div>
+  <p class="show-notes">First night of Big Modern! at the Garden. Before the first set, the PA played highlights from the Knicks' NBA Finals championship. Borne into POP was a first-time-played transition, Peach is a Future Islands cover, and State Of The Art is Jim James. Stuart Bogie sat in for the back half of the second set.</p>
   <a class="show-trip-link" href="{{ '/trips/nyc-2026/' | relative_url }}">Part of: Goose &mdash; Big Modern! at MSG &rarr;</a>
+  <div class="setlist">
+    <div class="setlist-lbl">Setlist</div>
+    <ol class="setlist-list">
+      <li class="setlist-set">Set 1:</li>
+      <li>Thatch</li>
+      <li>Borne &gt; POP</li>
+      <li>Savenger</li>
+      <li>Peach</li>
+      <li>Seekers on the Ridge pt I &gt; Seekers on the Ridge pt II</li>
+      <li>Echo of a Rose</li>
+      <li class="setlist-set">Set 2:</li>
+      <li>Pancakes</li>
+      <li>Into the Myst &gt; Good2B &gt; Elmeg The Wise</li>
+      <li>The Empress Of Organos</li>
+      <li class="setlist-set">Encore:</li>
+      <li>State Of The Art (A.E.I.O.U.)</li>
+    </ol>
+  </div>
   <a class="show-trip-link" href="https://elgoose.net/setlists/?date=2026-06-19" target="_blank" rel="noopener" style="margin-left:14px;">View full setlist &rarr;</a>
 </div>
 
@@ -138,7 +157,7 @@ title: "Shows"
       <h3>Quick add a show</h3>
       <button id="quick-add-close" class="modal-close" aria-label="Close">&times;</button>
     </div>
-    <p class="hint">Band and date, or just paste a setlist below and I'll try to pick both out of it. Not every show needs a setlist.</p>
+    <p class="hint">Band and date, or just paste a setlist (or a link to one) below and I'll try to pick both out of it. If the show's already logged, this updates it instead of adding a duplicate.</p>
 
     <label for="qa-band">Band</label>
     <input type="text" id="qa-band" list="qa-known-bands" placeholder="Start typing, or pick one you've used before">
@@ -147,8 +166,8 @@ title: "Shows"
     <label for="qa-date">Date</label>
     <input type="date" id="qa-date">
 
-    <label for="qa-setlist">Setlist (optional &mdash; one song per line, or paste the whole thing)</label>
-    <textarea id="qa-setlist" style="min-height:120px;" placeholder="Paste a setlist here, or leave this blank"></textarea>
+    <label for="qa-setlist">Setlist (optional &mdash; one song per line, paste the whole thing, or paste a phantasytour.com or setlist.fm link)</label>
+    <textarea id="qa-setlist" style="min-height:120px;" placeholder="Paste a setlist, a phantasytour.com or setlist.fm show link, or leave this blank"></textarea>
 
     <button class="btn" id="qa-save" style="margin-top:14px;">Add show</button>
     <span id="qa-status" class="status-msg"></span>
@@ -198,9 +217,14 @@ title: "Shows"
     return before + middle + after;
   }
   function setlistTextToHtml(text) {
-    const songs = text.split('\n').map(s => s.trim()).filter(Boolean);
-    if (!songs.length) return '';
-    const items = songs.map(s => `      <li>${escapeHtml(s)}</li>`).join('\n');
+    const lines = text.split('\n').map(s => s.trim()).filter(Boolean);
+    if (!lines.length) return '';
+    const items = lines.map(s => {
+      const isHeader = /^(Set\s*\d+|Encore)\s*:?\s*$/i.test(s);
+      return isHeader
+        ? `      <li class="setlist-set">${escapeHtml(s.replace(/:?\s*$/, ':'))}</li>`
+        : `      <li>${escapeHtml(s)}</li>`;
+    }).join('\n');
     return `\n  <div class="setlist">\n    <div class="setlist-lbl">Setlist</div>\n    <ol class="setlist-list">\n${items}\n    </ol>\n  </div>`;
   }
 
@@ -238,6 +262,138 @@ title: "Shows"
     return null;
   }
 
+  // ---- reading a link instead of pasted text ----
+  // Cross-origin fetch of an arbitrary site is blocked by CORS from this
+  // page's own origin (confirmed: a bare fetch to phantasytour.com fails
+  // outright). r.jina.ai is a free public reader proxy that fetches
+  // server-side and returns clean text with permissive CORS headers, no
+  // key needed. It only sees what's in the initial server-rendered HTML,
+  // not content a site loads in afterward with its own JS — confirmed
+  // phantasytour.com's show pages are fully server-rendered (this works
+  // well), but elgoose.net's setlist body is loaded in dynamically and
+  // never shows up in the proxied text, even on its permalink pages, not
+  // just its query-filtered ones. There's no key or backend here to run a
+  // real headless browser instead, so that's a hard limit for now, not a
+  // bug to chase.
+  function isUrl(s) { return /^https?:\/\/\S+$/i.test(s); }
+
+  function parsePhantasyTour(text) {
+    const head = text.match(/^#\s+(.+?)\s+Show\s+[•·]\s+([A-Za-z]+\.?\s+\d{1,2},?\s*\d{4})/m);
+    if (!head) return null;
+    const band = head[1].trim();
+    const d = new Date(head[2].replace(',', '') + ' 12:00:00');
+    if (isNaN(d)) return null;
+    const date = d.toISOString().slice(0, 10);
+
+    const iWasThere = text.search(/i was there/i);
+    let end = text.length;
+    for (const re of [/\n###\s+My Memories/i, /\n###\s+Song Stats/i]) {
+      const idx = text.slice(iWasThere === -1 ? 0 : iWasThere).search(re);
+      if (idx !== -1) end = Math.min(end, (iWasThere === -1 ? 0 : iWasThere) + idx);
+    }
+    const section = iWasThere === -1 ? '' : text.slice(iWasThere, end);
+    const songs = [];
+    for (const line of section.split('\n')) {
+      const header = line.match(/^\*\s+(Set\s*\d+|Encore)\s*:?/i);
+      if (header) { songs.push(header[1].trim() + ':'); continue; }
+      const song = line.match(/^\s*\d+\.\s+\[([^\]]+)\]/);
+      if (song) songs.push(song[1]);
+    }
+    return { band, date, setlistText: songs.join('\n') };
+  }
+
+  function parseSetlistFm(text) {
+    const bandM = text.match(/^#\s+\*\*\[([^\]]+)\]/m);
+    const dateM = text.match(/_([A-Za-z]+ \d{1,2},\s*\d{4}) Setlist_/);
+    if (!bandM || !dateM) return null;
+    const band = bandM[1].trim();
+    const d = new Date(dateM[1] + ' 12:00:00');
+    if (isNaN(d)) return null;
+    const date = d.toISOString().slice(0, 10);
+
+    const setStart = text.indexOf('## Setlist');
+    const noteStart = text.indexOf('**Note:**', setStart === -1 ? 0 : setStart);
+    const section = setStart === -1 ? '' : text.slice(setStart, noteStart === -1 ? text.length : noteStart);
+    const songs = [];
+    for (const line of section.split('\n')) {
+      const m = line.match(/^\s*\d+\.\s+(.*)$/);
+      if (!m) continue;
+      const rest = m[1].trim();
+      if (!rest) continue;
+      const header = rest.match(/^(Set\s*\d+|Encore)\s*:?\s*$/i);
+      if (header) { songs.push(header[1].trim() + ':'); continue; }
+      const song = rest.match(/\[([^\]]+)\]/);
+      if (!song) continue;
+      songs.push(/\(->\)|\(>\)/.test(rest) ? song[1] + ' >' : song[1]);
+    }
+    return { band, date, setlistText: songs.join('\n') };
+  }
+
+  async function readFromLink(url) {
+    let host = '';
+    try { host = new URL(url).hostname; } catch (e) { /* leave blank */ }
+    const res = await fetch('https://r.jina.ai/' + url);
+    if (!res.ok) throw new Error(`the page fetch came back ${res.status}`);
+    const text = await res.text();
+    const parsed = parsePhantasyTour(text) || parseSetlistFm(text);
+    if (parsed) return parsed;
+    if (host.includes('elgoose.net')) {
+      throw new Error("elgoose.net loads its setlists in after the page loads, so this can't read them — paste the setlist text instead");
+    }
+    // Unknown site: best effort on whatever text came back. Can only ever
+    // find a band already logged before, and won't attempt a setlist since
+    // there's no known structure to trust for an arbitrary page.
+    const date = inferDate(text);
+    const band = inferBand(text);
+    if (!date && !band) throw new Error("couldn't recognize that page's format — paste the setlist text instead");
+    return { band, date, setlistText: '' };
+  }
+
+  // ---- find an existing entry by id, so re-adding the same show updates
+  // it instead of creating a duplicate. Depth-counts <div>/</div> rather
+  // than a naive regex, since a .setlist block nests one div deep. ----
+  function findEntryBlock(content, id) {
+    const openTag = `<div class="show-entry" id="${id}">`;
+    const start = content.indexOf(openTag);
+    if (start === -1) return null;
+    let i = start + openTag.length;
+    let depth = 1;
+    while (depth > 0) {
+      const nextOpen = content.indexOf('<div', i);
+      const nextClose = content.indexOf('</div>', i);
+      if (nextClose === -1) return null;
+      if (nextOpen !== -1 && nextOpen < nextClose) { depth++; i = nextOpen + 4; }
+      else { depth--; i = nextClose + 6; }
+    }
+    return { start, end: i };
+  }
+  function upsertSetlistAndLink(entryHtml, setlistText, sourceLink) {
+    let html = entryHtml;
+    if (setlistText) {
+      const newSetlist = setlistTextToHtml(setlistText);
+      const setlistStart = html.indexOf('<div class="setlist">');
+      if (setlistStart === -1) {
+        const lastClose = html.lastIndexOf('</div>');
+        html = html.slice(0, lastClose) + newSetlist + '\n' + html.slice(lastClose);
+      } else {
+        let i = setlistStart + '<div class="setlist">'.length;
+        let depth = 1;
+        while (depth > 0) {
+          const nextOpen = html.indexOf('<div', i);
+          const nextClose = html.indexOf('</div>', i);
+          if (nextOpen !== -1 && nextOpen < nextClose) { depth++; i = nextOpen + 4; }
+          else { depth--; i = nextClose + 6; }
+        }
+        html = html.slice(0, setlistStart) + newSetlist.trim() + html.slice(i);
+      }
+    }
+    if (sourceLink && !html.includes(escapeHtml(sourceLink))) {
+      const lastClose = html.lastIndexOf('</div>');
+      html = html.slice(0, lastClose) + `\n  <a class="show-trip-link" href="${escapeHtml(sourceLink)}" target="_blank" rel="noopener">View full setlist &rarr;</a>\n` + html.slice(lastClose);
+    }
+    return html;
+  }
+
   function openModal() {
     populateBandList();
     $('quick-add-overlay').classList.remove('hidden');
@@ -257,16 +413,30 @@ title: "Shows"
 
     let band = $('qa-band').value.trim();
     let date = $('qa-date').value;
-    const setlistText = $('qa-setlist').value.trim();
+    let setlistText = $('qa-setlist').value.trim();
+    let sourceLink = '';
 
-    if ((!band || !date) && setlistText) {
+    if (isUrl(setlistText)) {
+      sourceLink = setlistText;
+      status.textContent = 'Reading that link...'; status.className = 'status-msg';
+      try {
+        const found = await readFromLink(sourceLink);
+        if (!band && found.band) band = found.band;
+        if (!date && found.date) date = found.date;
+        setlistText = found.setlistText || '';
+      } catch (e) {
+        status.textContent = "Couldn't read that link: " + e.message;
+        status.className = 'status-msg err';
+        return;
+      }
+    } else if ((!band || !date) && setlistText) {
       if (!date) { const d = inferDate(setlistText); if (d) date = d; }
       if (!band) { const b = inferBand(setlistText); if (b) band = b; }
     }
 
     if (!band && !date && !setlistText) { status.textContent = 'Give me a band and date, or paste a setlist.'; status.className = 'status-msg err'; return; }
-    if (!band) { status.textContent = "Couldn't find the band in that setlist (only recognizes bands already on this page) — type it in."; status.className = 'status-msg err'; return; }
-    if (!date) { status.textContent = "Couldn't find a date in that setlist — pick one."; status.className = 'status-msg err'; return; }
+    if (!band) { status.textContent = "Couldn't find the band (only recognizes bands already on this page) — type it in."; status.className = 'status-msg err'; return; }
+    if (!date) { status.textContent = "Couldn't find a date — pick one."; status.className = 'status-msg err'; return; }
 
     status.textContent = 'Saving...'; status.className = 'status-msg';
     try {
@@ -274,12 +444,22 @@ title: "Shows"
       const { content, sha } = await ghGet(path);
       const dateLabel = new Date(date + 'T12:00:00').toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
       const showId = `${date}-${slugify(band)}`;
-      let block = `<div class="show-entry" id="${showId}">\n  <div class="show-date">${escapeHtml(dateLabel)}</div>\n  <h3>${escapeHtml(band)}</h3>`;
-      block += setlistTextToHtml(setlistText);
-      block += `\n</div>`;
-      const updated = insertIntoMarkers(content, '<!-- SHOWS_START -->', '<!-- SHOWS_END -->', block, 'prepend');
-      await ghPut(path, updated, sha, `Log show: ${band} on ${date}`);
-      status.textContent = 'Added! Reloading...'; status.className = 'status-msg ok';
+
+      const existing = findEntryBlock(content, showId);
+      let updated;
+      if (existing) {
+        const merged = upsertSetlistAndLink(content.slice(existing.start, existing.end), setlistText, sourceLink);
+        updated = content.slice(0, existing.start) + merged + content.slice(existing.end);
+      } else {
+        let block = `<div class="show-entry" id="${showId}">\n  <div class="show-date">${escapeHtml(dateLabel)}</div>\n  <h3>${escapeHtml(band)}</h3>`;
+        if (setlistText) block += setlistTextToHtml(setlistText);
+        if (sourceLink) block += `\n  <a class="show-trip-link" href="${escapeHtml(sourceLink)}" target="_blank" rel="noopener">View full setlist &rarr;</a>`;
+        block += `\n</div>`;
+        updated = insertIntoMarkers(content, '<!-- SHOWS_START -->', '<!-- SHOWS_END -->', block, 'prepend');
+      }
+
+      await ghPut(path, updated, sha, `${existing ? 'Update' : 'Log'} show: ${band} on ${date}`);
+      status.textContent = (existing ? 'Updated!' : 'Added!') + ' Reloading...'; status.className = 'status-msg ok';
       setTimeout(() => location.reload(), 900);
     } catch (e) {
       status.textContent = 'Failed: ' + e.message; status.className = 'status-msg err';

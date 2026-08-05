@@ -572,10 +572,22 @@ main { max-width: 960px; margin: 0 auto; padding: 0 24px 84px; position: relativ
   color: var(--gold-deep); margin-bottom: 9px;
 }
 .setlist-list {
-  margin: 0; padding-left: 22px; columns: 2; column-gap: 26px;
+  margin: 0; padding-left: 0; list-style: none; columns: 2; column-gap: 26px;
   font-size: 0.88rem; color: var(--ink-soft); line-height: 1.6;
+  counter-reset: song;
 }
-.setlist-list li { break-inside: avoid; padding-left: 2px; }
+.setlist-list li { break-inside: avoid; position: relative; padding-left: 22px; }
+/* song lines get a counter that skips set/encore headers entirely, so
+   "Set 2:" never eats a number the way a plain <ol> would */
+.setlist-list li:not(.setlist-set) { counter-increment: song; }
+.setlist-list li:not(.setlist-set)::before {
+  content: counter(song) "."; position: absolute; left: 0; color: var(--stone);
+}
+.setlist-list li.setlist-set {
+  padding-left: 0; margin-top: 8px;
+  font-weight: 700; color: var(--ink);
+}
+.setlist-list li.setlist-set:first-child { margin-top: 0; }
 
 @media (max-width: 560px) {
   .setlist-list { columns: 1; }

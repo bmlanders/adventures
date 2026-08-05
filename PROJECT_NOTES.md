@@ -101,6 +101,36 @@ a genuinely new band still needs to be typed in. Reuses whatever token is
 already in `localStorage` from the admin page rather than asking again;
 if there isn't one, it says so and points at `/admin/`.
 
+**Setlist by link, not just pasted text.** The setlist field also accepts a
+URL. A bare cross-origin `fetch()` to another site is blocked by CORS from
+this page's own origin (confirmed directly: phantasytour.com refuses it
+outright), so links go through `r.jina.ai`, a free public reader proxy with
+permissive CORS, fetched server-side, no key needed. It only ever sees
+what's in the *initial* server-rendered HTML, not anything a page loads in
+afterward with its own JS:
+
+- **phantasytour.com** — works well, fully server-rendered. Parses the
+  `# {Band} Show • {Date}` heading and the numbered `Set N:`/`Encore:` list.
+- **setlist.fm** — works well too, different markup (`# **[Band](…) Setlist**`
+  heading, a `_{Date} Setlist_` string, numbered list with segues marked
+  `(->)`/`(>)` as separate tokens rather than inline arrows). Both parsers
+  run in sequence; whichever matches wins.
+- **elgoose.net** — confirmed broken, on both a query-filtered URL and a
+  show's own permalink. Its setlist body loads in dynamically after the
+  page renders, so the proxy's snapshot never contains it, only the nav
+  chrome. The tool detects the elgoose.net hostname specifically and says
+  so rather than failing with a generic error.
+- Any other site: falls back to the same loose date-regex/known-band
+  matching the plain-text-paste path already used, no attempt at a setlist
+  since there's no known structure to trust.
+
+**Adding the same show twice updates it instead of duplicating it.** Both
+the link path and manual entry compute the same `id` (`date-slugified-band`)
+either way, so saving finds a `.show-entry` with that id first
+(`findEntryBlock`, depth-counts `<div>`/`</div>` rather than a naive regex,
+since a `.setlist` block nests one level deep) and merges the new setlist
+and source link into the existing card instead of prepending a new one.
+
 The helper functions here (`ghGet`/`ghPut`/`insertIntoMarkers`/etc.) are
 deliberately duplicated from admin/index.html rather than pulled into a
 shared module. The admin round-trip had just been confirmed working
