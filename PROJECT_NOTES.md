@@ -86,6 +86,28 @@ even with a key. elgoose.net specifically 403s a bare fetch but loads fine
 in an actual browser, so pulling one over is a copy/paste-assisted job, not
 an automated one.
 
+**Quick-add.** A floating `+` button on `/shows/` itself opens a small modal
+for when the full admin form is more than you need, especially for shows
+that came from someone else buying the tickets so there's no confirmation
+email to work from. Three fields: band, date, setlist. Band is an
+`<input list>` against a datalist built by scraping this page's own
+`.show-entry h3` elements at open time, native dropdown-plus-free-text, no
+separate list to maintain and no custom combobox. Rule is (band AND date) OR
+setlist: paste only a setlist and it tries to infer the other two, a date
+regex (`Month D, YYYY` / ISO / `M/D/YYYY`) and a band match against that
+same known-bands list. Band inference can only recognize a band that's
+already been logged before; it can't invent one from unstructured text, so
+a genuinely new band still needs to be typed in. Reuses whatever token is
+already in `localStorage` from the admin page rather than asking again;
+if there isn't one, it says so and points at `/admin/`.
+
+The helper functions here (`ghGet`/`ghPut`/`insertIntoMarkers`/etc.) are
+deliberately duplicated from admin/index.html rather than pulled into a
+shared module. The admin round-trip had just been confirmed working
+end-to-end for the first time; refactoring it to share code with a brand
+new feature felt like the wrong moment to introduce risk to something that
+finally worked. Worth revisiting if a third page ever needs the same logic.
+
 `shows/index.html` needs its own route in `tools/preview/server.js` and its
 own entry in `check.js`'s render targets — it isn't picked up by the trips
 loop since it isn't a collection file.

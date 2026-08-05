@@ -129,3 +129,161 @@ title: "Shows"
 </div>
 
 <p style="margin-top:28px;"><a href="{{ '/' | relative_url }}">&larr; All trips</a></p>
+
+<button id="quick-add-fab" class="fab-add" title="Quick add a show" aria-label="Quick add a show">+</button>
+
+<div id="quick-add-overlay" class="modal-overlay hidden">
+  <div class="modal-card">
+    <div class="modal-head">
+      <h3>Quick add a show</h3>
+      <button id="quick-add-close" class="modal-close" aria-label="Close">&times;</button>
+    </div>
+    <p class="hint">Band and date, or just paste a setlist below and I'll try to pick both out of it. Not every show needs a setlist.</p>
+
+    <label for="qa-band">Band</label>
+    <input type="text" id="qa-band" list="qa-known-bands" placeholder="Start typing, or pick one you've used before">
+    <datalist id="qa-known-bands"></datalist>
+
+    <label for="qa-date">Date</label>
+    <input type="date" id="qa-date">
+
+    <label for="qa-setlist">Setlist (optional &mdash; one song per line, or paste the whole thing)</label>
+    <textarea id="qa-setlist" style="min-height:120px;" placeholder="Paste a setlist here, or leave this blank"></textarea>
+
+    <button class="btn" id="qa-save" style="margin-top:14px;">Add show</button>
+    <span id="qa-status" class="status-msg"></span>
+  </div>
+</div>
+
+<script>
+(function () {
+  const $ = (id) => document.getElementById(id);
+  const REPO = localStorage.getItem('lot_repo');
+  const TOKEN = localStorage.getItem('lot_token');
+
+  function b64encode(str) { return btoa(String.fromCharCode(...new TextEncoder().encode(str))); }
+  function b64decode(b64) { return new TextDecoder().decode(Uint8Array.from(atob(b64.replace(/\n/g, '')), c => c.charCodeAt(0))); }
+  function escapeHtml(s) { return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
+  function slugify(s) { return s.toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, ''); }
+
+  async function ghGet(path) {
+    const res = await fetch(`https://api.github.com/repos/${REPO}/contents/${path}`, {
+      headers: { Authorization: `token ${TOKEN}`, Accept: 'application/vnd.github+json' }
+    });
+    if (!res.ok) throw new Error(`GET ${path} failed: ${res.status}`);
+    const data = await res.json();
+    return { content: b64decode(data.content), sha: data.sha };
+  }
+  async function ghPut(path, content, sha, message) {
+    const body = { message, content: b64encode(content), branch: 'main' };
+    if (sha) body.sha = sha;
+    const res = await fetch(`https://api.github.com/repos/${REPO}/contents/${path}`, {
+      method: 'PUT',
+      headers: { Authorization: `token ${TOKEN}`, Accept: 'application/vnd.github+json', 'Content-Type': 'application/json' },
+      body: JSON.stringify(body)
+    });
+    if (!res.ok) { const err = await res.json().catch(() => ({})); throw new Error(err.message || `PUT ${path} failed: ${res.status}`); }
+    return res.json();
+  }
+  function insertIntoMarkers(content, markerStart, markerEnd, newBlock, mode) {
+    const startIdx = content.indexOf(markerStart);
+    const endIdx = content.indexOf(markerEnd);
+    if (startIdx === -1 || endIdx === -1) throw new Error(`Markers ${markerStart} not found in file`);
+    const before = content.slice(0, startIdx + markerStart.length);
+    let middle = content.slice(startIdx + markerStart.length, endIdx);
+    const after = content.slice(endIdx);
+    middle = middle.replace(/\s*<p class="memory-empty">[^<]*<\/p>\s*/, '\n');
+    if (mode === 'prepend') middle = `\n${newBlock}\n` + middle;
+    else middle = middle + `\n${newBlock}\n`;
+    return before + middle + after;
+  }
+  function setlistTextToHtml(text) {
+    const songs = text.split('\n').map(s => s.trim()).filter(Boolean);
+    if (!songs.length) return '';
+    const items = songs.map(s => `      <li>${escapeHtml(s)}</li>`).join('\n');
+    return `\n  <div class="setlist">\n    <div class="setlist-lbl">Setlist</div>\n    <ol class="setlist-list">\n${items}\n    </ol>\n  </div>`;
+  }
+
+  // Known bands come straight from this page's own show entries, not a
+  // separate list to maintain. The <input list> gives a native dropdown
+  // plus free typing for anything new, no custom combobox needed.
+  function knownBands() {
+    const names = Array.from(document.querySelectorAll('.show-entry h3')).map(h => h.textContent.trim());
+    return Array.from(new Set(names)).sort();
+  }
+  function populateBandList() {
+    $('qa-known-bands').innerHTML = knownBands().map(b => `<option value="${escapeHtml(b)}"></option>`).join('');
+  }
+
+  // Best-effort inference when only a setlist gets pasted in. Date: look for
+  // "Month D, YYYY", ISO, or M/D/YYYY. Band: check whether any band already
+  // logged on this page shows up in the pasted text — this can only ever
+  // recognize a band that's been added before, not guess a brand new one.
+  const MONTHS = 'January|February|March|April|May|June|July|August|September|October|November|December';
+  function inferDate(text) {
+    let m = text.match(new RegExp(`(${MONTHS})\\s+(\\d{1,2}),?\\s+(\\d{4})`, 'i'));
+    if (m) {
+      const d = new Date(`${m[1]} ${m[2]}, ${m[3]} 12:00:00`);
+      if (!isNaN(d)) return d.toISOString().slice(0, 10);
+    }
+    m = text.match(/\b(\d{4})-(\d{2})-(\d{2})\b/);
+    if (m) return `${m[1]}-${m[2]}-${m[3]}`;
+    m = text.match(/\b(\d{1,2})\/(\d{1,2})\/(\d{4})\b/);
+    if (m) return `${m[3]}-${m[1].padStart(2, '0')}-${m[2].padStart(2, '0')}`;
+    return null;
+  }
+  function inferBand(text) {
+    const lower = text.toLowerCase();
+    for (const b of knownBands()) { if (lower.includes(b.toLowerCase())) return b; }
+    return null;
+  }
+
+  function openModal() {
+    populateBandList();
+    $('quick-add-overlay').classList.remove('hidden');
+    const status = $('qa-status');
+    if (REPO && TOKEN) { status.textContent = ''; status.className = 'status-msg'; }
+    else { status.textContent = 'Connect via the admin page first, then come back to this button.'; status.className = 'status-msg err'; }
+  }
+  function closeModal() { $('quick-add-overlay').classList.add('hidden'); }
+
+  $('quick-add-fab').addEventListener('click', openModal);
+  $('quick-add-close').addEventListener('click', closeModal);
+  $('quick-add-overlay').addEventListener('click', (e) => { if (e.target.id === 'quick-add-overlay') closeModal(); });
+
+  $('qa-save').addEventListener('click', async () => {
+    const status = $('qa-status');
+    if (!REPO || !TOKEN) { status.textContent = 'Connect via the admin page first.'; status.className = 'status-msg err'; return; }
+
+    let band = $('qa-band').value.trim();
+    let date = $('qa-date').value;
+    const setlistText = $('qa-setlist').value.trim();
+
+    if ((!band || !date) && setlistText) {
+      if (!date) { const d = inferDate(setlistText); if (d) date = d; }
+      if (!band) { const b = inferBand(setlistText); if (b) band = b; }
+    }
+
+    if (!band && !date && !setlistText) { status.textContent = 'Give me a band and date, or paste a setlist.'; status.className = 'status-msg err'; return; }
+    if (!band) { status.textContent = "Couldn't find the band in that setlist (only recognizes bands already on this page) — type it in."; status.className = 'status-msg err'; return; }
+    if (!date) { status.textContent = "Couldn't find a date in that setlist — pick one."; status.className = 'status-msg err'; return; }
+
+    status.textContent = 'Saving...'; status.className = 'status-msg';
+    try {
+      const path = 'shows/index.html';
+      const { content, sha } = await ghGet(path);
+      const dateLabel = new Date(date + 'T12:00:00').toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+      const showId = `${date}-${slugify(band)}`;
+      let block = `<div class="show-entry" id="${showId}">\n  <div class="show-date">${escapeHtml(dateLabel)}</div>\n  <h3>${escapeHtml(band)}</h3>`;
+      block += setlistTextToHtml(setlistText);
+      block += `\n</div>`;
+      const updated = insertIntoMarkers(content, '<!-- SHOWS_START -->', '<!-- SHOWS_END -->', block, 'prepend');
+      await ghPut(path, updated, sha, `Log show: ${band} on ${date}`);
+      status.textContent = 'Added! Reloading...'; status.className = 'status-msg ok';
+      setTimeout(() => location.reload(), 900);
+    } catch (e) {
+      status.textContent = 'Failed: ' + e.message; status.className = 'status-msg err';
+    }
+  });
+})();
+</script>
