@@ -331,6 +331,7 @@ title: "Shows"
 <div class="show-entry" id="2025-06-05-widespread-panic">
   <div class="show-date">June 5, 2025</div>
   <h3>Widespread Panic</h3>
+  <div class="show-venue">The Chicago Theatre, Chicago, IL</div>
   <div class="setlist">
     <div class="setlist-lbl">Setlist</div>
     <ol class="setlist-list">
@@ -404,6 +405,7 @@ title: "Shows"
 <div class="show-entry" id="2025-04-25-widespread-panic">
   <div class="show-date">April 25, 2025</div>
   <h3>Widespread Panic</h3>
+  <div class="show-venue">Ascend Amphitheater, Nashville, TN</div>
   <div class="setlist">
     <div class="setlist-lbl">Setlist</div>
     <ol class="setlist-list">
@@ -440,6 +442,7 @@ title: "Shows"
 <div class="show-entry" id="2025-04-24-widespread-panic">
   <div class="show-date">April 24, 2025</div>
   <h3>Widespread Panic</h3>
+  <div class="show-venue">Ascend Amphitheater, Nashville, TN</div>
   <div class="setlist">
     <div class="setlist-lbl">Setlist</div>
     <ol class="setlist-list">
@@ -856,6 +859,9 @@ title: "Shows"
     <label for="qa-date">Date</label>
     <input type="date" id="qa-date">
 
+    <label for="qa-venue">Venue (optional &mdash; Venue, City, ST)</label>
+    <input type="text" id="qa-venue" placeholder="Comes from the link automatically if you paste one">
+
     <label for="qa-setlist">Setlist (optional &mdash; one song per line, paste the whole thing, or paste a phantasytour.com, setlist.fm, or nugs.net link)</label>
     <textarea id="qa-setlist" style="min-height:120px;" placeholder="Paste a setlist, a phantasytour.com, setlist.fm, or nugs.net show link, or leave this blank"></textarea>
 
@@ -1051,6 +1057,8 @@ title: "Shows"
     const d = new Date(head[2].replace(',', '') + ' 12:00:00');
     if (isNaN(d)) return null;
     const date = d.toISOString().slice(0, 10);
+    const venueM = text.slice(head.index + head[0].length).match(/^\s*\n+##\s+(.+)$/m);
+    const venue = venueM ? venueM[1].trim() : '';
 
     const iWasThere = text.search(/i was there/i);
     let end = text.length;
@@ -1066,7 +1074,7 @@ title: "Shows"
       const song = line.match(/^\s*\d+\.\s+\[([^\]]+)\]/);
       if (song) songs.push(song[1]);
     }
-    return { band, date, setlistText: songs.join('\n') };
+    return { band, date, venue, setlistText: songs.join('\n') };
   }
 
   function parseSetlistFm(text) {
@@ -1077,6 +1085,8 @@ title: "Shows"
     const d = new Date(dateM[1] + ' 12:00:00');
     if (isNaN(d)) return null;
     const date = d.toISOString().slice(0, 10);
+    const venueM = text.match(/\*\*at \[([^\]]+)\]/);
+    const venue = venueM ? venueM[1].trim().replace(/,\s*USA$/i, '') : '';
 
     const setStart = text.indexOf('## Setlist');
     const noteStart = text.indexOf('**Note:**', setStart === -1 ? 0 : setStart);
@@ -1093,14 +1103,15 @@ title: "Shows"
       if (!song) continue;
       songs.push(/\(->\)|\(>\)/.test(rest) ? song[1] + ' >' : song[1]);
     }
-    return { band, date, setlistText: songs.join('\n') };
+    return { band, date, venue, setlistText: songs.join('\n') };
   }
 
   function parseNugs(text) {
-    const head = text.match(/^Title:\s*(.+?)\s+Live Concert Setlist at\s+.+?\s+on\s+(\d{2})-(\d{2})-(\d{4})/m);
+    const head = text.match(/^Title:\s*(.+?)\s+Live Concert Setlist at\s+(.+?)\s+on\s+(\d{2})-(\d{2})-(\d{4})/m);
     if (!head) return null;
     const band = head[1].trim();
-    const date = `${head[4]}-${head[2]}-${head[3]}`;
+    const venue = head[2].trim();
+    const date = `${head[5]}-${head[3]}-${head[4]}`;
 
     const setStart = text.search(/Setlist at /);
     const shareIdx = text.indexOf('Share via', setStart === -1 ? 0 : setStart);
@@ -1114,7 +1125,7 @@ title: "Shows"
       const song = trimmed.match(/^(.+?)\s+\d{1,2}:\d{2}$/);
       if (song) songs.push(song[1].trim());
     }
-    return { band, date, setlistText: songs.join('\n') };
+    return { band, date, venue, setlistText: songs.join('\n') };
   }
 
   async function readFromLink(url) {
@@ -1134,7 +1145,7 @@ title: "Shows"
     const date = inferDate(text);
     const band = inferBand(text);
     if (!date && !band) throw new Error("couldn't recognize that page's format — paste the setlist text instead");
-    return { band, date, setlistText: '' };
+    return { band, date, venue: '', setlistText: '' };
   }
 
   // ---- find an existing entry by id, so re-adding the same show updates
@@ -1201,6 +1212,7 @@ title: "Shows"
 
     let band = $('qa-band').value.trim();
     let date = $('qa-date').value;
+    let venue = $('qa-venue').value.trim();
     let setlistText = $('qa-setlist').value.trim();
     let sourceLink = '';
 
@@ -1211,6 +1223,7 @@ title: "Shows"
         const found = await readFromLink(sourceLink);
         if (!band && found.band) band = found.band;
         if (!date && found.date) date = found.date;
+        if (!venue && found.venue) venue = found.venue;
         setlistText = found.setlistText || '';
       } catch (e) {
         status.textContent = "Couldn't read that link: " + e.message;
@@ -1236,10 +1249,15 @@ title: "Shows"
       const existing = findEntryBlock(content, showId);
       let updated;
       if (existing) {
-        const merged = upsertSetlistAndLink(content.slice(existing.start, existing.end), setlistText, sourceLink);
+        let entryHtml = content.slice(existing.start, existing.end);
+        if (venue && !entryHtml.includes('class="show-venue"')) {
+          entryHtml = entryHtml.replace(/(<h3>[^<]*<\/h3>)/, `$1\n  <div class="show-venue">${escapeHtml(venue)}</div>`);
+        }
+        const merged = upsertSetlistAndLink(entryHtml, setlistText, sourceLink);
         updated = content.slice(0, existing.start) + merged + content.slice(existing.end);
       } else {
         let block = `<div class="show-entry" id="${showId}">\n  <div class="show-date">${escapeHtml(dateLabel)}</div>\n  <h3>${escapeHtml(band)}</h3>`;
+        if (venue) block += `\n  <div class="show-venue">${escapeHtml(venue)}</div>`;
         if (setlistText) block += setlistTextToHtml(setlistText);
         if (sourceLink) block += `\n  <a class="show-trip-link" href="${escapeHtml(sourceLink)}" target="_blank" rel="noopener">View full setlist &rarr;</a>`;
         block += `\n</div>`;
