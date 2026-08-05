@@ -175,11 +175,12 @@ main { max-width: 960px; margin: 0 auto; padding: 0 24px 84px; position: relativ
   max-width: 15ch;
 }
 .masthead .lede { color: #C6D3C9; max-width: 46ch; margin: 0 0 30px; font-size: 1.04rem; }
-.masthead .stats { display: flex; gap: 34px; flex-wrap: wrap; }
-.masthead .stat .n {
+.masthead .stats, .trip-hero .stats { display: flex; gap: 34px; flex-wrap: wrap; }
+.trip-hero .stats { margin-top: 22px; }
+.masthead .stat .n, .trip-hero .stat .n {
   font-family: var(--serif); font-size: 1.7rem; color: #fff; font-weight: 600; line-height: 1;
 }
-.masthead .stat .l {
+.masthead .stat .l, .trip-hero .stat .l {
   font-size: 0.68rem; letter-spacing: 0.11em; text-transform: uppercase; color: var(--stone-soft); margin-top: 6px;
 }
 .masthead-photo {
@@ -549,6 +550,12 @@ main { max-width: 960px; margin: 0 auto; padding: 0 24px 84px; position: relativ
 .memory-empty { color: var(--stone); font-size: 0.9rem; font-style: italic; }
 
 /* ===== Shows / concert log ===== */
+.shows-filters { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 22px; }
+.shows-filters select {
+  width: auto; padding: 8px 30px 8px 14px;
+  font-size: 0.82rem; font-weight: 600;
+  border-radius: 20px; border: 1px solid var(--line); background: var(--card); color: var(--ink);
+}
 .show-entry {
   background: var(--card);
   border: 1px solid var(--line);

@@ -138,6 +138,28 @@ end-to-end for the first time; refactoring it to share code with a brand
 new feature felt like the wrong moment to introduce risk to something that
 finally worked. Worth revisiting if a third page ever needs the same logic.
 
+**New shows insert in date order, not at the top.** First real use of the
+quick-add tool put a June 2025 show above a December 2026 one, a plain
+prepend, same bug shape as the original "Log a show" admin form. Fixed in
+both places with `insertShowSorted`: since every id starts with
+`YYYY-MM-DD`, it walks the existing entries and inserts right before the
+first one whose id-date is the same day or older, so the list stays sorted
+without needing to parse the human-readable `.show-date` text at all.
+`insertIntoMarkers` (used for memories/days elsewhere) is untouched; this
+is shows-specific.
+
+**Filters and a stats strip on `/shows/`, entirely client-side.** Three
+selects, band/year/state, populate from the page's own rendered
+`.show-entry` elements (band from `h3`, year from the leading 4 digits of
+`id`, state from the trailing `, XX` on `.show-venue`, when there is one)
+and just toggle `display:none` on the ones that don't match, no page
+reload. The compact stats (`Shows`/`Bands`/`States`) reuse the homepage's
+`.masthead .stats` styling, now shared with `.trip-hero .stats` since this
+page uses that hero, and recompute from whatever's currently visible, so
+they reflect the active filters, not just the full list. Quick-add-only
+entries with no venue (that form never collects one) simply don't count
+toward any state; that's expected, not a bug to chase.
+
 `shows/index.html` needs its own route in `tools/preview/server.js` and its
 own entry in `check.js`'s render targets — it isn't picked up by the trips
 loop since it isn't a collection file.

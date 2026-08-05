@@ -7,115 +7,25 @@ title: "Shows"
     <div class="eyebrow">The concert log</div>
     <h1>Every show, one list.</h1>
     <div class="route">Not every show gets a whole trip built around it. This is the running list, notes and setlists included.</div>
+    <div class="stats">
+      <div class="stat"><div class="n" id="stat-shows">&ndash;</div><div class="l">Shows</div></div>
+      <div class="stat"><div class="n" id="stat-bands">&ndash;</div><div class="l">Bands</div></div>
+      <div class="stat"><div class="n" id="stat-states">&ndash;</div><div class="l">States</div></div>
+    </div>
   </div>
 </div>
 
 <p class="lede" style="margin-bottom:16px;">Add one from the <a href="{{ '/admin/' | relative_url }}">admin page</a>.</p>
 
+<div class="shows-filters">
+  <select id="filter-band"><option value="">All bands</option></select>
+  <select id="filter-year"><option value="">All years</option></select>
+  <select id="filter-state"><option value="">All states</option></select>
+</div>
+<p class="memory-empty" id="filter-empty" style="display:none;">No shows match those filters.</p>
+
 <div class="shows-list">
 <!-- SHOWS_START -->
-<div class="show-entry" id="2025-04-25-widespread-panic">
-  <div class="show-date">April 25, 2025</div>
-  <h3>Widespread Panic</h3>
-  <div class="setlist">
-    <div class="setlist-lbl">Setlist</div>
-    <ol class="setlist-list">
-      <li class="setlist-set">Set 1:</li>
-      <li>Mr. Soul</li>
-      <li>Makes Sense to Me</li>
-      <li>Little Kin</li>
-      <li>Goodpeople &gt;</li>
-      <li>Pigeons &gt;</li>
-      <li>Proving Ground &gt;</li>
-      <li>Jack</li>
-      <li>Climb to Safety</li>
-      <li class="setlist-set">Set 2:</li>
-      <li>Disco &gt;</li>
-      <li>Greta &gt;</li>
-      <li>Jam &gt;</li>
-      <li>Tie Your Shoes</li>
-      <li>Rock</li>
-      <li>We Walk Each Other Home</li>
-      <li>Rebirtha</li>
-      <li>Ribs and Whiskey</li>
-      <li>King Baby &gt;</li>
-      <li>Godzilla</li>
-      <li>Chilly Water</li>
-      <li class="setlist-set">Encore:</li>
-      <li>Expiration Day</li>
-      <li>Protein Drink &gt;</li>
-      <li>Sewing Machine</li>
-    </ol>
-  </div>
-  <a class="show-trip-link" href="https://www.setlist.fm/setlist/widespread-panic/2025/ascend-amphitheater-nashville-tn-635dbe63.html" target="_blank" rel="noopener">View full setlist &rarr;</a>
-</div>
-
-<div class="show-entry" id="2025-04-24-widespread-panic">
-  <div class="show-date">April 24, 2025</div>
-  <h3>Widespread Panic</h3>
-  <div class="setlist">
-    <div class="setlist-lbl">Setlist</div>
-    <ol class="setlist-list">
-      <li class="setlist-set">Set 1:</li>
-      <li>Send Your Mind</li>
-      <li>Coconut</li>
-      <li>Porch Song</li>
-      <li>Party at Your Mama's House</li>
-      <li>Stop Breakin' Down Blues</li>
-      <li>Surprise Valley</li>
-      <li>No Sugar Tonight / New Mother Nature</li>
-      <li>Conrad</li>
-      <li class="setlist-set">Set 2:</li>
-      <li>Big Wooly Mammoth</li>
-      <li>Hatfield</li>
-      <li>Little by Little</li>
-      <li>Small Town</li>
-      <li>Imitation Leather Shoes</li>
-      <li>Holden Oversoul</li>
-      <li>Trashy</li>
-      <li>Fixin' to Die</li>
-      <li>Red Hot Mama</li>
-      <li class="setlist-set">Encore:</li>
-      <li>Keep Me in Your Heart</li>
-      <li>Lawyers, Guns and Money</li>
-    </ol>
-  </div>
-  <a class="show-trip-link" href="https://www.setlist.fm/setlist/widespread-panic/2025/ascend-amphitheater-nashville-tn-7b5dbe6c.html" target="_blank" rel="noopener">View full setlist &rarr;</a>
-</div>
-
-<div class="show-entry" id="2025-06-05-widespread-panic">
-  <div class="show-date">June 5, 2025</div>
-  <h3>Widespread Panic</h3>
-  <div class="setlist">
-    <div class="setlist-lbl">Setlist</div>
-    <ol class="setlist-list">
-      <li class="setlist-set">Set 1:</li>
-      <li>Greta</li>
-      <li>Worry</li>
-      <li>Space Wrangler</li>
-      <li>I'm Not Alone &gt;</li>
-      <li>Aunt Avis</li>
-      <li>Rebirtha &gt;</li>
-      <li>Better Off</li>
-      <li>Don't Wanna Lose You</li>
-      <li>Halloween Face</li>
-      <li class="setlist-set">Set 2:</li>
-      <li>Fishing</li>
-      <li>Bust It Big</li>
-      <li>Ribs and Whiskey</li>
-      <li>Pickin' Up the Pieces</li>
-      <li>Surprise Valley &gt;</li>
-      <li>Red Hot Mama &gt;</li>
-      <li>Arleen</li>
-      <li>Chilly Water</li>
-      <li class="setlist-set">Encore:</li>
-      <li>All Time Low</li>
-      <li>Rockin' in the Free World</li>
-    </ol>
-  </div>
-  <a class="show-trip-link" href="https://www.setlist.fm/setlist/widespread-panic/2025/the-chicago-theatre-chicago-il-7b5a6acc.html" target="_blank" rel="noopener">View full setlist &rarr;</a>
-</div>
-
 <div class="show-entry" id="2026-12-12-goose">
   <div class="show-date">December 12, 2026</div>
   <h3>Goose</h3>
@@ -246,6 +156,108 @@ title: "Shows"
   <div class="show-venue">The Deck, Muskegon, MI</div>
   <p class="show-notes">Solo show from the Greensky Bluegrass frontman.</p>
 </div>
+
+<div class="show-entry" id="2025-06-05-widespread-panic">
+  <div class="show-date">June 5, 2025</div>
+  <h3>Widespread Panic</h3>
+  <div class="setlist">
+    <div class="setlist-lbl">Setlist</div>
+    <ol class="setlist-list">
+      <li class="setlist-set">Set 1:</li>
+      <li>Greta</li>
+      <li>Worry</li>
+      <li>Space Wrangler</li>
+      <li>I'm Not Alone &gt;</li>
+      <li>Aunt Avis</li>
+      <li>Rebirtha &gt;</li>
+      <li>Better Off</li>
+      <li>Don't Wanna Lose You</li>
+      <li>Halloween Face</li>
+      <li class="setlist-set">Set 2:</li>
+      <li>Fishing</li>
+      <li>Bust It Big</li>
+      <li>Ribs and Whiskey</li>
+      <li>Pickin' Up the Pieces</li>
+      <li>Surprise Valley &gt;</li>
+      <li>Red Hot Mama &gt;</li>
+      <li>Arleen</li>
+      <li>Chilly Water</li>
+      <li class="setlist-set">Encore:</li>
+      <li>All Time Low</li>
+      <li>Rockin' in the Free World</li>
+    </ol>
+  </div>
+  <a class="show-trip-link" href="https://www.setlist.fm/setlist/widespread-panic/2025/the-chicago-theatre-chicago-il-7b5a6acc.html" target="_blank" rel="noopener">View full setlist &rarr;</a>
+</div>
+
+<div class="show-entry" id="2025-04-25-widespread-panic">
+  <div class="show-date">April 25, 2025</div>
+  <h3>Widespread Panic</h3>
+  <div class="setlist">
+    <div class="setlist-lbl">Setlist</div>
+    <ol class="setlist-list">
+      <li class="setlist-set">Set 1:</li>
+      <li>Mr. Soul</li>
+      <li>Makes Sense to Me</li>
+      <li>Little Kin</li>
+      <li>Goodpeople &gt;</li>
+      <li>Pigeons &gt;</li>
+      <li>Proving Ground &gt;</li>
+      <li>Jack</li>
+      <li>Climb to Safety</li>
+      <li class="setlist-set">Set 2:</li>
+      <li>Disco &gt;</li>
+      <li>Greta &gt;</li>
+      <li>Jam &gt;</li>
+      <li>Tie Your Shoes</li>
+      <li>Rock</li>
+      <li>We Walk Each Other Home</li>
+      <li>Rebirtha</li>
+      <li>Ribs and Whiskey</li>
+      <li>King Baby &gt;</li>
+      <li>Godzilla</li>
+      <li>Chilly Water</li>
+      <li class="setlist-set">Encore:</li>
+      <li>Expiration Day</li>
+      <li>Protein Drink &gt;</li>
+      <li>Sewing Machine</li>
+    </ol>
+  </div>
+  <a class="show-trip-link" href="https://www.setlist.fm/setlist/widespread-panic/2025/ascend-amphitheater-nashville-tn-635dbe63.html" target="_blank" rel="noopener">View full setlist &rarr;</a>
+</div>
+
+<div class="show-entry" id="2025-04-24-widespread-panic">
+  <div class="show-date">April 24, 2025</div>
+  <h3>Widespread Panic</h3>
+  <div class="setlist">
+    <div class="setlist-lbl">Setlist</div>
+    <ol class="setlist-list">
+      <li class="setlist-set">Set 1:</li>
+      <li>Send Your Mind</li>
+      <li>Coconut</li>
+      <li>Porch Song</li>
+      <li>Party at Your Mama's House</li>
+      <li>Stop Breakin' Down Blues</li>
+      <li>Surprise Valley</li>
+      <li>No Sugar Tonight / New Mother Nature</li>
+      <li>Conrad</li>
+      <li class="setlist-set">Set 2:</li>
+      <li>Big Wooly Mammoth</li>
+      <li>Hatfield</li>
+      <li>Little by Little</li>
+      <li>Small Town</li>
+      <li>Imitation Leather Shoes</li>
+      <li>Holden Oversoul</li>
+      <li>Trashy</li>
+      <li>Fixin' to Die</li>
+      <li>Red Hot Mama</li>
+      <li class="setlist-set">Encore:</li>
+      <li>Keep Me in Your Heart</li>
+      <li>Lawyers, Guns and Money</li>
+    </ol>
+  </div>
+  <a class="show-trip-link" href="https://www.setlist.fm/setlist/widespread-panic/2025/ascend-amphitheater-nashville-tn-7b5dbe6c.html" target="_blank" rel="noopener">View full setlist &rarr;</a>
+</div>
 <!-- SHOWS_END -->
 </div>
 
@@ -279,6 +291,60 @@ title: "Shows"
 <script>
 (function () {
   const $ = (id) => document.getElementById(id);
+
+  // ---- band/year/state filters + a compact stats strip, both purely
+  // client-side over this page's own rendered entries. State comes from
+  // parsing the trailing ", XX" off each .show-venue, so entries with no
+  // venue (the quick-add tool doesn't collect one) just don't count
+  // toward any state and are excluded when filtering by one. ----
+  function stateFromVenue(el) {
+    const venue = el.querySelector('.show-venue')?.textContent || '';
+    const m = venue.match(/,\s*([A-Z]{2})\s*$/);
+    return m ? m[1] : '';
+  }
+  function fillSelect(sel, values, placeholder) {
+    sel.innerHTML = `<option value="">${placeholder}</option>` +
+      values.map(v => `<option value="${escapeHtml(v)}">${escapeHtml(v)}</option>`).join('');
+  }
+  function initFiltersAndStats() {
+    const entries = Array.from(document.querySelectorAll('.show-entry'));
+    if (!entries.length) return;
+    const bands = new Set(), years = new Set(), states = new Set();
+    entries.forEach(el => {
+      const band = el.querySelector('h3')?.textContent.trim();
+      if (band) bands.add(band);
+      const year = el.id.slice(0, 4);
+      if (/^\d{4}$/.test(year)) years.add(year);
+      const state = stateFromVenue(el);
+      if (state) states.add(state);
+    });
+    fillSelect($('filter-band'), Array.from(bands).sort(), 'All bands');
+    fillSelect($('filter-year'), Array.from(years).sort().reverse(), 'All years');
+    fillSelect($('filter-state'), Array.from(states).sort(), 'All states');
+
+    function apply() {
+      const band = $('filter-band').value;
+      const year = $('filter-year').value;
+      const state = $('filter-state').value;
+      let visible = 0;
+      const visBands = new Set(), visStates = new Set();
+      entries.forEach(el => {
+        const elBand = el.querySelector('h3')?.textContent.trim() || '';
+        const elYear = el.id.slice(0, 4);
+        const elState = stateFromVenue(el);
+        const match = (!band || elBand === band) && (!year || elYear === year) && (!state || elState === state);
+        el.style.display = match ? '' : 'none';
+        if (match) { visible++; visBands.add(elBand); if (elState) visStates.add(elState); }
+      });
+      $('stat-shows').textContent = visible;
+      $('stat-bands').textContent = visBands.size;
+      $('stat-states').textContent = visStates.size;
+      $('filter-empty').style.display = visible ? 'none' : 'block';
+    }
+    ['filter-band', 'filter-year', 'filter-state'].forEach(id => $(id).addEventListener('change', apply));
+    apply();
+  }
+
   const REPO = localStorage.getItem('lot_repo');
   const TOKEN = localStorage.getItem('lot_token');
 
@@ -316,6 +382,29 @@ title: "Shows"
     middle = middle.replace(/\s*<p class="memory-empty">[^<]*<\/p>\s*/, '\n');
     if (mode === 'prepend') middle = `\n${newBlock}\n` + middle;
     else middle = middle + `\n${newBlock}\n`;
+    return before + middle + after;
+  }
+  // Shows specifically need date order, not just newest-added-first: a
+  // plain prepend put a June 2025 show above a December 2026 one the first
+  // time this ran for real. Inserts right before the first existing entry
+  // whose id-date is the same day or older, since ids start with
+  // YYYY-MM-DD and string comparison sorts those correctly.
+  function insertShowSorted(content, markerStart, markerEnd, newBlock, newDate) {
+    const startIdx = content.indexOf(markerStart);
+    const endIdx = content.indexOf(markerEnd);
+    if (startIdx === -1 || endIdx === -1) throw new Error(`Markers ${markerStart} not found in file`);
+    const before = content.slice(0, startIdx + markerStart.length);
+    let middle = content.slice(startIdx + markerStart.length, endIdx);
+    const after = content.slice(endIdx);
+    middle = middle.replace(/\s*<p class="memory-empty">[^<]*<\/p>\s*/, '\n');
+
+    const entryRe = /<div class="show-entry" id="(\d{4}-\d{2}-\d{2})[^"]*">/g;
+    let m, insertAt = -1;
+    while ((m = entryRe.exec(middle))) {
+      if (m[1] <= newDate) { insertAt = m.index; break; }
+    }
+    if (insertAt === -1) middle = middle.replace(/\s*$/, '') + `\n\n${newBlock}\n`;
+    else middle = middle.slice(0, insertAt) + `${newBlock}\n\n` + middle.slice(insertAt);
     return before + middle + after;
   }
   function setlistTextToHtml(text) {
@@ -557,7 +646,7 @@ title: "Shows"
         if (setlistText) block += setlistTextToHtml(setlistText);
         if (sourceLink) block += `\n  <a class="show-trip-link" href="${escapeHtml(sourceLink)}" target="_blank" rel="noopener">View full setlist &rarr;</a>`;
         block += `\n</div>`;
-        updated = insertIntoMarkers(content, '<!-- SHOWS_START -->', '<!-- SHOWS_END -->', block, 'prepend');
+        updated = insertShowSorted(content, '<!-- SHOWS_START -->', '<!-- SHOWS_END -->', block, date);
       }
 
       await ghPut(path, updated, sha, `${existing ? 'Update' : 'Log'} show: ${band} on ${date}`);
@@ -567,5 +656,7 @@ title: "Shows"
       status.textContent = 'Failed: ' + e.message; status.className = 'status-msg err';
     }
   });
+
+  initFiltersAndStats();
 })();
 </script>

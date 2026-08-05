@@ -291,6 +291,29 @@ function insertIntoMarkers(content, markerStart, markerEnd, newBlock, mode) {
   }
   return before + middle + after;
 }
+// Shows specifically need date order, not just newest-added-first (a plain
+// prepend put a June 2025 show above a December 2026 one the first time
+// this ran for real). Inserts right before the first existing entry whose
+// id-date is the same day or older, since ids start with YYYY-MM-DD and
+// string comparison sorts those correctly.
+function insertShowSorted(content, markerStart, markerEnd, newBlock, newDate) {
+  const startIdx = content.indexOf(markerStart);
+  const endIdx = content.indexOf(markerEnd);
+  if (startIdx === -1 || endIdx === -1) throw new Error(`Markers ${markerStart} not found in file`);
+  const before = content.slice(0, startIdx + markerStart.length);
+  let middle = content.slice(startIdx + markerStart.length, endIdx);
+  const after = content.slice(endIdx);
+  middle = middle.replace(/\s*<p class="memory-empty">[^<]*<\/p>\s*/, '\n');
+
+  const entryRe = /<div class="show-entry" id="(\d{4}-\d{2}-\d{2})[^"]*">/g;
+  let m, insertAt = -1;
+  while ((m = entryRe.exec(middle))) {
+    if (m[1] <= newDate) { insertAt = m.index; break; }
+  }
+  if (insertAt === -1) middle = middle.replace(/\s*$/, '') + `\n\n${newBlock}\n`;
+  else middle = middle.slice(0, insertAt) + `${newBlock}\n\n` + middle.slice(insertAt);
+  return before + middle + after;
+}
 
 // ---- Trip list population ----
 async function loadTrips() {
@@ -562,7 +585,7 @@ $('show-submit').addEventListener('click', async () => {
     if (setlistLink) block += `\n  <a class="show-trip-link" href="${escapeHtml(setlistLink)}" target="_blank" rel="noopener" style="margin-left:14px;">View full setlist &rarr;</a>`;
     block += `\n</div>`;
 
-    const updated = insertIntoMarkers(content, '<!-- SHOWS_START -->', '<!-- SHOWS_END -->', block, 'prepend');
+    const updated = insertShowSorted(content, '<!-- SHOWS_START -->', '<!-- SHOWS_END -->', block, date);
     await ghPut(path, updated, sha, `Log show: ${artist} at ${venue}`);
     status.textContent = 'Logged! Live in about a minute.'; status.className = 'status-msg ok';
     $('show-artist').value = ''; $('show-venue').value = ''; $('show-date').value = '';
