@@ -600,6 +600,31 @@ main { max-width: 960px; margin: 0 auto; padding: 0 24px 84px; position: relativ
   .setlist-list { columns: 1; }
 }
 
+/* ===== Fun stats: band leaderboard + footprint map (shows page) ===== */
+.fun-stats { display: grid; grid-template-columns: 1fr 1.4fr; gap: 22px; margin-bottom: 28px; }
+.band-leaderboard {
+  list-style: none; margin: 0; padding: 6px 20px;
+  background: var(--card); border: 1px solid var(--line); border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+.band-leaderboard li {
+  display: flex; align-items: center; gap: 12px;
+  padding: 10px 0; border-bottom: 1px solid var(--line); font-size: 0.92rem;
+}
+.band-leaderboard li:last-child { border-bottom: none; }
+.band-leaderboard .rank {
+  font-family: var(--serif); font-weight: 600; font-size: 1rem; color: var(--gold-deep);
+  width: 20px; flex: 0 0 auto;
+}
+.band-leaderboard .band-name { flex: 1 1 auto; min-width: 0; }
+.band-leaderboard .count { color: var(--stone); font-size: 0.8rem; font-weight: 600; flex: 0 0 auto; }
+#footprint-map { height: 100%; min-height: 240px; margin-bottom: 0; }
+
+@media (max-width: 700px) {
+  .fun-stats { grid-template-columns: 1fr; }
+  #footprint-map { height: 240px; }
+}
+
 /* ===== Quick-add floating button + modal (shows page) ===== */
 .fab-add {
   position: fixed; right: 24px; bottom: 24px; z-index: 50;

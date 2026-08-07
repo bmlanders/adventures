@@ -1,6 +1,7 @@
 ---
 layout: default
 title: "Shows"
+map: true
 ---
 <div class="trip-hero" style="margin-bottom:30px;">
   <div class="inner">
@@ -23,6 +24,18 @@ title: "Shows"
   <select id="filter-state"><option value="">All states</option></select>
 </div>
 <p class="memory-empty" id="filter-empty" style="display:none;">No shows match those filters.</p>
+
+<div class="fun-stats">
+  <div class="fun-stats-col">
+    <div class="eyebrow" style="margin-bottom:10px;">Most seen</div>
+    <ol class="band-leaderboard" id="band-leaderboard"></ol>
+  </div>
+  <div class="fun-stats-col">
+    <div class="eyebrow" style="margin-bottom:10px;">Where you've been</div>
+    <div class="trip-map" id="footprint-map"></div>
+  </div>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js"></script>
 
 <div class="shows-list">
 <!-- SHOWS_START -->
@@ -1505,6 +1518,74 @@ title: "Shows"
     }
   });
 
+  // ---- band leaderboard + footprint map, both "for fun" and computed once
+  // from the full list (not filter-reactive, keeps this simple). City
+  // coordinates are hand-picked, same tradeoff as the trip route maps:
+  // no geocoding API, no backend to call one from. ----
+  const CITY_COORDS = {
+    'Nashville, TN': [36.1627, -86.7816],
+    'Kalamazoo, MI': [42.2917, -85.5872],
+    'Birmingham, AL': [33.5186, -86.8104],
+    'Grand Rapids, MI': [42.9634, -85.6681],
+    'Chicago, IL': [41.8781, -87.6298],
+    'Hobart, IN': [41.5320, -87.2564],
+    'Atlantic City, NJ': [39.3643, -74.4229],
+    'New York, NY': [40.7128, -74.0060],
+    'Denver, CO': [39.7392, -104.9903],
+    'Miramar Beach, FL': [30.3861, -86.3597],
+    'Las Vegas, NV': [36.1699, -115.1398],
+    'Pelham, TN': [35.2409, -85.6597],
+    'Muskegon, MI': [43.2342, -86.2484],
+    'Eureka Springs, AR': [36.4012, -93.7382],
+    'George, WA': [47.0910, -119.9350],
+    'Paw Paw, MI': [42.2192, -85.8886],
+    'Fort Collins, CO': [40.5853, -105.0844]
+  };
+  function cityFromVenue(venueText) {
+    const parts = venueText.split(',').map(s => s.trim());
+    return parts.length >= 2 ? parts.slice(-2).join(', ') : null;
+  }
+  function renderLeaderboard() {
+    const el = $('band-leaderboard');
+    if (!el) return;
+    const counts = {};
+    document.querySelectorAll('.show-entry h3').forEach(h => {
+      const band = h.textContent.trim();
+      counts[band] = (counts[band] || 0) + 1;
+    });
+    const ranked = Object.entries(counts).sort((a, b) => b[1] - a[1]).slice(0, 8);
+    el.innerHTML = ranked.map(([band, n], i) =>
+      `<li><span class="rank">${i + 1}</span><span class="band-name">${escapeHtml(band)}</span><span class="count">${n} show${n === 1 ? '' : 's'}</span></li>`
+    ).join('');
+  }
+  function renderFootprintMap() {
+    const el = $('footprint-map');
+    if (!el || !window.L) return;
+    const cityCounts = {};
+    document.querySelectorAll('.show-venue').forEach(v => {
+      const city = cityFromVenue(v.textContent.trim());
+      if (city) cityCounts[city] = (cityCounts[city] || 0) + 1;
+    });
+    const points = Object.keys(cityCounts)
+      .map(city => ({ city, count: cityCounts[city], coords: CITY_COORDS[city] }))
+      .filter(p => p.coords);
+    if (!points.length) return;
+    const map = L.map(el, { scrollWheelZoom: false });
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+      maxZoom: 12
+    }).addTo(map);
+    const pinIcon = L.divIcon({ className: 'trip-map-pin', html: '<span></span>', iconSize: [14, 14], iconAnchor: [7, 7] });
+    const latlngs = points.map(p => p.coords);
+    points.forEach(p => {
+      L.marker(p.coords, { icon: pinIcon }).addTo(map)
+        .bindTooltip(`${p.city} (${p.count} show${p.count === 1 ? '' : 's'})`, { direction: 'top', offset: [0, -8] });
+    });
+    map.fitBounds(latlngs, { padding: [30, 30] });
+  }
+
   initFiltersAndStats();
+  renderLeaderboard();
+  renderFootprintMap();
 })();
 </script>
