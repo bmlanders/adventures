@@ -600,6 +600,23 @@ main { max-width: 960px; margin: 0 auto; padding: 0 24px 84px; position: relativ
   .setlist-list { columns: 1; }
 }
 
+/* ===== Inline setlist editing, per show card ===== */
+.show-edit { margin-top: 12px; }
+.show-edit-trigger {
+  background: none; border: none; padding: 0; cursor: pointer;
+  font-size: 0.78rem; font-weight: 600; color: var(--stone);
+  text-decoration: underline; text-underline-offset: 2px;
+}
+.show-edit-trigger:hover { color: var(--ink); }
+.show-edit-form { margin-top: 10px; }
+.show-edit-form.hidden { display: none; }
+.show-edit-textarea {
+  width: 100%; min-height: 150px; resize: vertical;
+  font-family: 'SFMono-Regular', Consolas, monospace; font-size: 0.83rem;
+}
+.show-edit-actions { display: flex; gap: 10px; margin-top: 8px; }
+.show-edit-actions .btn { padding: 8px 18px; font-size: 0.82rem; }
+
 /* ===== Fun stats: band leaderboard + footprint map (shows page) ===== */
 .fun-stats { display: grid; grid-template-columns: 1fr 1.4fr; gap: 22px; margin-bottom: 28px; }
 .band-leaderboard {
