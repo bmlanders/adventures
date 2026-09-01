@@ -18,6 +18,7 @@ shows:
   <dl class="facts">
     <div><dt>Show</dt><dd>Daniel Donato · Lakeview Marina Music Park, 8:00 PM</dd></div>
   </dl>
+  <a class="trip-shows-link" href="{{ '/shows/' | relative_url }}#2026-04-09-daniel-donato">Setlist &amp; notes &rarr;</a>
 </div>
 
 <div class="day-block">
@@ -33,6 +34,7 @@ shows:
   <dl class="facts">
     <div><dt>Show</dt><dd>Goose with special guest The Stews · Coca-Cola Amphitheater, 6:00 PM</dd></div>
   </dl>
+  <a class="trip-shows-link" href="{{ '/shows/' | relative_url }}#2026-04-11-goose">Setlist &amp; notes &rarr;</a>
 </div>
 
 <div class="day-block">

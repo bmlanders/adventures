@@ -251,6 +251,7 @@ shows:
       <p>Back at the hotel by 4:00, which is exactly why the walking tour was built to end when it did. Six blocks up 6th Ave and you're there.</p>
     </div>
   </div>
+  <a class="trip-shows-link" href="{{ '/shows/' | relative_url }}#2026-02-21-jason-isbell-and-the-400-unit">Setlist &amp; notes &rarr;</a>
 </div>
 <!-- DAYS_END -->
 

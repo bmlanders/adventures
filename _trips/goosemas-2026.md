@@ -30,6 +30,7 @@ shows:
     <div><dt>Show</dt><dd>Goosemas Night One &middot; Jim Whelan Boardwalk Hall</dd></div>
   </dl>
   <div class="entry">Goose's first-ever shows in Atlantic City, and the 13th annual Goosemas run, always themed, always a batch of cover debuts nobody saw coming.</div>
+  <a class="trip-shows-link" href="{{ '/shows/' | relative_url }}#2026-12-11-goose">Setlist &amp; notes &rarr;</a>
 </div>
 
 <div class="day-block">
@@ -38,6 +39,7 @@ shows:
   <dl class="facts">
     <div><dt>Show</dt><dd>Goosemas Night Two &middot; Jim Whelan Boardwalk Hall</dd></div>
   </dl>
+  <a class="trip-shows-link" href="{{ '/shows/' | relative_url }}#2026-12-12-goose">Setlist &amp; notes &rarr;</a>
 </div>
 
 <div class="day-block">
