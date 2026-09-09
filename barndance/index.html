@@ -153,6 +153,7 @@
   .msg.err{background:#f7e7e4; border:1px solid #e6c4bd; color:var(--accent-2)}
 
   .foot{margin-top:34px; padding-top:22px; border-top:1px solid var(--line); color:var(--ink-2); font-size:.9rem}
+  .foot p{margin:0 0 6px}
 
   #rsvp{scroll-margin-top:20px}
 </style>
@@ -169,10 +170,11 @@
 
   <section class="intro">
     <p class="lede">Come join us for a Barn Dance and BBQ, a send-off for the
-    season at my place in Michigan. The boats go in the barn the next morning, so
+    season at our place in Michigan. The boats go in the barn the next morning, so
     this is the last real weekend before everything gets packed away for winter.</p>
-    <p>I'll be smoking a pile of BBQ, with food and drinks out all afternoon and
-    into the night. There's a live band in the barn. I'm still nailing down who.</p>
+    <p>We'll have a pile of BBQ on the smoker, with food and drinks out all
+    afternoon and into the night. There's a live band in the barn. We're still
+    nailing down who.</p>
     <p>Stay the night and roll out Sunday whenever you surface. There will be
     coffee and donuts.</p>
     <p>Wives, great friends and good people are welcome. We're keeping this one
@@ -200,9 +202,9 @@
   <section>
     <div class="kicker">Where to sleep</div>
     <h2>Crash here, camp, or grab a room</h2>
-    <p>Between my place and my buddy Sully's across the lake, we've got a lot of
-    beds. I can't promise one for everyone, so the earlier you RSVP, the better
-    your odds. Ask on the form and I'll see what I can do.</p>
+    <p>Between our place and our buddy Sully's across the lake, we've got a lot of
+    beds. We can't promise one for everyone, so the earlier you RSVP, the better
+    your odds. Ask on the form and we'll see what we can do.</p>
     <ul class="plain">
       <li><b>Camp on the property.</b> Two acres, so bring a tent or a camper and
       spread out. Power, water, real bathrooms, and fire pits are all there.</li>
@@ -223,7 +225,7 @@
 
   <section>
     <div class="kicker">Food and drink</div>
-    <h2>I've got it covered</h2>
+    <h2>We've got it covered</h2>
     <p>Don't bring a dish, a cooler, or a case of anything. The food and drinks
     are handled. Just bring an overnight bag. Denim and flannel heavily
     encouraged.</p>
@@ -236,7 +238,7 @@
       <p class="roster-head"><b id="count-num">0</b> coming so far</p>
       <ul class="roster-names" id="roster-names"></ul>
     </div>
-    <p>Add your name and I'll email you a confirmation link. Click it and you're
+    <p>Add your name and we'll email you a confirmation link. Click it and you're
     on the list.</p>
 
     <form id="form" autocomplete="on">
@@ -285,8 +287,9 @@
   </section>
 
   <div class="foot">
-    Questions, or need to change your RSVP? Email me at
-    <a href="mailto:bmlanders@gmail.com">bmlanders@gmail.com</a>.
+    <p>Hosted by Brendan and Jen Landers.</p>
+    <p>Questions, or need to change your RSVP? Email us at
+    <a href="mailto:bmlanders@gmail.com">bmlanders@gmail.com</a>.</p>
   </div>
 
 </div>
@@ -338,7 +341,7 @@
   if (!LIVE){
     btn.disabled = true;
     btn.textContent = 'RSVP opens soon';
-    show('err', "The RSVP form isn't switched on yet. Check back soon, or email me at bmlanders@gmail.com.");
+    show('err', "The RSVP form isn't switched on yet. Check back soon, or email us at bmlanders@gmail.com.");
   }
   ready = true;
 
@@ -371,7 +374,7 @@
       .catch(function(){
         form.classList.add('hidden');
         show('ok', "Almost there. A confirmation link is on its way to " + email +
-          ". Click it to land on the list. Nothing in a few minutes? Check spam, or email me.");
+          ". Click it to land on the list. Nothing in a few minutes? Check spam, or email us.");
       });
   });
 
@@ -381,7 +384,7 @@
       if (res.state === 'already'){
         show('ok', "You're already confirmed. See you there.");
       } else if (res.state === 'resent'){
-        show('ok', "You'd already started an RSVP, so I re-sent the link to " + email +
+        show('ok', "You'd already started an RSVP, so we re-sent the link to " + email +
           ". Click it to lock in your spot.");
       } else {
         show('ok', "Almost there. Check " + email + " for a confirmation link and click it. " +
