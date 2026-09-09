@@ -105,10 +105,15 @@
     font-size:.9rem; color:var(--ink-2);
   }
 
-  /* ---- headcount ---- */
-  .count{display:flex; align-items:center; gap:8px; margin:0 0 16px; color:var(--ink-2); font-size:.95rem}
-  .count b{font-weight:600; color:var(--ink)}
-  .count::before{content:""; width:7px; height:7px; border-radius:50%; background:#5a8f4e; display:inline-block}
+  /* ---- who's coming ---- */
+  .roster{margin:0 0 20px}
+  .roster-head{margin:0 0 10px; color:var(--ink-2); font-size:.95rem}
+  .roster-head b{color:var(--ink); font-weight:600}
+  .roster-names{list-style:none; margin:0; padding:0; display:flex; flex-wrap:wrap; gap:6px}
+  .roster-names li{
+    font-size:.82rem; color:var(--ink-2); background:#efe5d1;
+    border-radius:999px; padding:4px 11px; white-space:nowrap;
+  }
 
   /* ---- form ---- */
   form{background:var(--card); border:1px solid var(--line); border-radius:14px; padding:24px; margin-top:18px}
@@ -227,8 +232,9 @@
   <section id="rsvp">
     <div class="kicker">RSVP by September 30</div>
     <h2>Are you in?</h2>
-    <div class="count" id="count" hidden>
-      <span><b id="count-num">0</b> confirmed so far</span>
+    <div class="roster" id="roster" hidden>
+      <p class="roster-head"><b id="count-num">0</b> coming so far</p>
+      <ul class="roster-names" id="roster-names"></ul>
     </div>
     <p>Add your name and I'll email you a confirmation link. Click it and you're
     on the list.</p>
@@ -305,21 +311,28 @@
   var result = document.getElementById('result');
   var ready = false;
 
-  // ---- headcount ----
-  function paintCount(n){
-    if (typeof n !== 'number' || isNaN(n)) return;
-    document.getElementById('count-num').textContent = n;
-    document.getElementById('count').hidden = n < 1;
+  // ---- who's coming ----
+  function paintRoster(d){
+    if (!d || typeof d.count !== 'number' || isNaN(d.count)) return;
+    document.getElementById('count-num').textContent = d.count;
+    var ul = document.getElementById('roster-names');
+    ul.textContent = '';
+    (d.names || []).forEach(function(n){
+      var li = document.createElement('li');
+      li.textContent = n;
+      ul.appendChild(li);
+    });
+    document.getElementById('roster').hidden = d.count < 1;
   }
-  function loadCount(){
+  function loadRoster(){
     if (!LIVE) return;
     fetch(ENDPOINT + '?count=1')
       .then(function(r){ return r.json(); })
-      .then(function(d){ paintCount(d && d.count); })
-      .catch(function(){ /* the count is a nice-to-have, ignore */ });
+      .then(paintRoster)
+      .catch(function(){ /* nice-to-have, ignore */ });
   }
-  loadCount();
-  setInterval(loadCount, 90000);
+  loadRoster();
+  setInterval(loadRoster, 90000);
 
   // ---- submit ----
   if (!LIVE){
