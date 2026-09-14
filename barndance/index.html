@@ -80,6 +80,13 @@
   .wrap a:hover{color:var(--accent); text-decoration-color:var(--accent)}
 
   /* ---- facts ---- */
+  .update{margin:22px 0; padding:20px 22px; background:var(--card);
+    border:1px solid var(--line); border-radius:14px}
+  .update .kicker{margin-bottom:8px}
+  .update p{margin:0 0 14px}
+  .update p:last-child{margin-bottom:0}
+  .update .links a{margin-right:16px}
+
   .facts{display:grid; grid-template-columns:max-content 1fr; gap:11px 22px; margin:4px 0 22px}
   .facts dt{
     font-size:.72rem; text-transform:uppercase; letter-spacing:.12em;
@@ -173,9 +180,22 @@
     <p class="lede" data-c="lede">Come join us for a Barn Party and BBQ, a send-off for the
     season at our place in Michigan. The boats go in the barn the next morning, so
     this is the last real weekend before everything gets packed away for winter.</p>
+
+    <div class="update">
+      <div class="kicker">Update</div>
+      <p>We locked in the band: Full Cord is playing the barn. They're a bluegrass
+      outfit out of Grand Haven, hard driving and harmony heavy, fresh off two new
+      songs with Billy Strings on guitar and a set at his Ionia Freak Fair this
+      August. Telluride Bluegrass Festival band contest winners and IBMA's
+      Momentum Band of the Year in 2022, with their debut album Cambium out in 2023.</p>
+      <p class="links">
+        <a href="https://fullcord.net/" target="_blank" rel="noopener">Their site</a>
+        <a href="https://open.spotify.com/artist/0IfvCXwxVGv9Eh26bgmGFr" target="_blank" rel="noopener">Spotify</a>
+      </p>
+    </div>
+
     <p data-c="intro_bbq">We'll have a pile of BBQ on the smoker, with food and drinks out all
-    afternoon and into the night. There's a live band in the barn. We're still
-    nailing down who.</p>
+    afternoon and into the night.</p>
     <p data-c="intro_stay">Stay the night and roll out Sunday whenever you surface. There will be
     coffee and donuts.</p>
     <p data-c="intro_spouses">Spouses, great friends and good people are welcome. We're keeping this one
@@ -188,7 +208,7 @@
     <dl class="facts">
       <dt>Date</dt><dd data-c="fact_date">Saturday, October 17, 2026</dd>
       <dt>Time</dt><dd data-c="fact_time">Afternoon onward, kickoff around 5</dd>
-      <dt>Music</dt><dd data-c="fact_music">Live band around 8</dd>
+      <dt>Music</dt><dd data-c="fact_music">Full Cord, 7:30 to 10:00</dd>
       <dt>Sunday</dt><dd data-c="fact_sunday">No set end. Coffee, donuts, head out whenever</dd>
       <dt>Address</dt><dd data-c="fact_address">62613 CR 681, Hartford, MI 49057</dd>
     </dl>
