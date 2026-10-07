@@ -3,6 +3,7 @@ title: "Live Music Shortlist: Fall 2026 to Spring 2027"
 status: upcoming
 dates: "Oct 2026 to Apr 2027"
 sort_date: 2027-04-30
+nav_only: true
 route: "Chicago · SW Michigan · Milwaukee · Cincinnati · Nashville · everything within about 8 hours of home"
 blurb: "Every show worth the drive over the next six months, sorted by weekend. Bold names are on the roster, italics are new finds."
 ---

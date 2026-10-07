@@ -2,7 +2,7 @@
 layout: default
 title: null
 ---
-{% assign trips = site.trips | sort: 'sort_date' | reverse %}
+{% assign trips = site.trips | where_exp: 'trip', 'trip.nav_only != true' | sort: 'sort_date' | reverse %}
 {% assign upcoming_count = 0 %}
 {% assign complete_count = 0 %}
 {% for trip in trips %}
@@ -10,7 +10,7 @@ title: null
   {% if trip.status != 'complete' %}{% assign upcoming_count = upcoming_count | plus: 1 %}{% endif %}
 {% endfor %}
 {% assign next_trip = nil %}
-{% assign trips_asc = site.trips | sort: 'sort_date' %}
+{% assign trips_asc = site.trips | where_exp: 'trip', 'trip.nav_only != true' | sort: 'sort_date' %}
 {% for trip in trips_asc %}
   {% if trip.status != 'complete' %}
     {% assign next_trip = trip %}
