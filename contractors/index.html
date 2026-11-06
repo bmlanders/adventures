@@ -57,6 +57,8 @@ title: "Contractors"
       <datalist id="trade-list"></datalist>
       <label for="e-company">Company <span class="ct-opt">optional</span></label>
       <input type="text" id="e-company" placeholder="Sullivan Plumbing">
+      <label for="e-url">Website or listing <span class="ct-opt">optional</span></label>
+      <input type="url" id="e-url" placeholder="https://...">
       <label>Which house</label>
       <div class="ct-seg ct-seg-form" id="e-prop">
         <button type="button" data-v="hartford" class="on">Hartford</button>
@@ -134,6 +136,10 @@ title: "Contractors"
   const PROP_LABEL = { hartford: 'Hartford', palos: 'Palos', both: 'Both houses' };
 
   const $ = (id) => document.getElementById(id);
+  // <main> is its own stacking context (z-index:1) and the footer comes after it,
+  // so on a short page the footer paints over the fixed + button and swallows
+  // the click. Hoist the button and modals out to <body>.
+  document.querySelectorAll('#ct-fab, .modal-overlay').forEach(el => document.body.appendChild(el));
   const ls = {
     get(k) { try { return localStorage.getItem(k); } catch (e) { return null; } },
     set(k, v) { try { localStorage.setItem(k, v); } catch (e) {} },
@@ -252,6 +258,7 @@ title: "Contractors"
         </div>
         <div class="ct-actions">
           ${d ? `<a class="ct-call" href="tel:${d}" aria-label="Call ${esc(c.name)}">Call</a><a class="ct-text" href="sms:${d}" aria-label="Text ${esc(c.name)}">Text</a>` : ''}
+          ${/^https?:\/\//i.test(c.url || '') ? `<a class="ct-text" href="${esc(c.url)}" target="_blank" rel="noopener">Site</a>` : ''}
         </div>
       </div>
       ${d ? `<div class="ct-phone">${esc(fmtPhone(c.phone))}</div>` : ''}
@@ -364,7 +371,7 @@ title: "Contractors"
     if (needToken()) return;
     editingId = c.id;
     $('m-edit-title').textContent = 'Edit ' + c.name;
-    $('e-name').value = c.name; $('e-phone').value = c.phone || ''; $('e-trade').value = c.trade || ''; $('e-company').value = c.company || '';
+    $('e-name').value = c.name; $('e-phone').value = c.phone || ''; $('e-trade').value = c.trade || ''; $('e-company').value = c.company || ''; $('e-url').value = c.url || '';
     eProp.set(c.property || 'hartford');
     $('e-review-part').style.display = 'none';
     $('e-smart').style.display = 'none';
@@ -394,6 +401,7 @@ title: "Contractors"
     const rec = {
       name: titleCase($('e-name').value), phone: fmtPhone($('e-phone').value.trim()),
       trade: titleCase($('e-trade').value), company: $('e-company').value.trim(), property: eProp.get(),
+      url: $('e-url').value.trim(),
     };
     if (!rec.name || !rec.trade) { setMsg(msg, 'Name and trade are required.', false); return; }
     // friendly duplicate check on phone number for new entries
@@ -497,15 +505,21 @@ title: "Contractors"
   const UI_WORDS = /^(contact|contacts|edit|cancel|done|message|call|video|mail|email|mobile|home|work|phone|iphone|main|other|notes?|send message|share contact|add to favorites|facetime|search|menu|home page|about|services|reviews?|directions|website|open|closed|hours|sponsored|ad)$/i;
 
   function guessFromText(raw, opts = {}) {
-    const text = raw.replace(/\r/g, '').replace(/[ \t]+/g, ' ');
+    // Drop menu/link-list lines (directory sites are full of "* [Roofing]" nav).
+    const text = raw.replace(/\r/g, '').replace(/[ \t]+/g, ' ').split('\n')
+      .filter(l => !/^\s*(\*|\d+\.)\s*\[[^\]]*\]\s*$/.test(l) && !/^\s*\[[^\]]*\]\s*$/.test(l)).join('\n');
     const out = {};
+    const h1 = (text.match(/^#\s+(.+)$/m) || [])[1];
+    const headline = [opts.title || '', h1 || ''].join(' ');
     // phone: tel: links win, then anything phone-shaped
     const tel = text.match(/tel:\+?1?[\s.-]?(\d{3})[\s.-]?(\d{3})[\s.-]?(\d{4})/i);
     const ph = tel || text.match(/(?:\+?1[\s.-]?)?\(?(\d{3})\)?[\s.-]?(\d{3})[\s.-]?(\d{4})\b/);
     if (ph) out.phone = fmtPhone(ph[1] + ph[2] + ph[3]);
     // trade: whichever keyword set hits most
     let best = null, bestN = 0;
-    TRADE_KEYS.forEach(([re, trade]) => { const n = (text.match(new RegExp(re.source, 'gi')) || []).length; if (n > bestN) { bestN = n; best = trade; } });
+    const headTrade = TRADE_KEYS.find(([re]) => re.test(headline));
+    if (headTrade) { best = headTrade[1]; bestN = Infinity; }
+    if (!headTrade) TRADE_KEYS.forEach(([re, trade]) => { const n = (text.match(new RegExp(re.source, 'gi')) || []).length; if (n > bestN) { bestN = n; best = trade; } });
     if (best) out.trade = best;
     // house: area code first, then town names
     const ac = ph ? ph[1] : '';
@@ -515,8 +529,9 @@ title: "Contractors"
     else if (PALOS.test(text) && !HARTFORD.test(text)) out.property = 'palos';
     // company
     const lines = text.split('\n').map(l => l.replace(/[#*_>\[\]]/g, '').replace(/\(http[^)]*\)/g, '').trim()).filter(Boolean);
-    if (opts.title) {
-      const t = opts.title.split(/\s[|–—-]\s|\s·\s/).map(s => s.trim()).filter(s => s && !/^home$/i.test(s));
+    if (h1 && h1.length < 70) out.company = h1.replace(/[*_\[\]]/g, '').trim();
+    else if (opts.title) {
+      const t = opts.title.replace(/\s+reviews?\b.*$/i, '').split(/\s[|–—-]\s|\s·\s/).map(s => s.trim()).filter(s => s && !/^home$/i.test(s));
       if (t.length) out.company = t.sort((a, b) => (/(llc|inc|co\b|company|services|plumbing|electric|roofing|heating|construction|landscap)/i.test(b) ? 1 : 0) - (/(llc|inc|co\b|company|services|plumbing|electric|roofing|heating|construction|landscap)/i.test(a) ? 1 : 0))[0];
     }
     if (!out.company) {
@@ -524,8 +539,9 @@ title: "Contractors"
       if (co) out.company = co;
     }
     // person name: first short line of 2-3 capitalized words with no digits
-    const nm = lines.find(l => l.length < 40 && !/\d|@|http|www\./i.test(l) && !UI_WORDS.test(l) && l !== out.company &&
-      /^([A-Z][a-zA-Z'.-]+)(\s[A-Z][a-zA-Z'.-]+){0,2}$/.test(l) && !TRADE_KEYS.some(([re]) => re.test(l)));
+    // Web pages are full of reviewer names and buttons; trust the business heading there.
+    const nm = opts.title !== undefined ? null : lines.find(l => l.length < 40 && !/\d|@|http|www\./i.test(l) && !UI_WORDS.test(l) && l !== out.company &&
+      /^([A-Z][a-zA-Z'.-]+)(\s[A-Z][a-zA-Z'.-]+){1,2}$/.test(l) && !TRADE_KEYS.some(([re]) => re.test(l)));
     if (nm) out.name = nm;
     if (!out.name && out.company) { out.name = out.company; delete out.company; }
     return out;
@@ -538,6 +554,7 @@ title: "Contractors"
     if (g.trade) { $('e-trade').value = g.trade; filled.push('trade'); }
     if (g.company) { $('e-company').value = g.company; filled.push('company'); }
     if (g.property) { eProp.set(g.property); filled.push(PROP_LABEL[g.property]); }
+    if (g.url) $('e-url').value = g.url;
     return filled;
   }
 
@@ -575,7 +592,10 @@ title: "Contractors"
       const body = await res.text();
       const title = (body.match(/^Title:\s*(.+)$/m) || [])[1] || '';
       const content = body.split(/^Markdown Content:\s*$/m)[1] || body;
-      smartDone(guessFromText(content, { title }), 'website');
+      const g = guessFromText(content, { title });
+      g.url = url;
+      smartDone(g, 'website');
+      if (!g.phone) $('s-msg').textContent += ' No phone on that page (sites like HomeAdvisor hide it). Add it when you have it.';
     } catch (e) { msg.textContent = 'Couldn\'t read that site (' + e.message + '). Try a screenshot of it instead.'; }
   }
   function smartDone(g, src) {

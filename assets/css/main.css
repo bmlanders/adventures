@@ -832,7 +832,7 @@ footer.site-footer a { color: var(--stone); }
 .ct-smart-row { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px; }
 .ct-smart-row .btn { padding: 8px 14px; font-size: 0.8rem; background: #fff; }
 .ct-smart .hint { color: var(--gold-deep); }
-input[type=tel] { width: 100%; font-family: var(--sans); font-size: 0.95rem; padding: 11px 13px; border: 1px solid var(--line); border-radius: var(--radius-sm); background: #fff; color: var(--ink); }
+input[type=tel], .modal-card input[type=url] { width: 100%; font-family: var(--sans); font-size: 0.95rem; padding: 11px 13px; border: 1px solid var(--line); border-radius: var(--radius-sm); background: #fff; color: var(--ink); }
 @media (max-width: 560px) {
   .ct-toolbar .ct-seg { flex: 1 1 100%; }
   .ct-toolbar .ct-seg button { flex: 1; }
