@@ -31,3 +31,4 @@ exclude:
   - Gemfile.lock
   - tools/
   - node_modules/
+  - worker/

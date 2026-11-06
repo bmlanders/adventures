@@ -36,6 +36,7 @@ map: true
   </div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js"></script>
+<script src="{{ '/assets/js/lot-auth.js' | relative_url }}"></script>
 
 <div class="shows-list">
 <!-- SHOWS_START -->
@@ -2575,8 +2576,8 @@ map: true
     apply();
   }
 
-  const REPO = localStorage.getItem('lot_repo');
-  const TOKEN = localStorage.getItem('lot_token');
+  // Signed in (Google or legacy token)? Getters so a sign-in elsewhere is picked up.
+  const signedIn = () => !!(window.LOT && LOT.user());
 
   function b64encode(str) { return btoa(String.fromCharCode(...new TextEncoder().encode(str))); }
   function b64decode(b64) { return new TextDecoder().decode(Uint8Array.from(atob(b64.replace(/\n/g, '')), c => c.charCodeAt(0))); }
@@ -2584,9 +2585,7 @@ map: true
   function slugify(s) { return s.toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, ''); }
 
   async function ghGet(path) {
-    const res = await fetch(`https://api.github.com/repos/${REPO}/contents/${path}`, {
-      headers: { Authorization: `token ${TOKEN}`, Accept: 'application/vnd.github+json' }
-    });
+    const res = await LOT.gh(`contents/${path}`);
     if (!res.ok) throw new Error(`GET ${path} failed: ${res.status}`);
     const data = await res.json();
     return { content: b64decode(data.content), sha: data.sha };
@@ -2594,11 +2593,7 @@ map: true
   async function ghPut(path, content, sha, message) {
     const body = { message, content: b64encode(content), branch: 'main' };
     if (sha) body.sha = sha;
-    const res = await fetch(`https://api.github.com/repos/${REPO}/contents/${path}`, {
-      method: 'PUT',
-      headers: { Authorization: `token ${TOKEN}`, Accept: 'application/vnd.github+json', 'Content-Type': 'application/json' },
-      body: JSON.stringify(body)
-    });
+    const res = await LOT.gh(`contents/${path}`, { method: 'PUT', body: JSON.stringify(body) });
     if (!res.ok) { const err = await res.json().catch(() => ({})); throw new Error(err.message || `PUT ${path} failed: ${res.status}`); }
     return res.json();
   }
@@ -2845,8 +2840,8 @@ map: true
     populateBandList();
     $('quick-add-overlay').classList.remove('hidden');
     const status = $('qa-status');
-    if (REPO && TOKEN) { status.textContent = ''; status.className = 'status-msg'; }
-    else { status.textContent = 'Connect via the admin page first, then come back to this button.'; status.className = 'status-msg err'; }
+    if (signedIn()) { status.textContent = ''; status.className = 'status-msg'; }
+    else { status.textContent = 'Sign in on the admin page first, then come back to this button.'; status.className = 'status-msg err'; }
   }
   function closeModal() { $('quick-add-overlay').classList.add('hidden'); }
 
@@ -2856,7 +2851,7 @@ map: true
 
   $('qa-save').addEventListener('click', async () => {
     const status = $('qa-status');
-    if (!REPO || !TOKEN) { status.textContent = 'Connect via the admin page first.'; status.className = 'status-msg err'; return; }
+    if (!signedIn()) { status.textContent = 'Sign in on the admin page first.'; status.className = 'status-msg err'; return; }
 
     let band = $('qa-band').value.trim();
     let date = $('qa-date').value;
@@ -3022,8 +3017,8 @@ map: true
         textarea.value = reconstructSetlistText(entry);
         form.classList.remove('hidden');
         trigger.style.display = 'none';
-        status.textContent = REPO && TOKEN ? '' : 'Connect via the admin page first, then come back.';
-        status.className = REPO && TOKEN ? 'status-msg show-edit-status' : 'status-msg show-edit-status err';
+        status.textContent = signedIn() ? '' : 'Sign in on the admin page first, then come back.';
+        status.className = signedIn() ? 'status-msg show-edit-status' : 'status-msg show-edit-status err';
       });
       wrap.querySelector('.show-edit-cancel').addEventListener('click', () => {
         form.classList.add('hidden');
@@ -3031,7 +3026,7 @@ map: true
         status.textContent = '';
       });
       wrap.querySelector('.show-edit-save').addEventListener('click', async () => {
-        if (!REPO || !TOKEN) { status.textContent = 'Connect via the admin page first.'; status.className = 'status-msg show-edit-status err'; return; }
+        if (!signedIn()) { status.textContent = 'Sign in on the admin page first.'; status.className = 'status-msg show-edit-status err'; return; }
         status.textContent = 'Saving...'; status.className = 'status-msg show-edit-status';
         try {
           const path = 'shows/index.html';

@@ -54,11 +54,18 @@
     </div>
   </header>
   <main>
-    <p class="admin-lede">Add memories, update itineraries, or start a new trip. This page talks straight to GitHub — nothing runs on a server, and only someone with your access token can save changes here.</p>
+    <p class="admin-lede">Add memories, update itineraries, or start a new trip. Changes save straight to the site's GitHub repo. Only Brendan and Jen can sign in.</p>
 
     <!-- ===== Connect ===== -->
     <div class="card-block" id="connect-block">
-      <h2 style="font-size:1.15rem; margin:0 0 4px;"><span class="step-n">1</span>Connect</h2>
+      <h2 style="font-size:1.15rem; margin:0 0 4px;"><span class="step-n">1</span><span id="connect-title">Connect</span></h2>
+      <div id="google-connect" style="display:none;">
+        <p class="hint" style="margin-bottom:14px;">Sign in with Google. It sticks for about 90 days on this device, here and on the Shows and Contractors pages.</p>
+        <div id="google-btn"></div>
+        <div id="google-signed-in" style="display:none;">Signed in as <strong id="google-name"></strong> &middot; <button type="button" id="google-signout" style="background:none;border:none;padding:0;font:inherit;color:var(--green);font-weight:600;cursor:pointer;text-decoration:underline;">sign out</button></div>
+        <span id="google-status" class="status-msg"></span>
+      </div>
+      <div id="token-connect">
       <p class="hint" style="margin-bottom:10px;">Paste your GitHub token below. It's saved only in this browser (never sent anywhere but GitHub) so you'll only need to do this once per device. See the README for how to create one — takes two minutes.</p>
       <label for="repo-field">Repository</label>
       <input type="text" id="repo-field" value="bmlanders/adventures">
@@ -66,6 +73,7 @@
       <input type="password" id="token-field" placeholder="ghp_...">
       <button class="btn" id="connect-btn" style="margin-top:14px;">Connect</button>
       <span id="connect-status" class="status-msg"></span>
+      </div>
     </div>
 
     <div id="app" style="display:none;">
@@ -221,6 +229,7 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 <script src="../assets/js/pdf-import.js"></script>
+<script src="../assets/js/lot-auth.js"></script>
 <script>
 const $ = (id) => document.getElementById(id);
 let REPO = '', TOKEN = '';
@@ -242,28 +251,20 @@ function b64decode(b64) {
 
 // ---- GitHub API ----
 async function ghGet(path) {
-  const res = await fetch(`https://api.github.com/repos/${REPO}/contents/${path}`, {
-    headers: { Authorization: `token ${TOKEN}`, Accept: 'application/vnd.github+json' }
-  });
+  const res = await LOT.gh(`contents/${path}`);
   if (!res.ok) throw new Error(`GET ${path} failed: ${res.status}`);
   const data = await res.json();
   return { content: b64decode(data.content), sha: data.sha };
 }
 async function ghList(path) {
-  const res = await fetch(`https://api.github.com/repos/${REPO}/contents/${path}`, {
-    headers: { Authorization: `token ${TOKEN}`, Accept: 'application/vnd.github+json' }
-  });
+  const res = await LOT.gh(`contents/${path}`);
   if (!res.ok) throw new Error(`LIST ${path} failed: ${res.status}`);
   return res.json();
 }
 async function ghPut(path, content, sha, message) {
   const body = { message, content: b64encode(content), branch: 'main' };
   if (sha) body.sha = sha;
-  const res = await fetch(`https://api.github.com/repos/${REPO}/contents/${path}`, {
-    method: 'PUT',
-    headers: { Authorization: `token ${TOKEN}`, Accept: 'application/vnd.github+json', 'Content-Type': 'application/json' },
-    body: JSON.stringify(body)
-  });
+  const res = await LOT.gh(`contents/${path}`, { method: 'PUT', body: JSON.stringify(body) });
   if (!res.ok) {
     const err = await res.json().catch(() => ({}));
     throw new Error(err.message || `PUT ${path} failed: ${res.status}`);
@@ -341,9 +342,9 @@ $('connect-btn').addEventListener('click', async () => {
   if (!REPO || !TOKEN) { status.textContent = 'Enter both fields.'; status.className = 'status-msg err'; return; }
   status.textContent = 'Connecting...'; status.className = 'status-msg';
   try {
-    await ghList('_trips');
     localStorage.setItem('lot_repo', REPO);
     localStorage.setItem('lot_token', TOKEN);
+    try { await ghList('_trips'); } catch (err) { localStorage.removeItem('lot_token'); throw err; }
     status.textContent = 'Connected.'; status.className = 'status-msg ok';
     await loadTrips();
     $('app').style.display = 'block';
@@ -653,8 +654,30 @@ $('pdf-file').addEventListener('change', (e) => { if (e.target.files[0]) handleP
 ['dragleave', 'drop'].forEach(evt => pdfDrop.addEventListener(evt, (e) => { e.preventDefault(); pdfDrop.classList.remove('drag'); }));
 pdfDrop.addEventListener('drop', (e) => { const f = e.dataTransfer.files[0]; if (f) handlePdfFile(f); });
 
+// ---- Google sign-in (when lot-auth.js is configured) ----
+async function openApp() {
+  try { await loadTrips(); $('app').style.display = 'block'; }
+  catch (e) { $('google-status').textContent = e.message; $('google-status').className = 'status-msg err'; }
+}
+function paintGoogle() {
+  const u = LOT.user();
+  $('google-signed-in').style.display = u ? '' : 'none';
+  $('google-btn').style.display = u ? 'none' : '';
+  $('connect-title').textContent = u ? 'Signed in' : 'Sign in';
+  if (u) $('google-name').textContent = u.name;
+  else { $('app').style.display = 'none'; LOT.renderButton($('google-btn'), (m) => { $('google-status').textContent = m; $('google-status').className = 'status-msg err'; }); }
+}
+if (LOT.google) {
+  $('google-connect').style.display = ''; $('token-connect').style.display = 'none';
+  $('google-signout').onclick = () => LOT.signOut();
+  LOT.onChange((u) => { paintGoogle(); if (u) openApp(); });
+  paintGoogle();
+  if (LOT.user()) openApp();
+}
+
 // ---- Auto-connect if we have a saved token ----
 window.addEventListener('DOMContentLoaded', async () => {
+  if (LOT.google) return;
   const savedRepo = localStorage.getItem('lot_repo');
   const savedToken = localStorage.getItem('lot_token');
   if (savedRepo && savedToken) {

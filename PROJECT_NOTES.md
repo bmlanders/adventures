@@ -296,9 +296,30 @@ whether it actually landed before retrying:
 git ls-remote https://github.com/bmlanders/adventures.git refs/heads/main
 ```
 
-Never handle the user's GitHub token. The admin page's whole security model is
-that the token stays in their browser's localStorage and only ever talks to
-GitHub.
+Never handle the user's GitHub token.
+
+## Sign-in (Google via a Cloudflare Worker)
+
+Added Nov 2026 because pasting a GitHub token on every device was a dealbreaker.
+`assets/js/lot-auth.js` is the one shared auth layer for admin, shows
+quick-add, and contractors: `LOT.user()`, `LOT.gh(path, opts)` (a fetch against
+`repos/{repo}/<path>`), `LOT.renderButton(el)`, `LOT.signOut()`, `LOT.onChange()`.
+
+- `CONFIG` filled in: Google Identity Services button > ID token POSTed to the
+  Worker's `/login` > Worker verifies it with Google's tokeninfo, checks
+  `ALLOWED_EMAILS`, returns a 90-day HMAC-signed session (`lot_user` in
+  localStorage). `LOT.gh` then calls `{worker}/gh/contents/...`; the Worker adds
+  its own `GITHUB_TOKEN` and sets the commit author to whoever signed in.
+- `CONFIG` empty: falls back to the old `lot_token`/`lot_repo` direct-to-GitHub
+  path, so nothing breaks before setup.
+
+Worker rules worth keeping: only `contents/...` paths, only GET/PUT, fixed repo,
+CORS limited to `ALLOWED_ORIGINS`. Sessions are re-checked against
+`ALLOWED_EMAILS` on every request so removing someone is immediate. Setup steps
+are in `worker/README.md`; `worker/` is excluded from Jekyll. Tested with the
+Worker run in Node against mocked Google/GitHub and a fake GIS script in
+Playwright (both configured and fallback modes); not yet run against the real
+services until the user finishes setup.
 
 ## Verified
 

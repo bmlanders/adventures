@@ -108,9 +108,18 @@ title: "Contractors"
 <!-- Connect -->
 <div class="modal-overlay hidden" id="m-connect">
   <div class="modal-card">
-    <div class="modal-head"><h3>Connect to edit</h3><button class="modal-close" data-close aria-label="Close">&times;</button></div>
-    <p class="hint" style="margin-top:8px;">Same GitHub token the <a href="{{ '/admin/' | relative_url }}">trip admin</a> uses. It stays in this browser and only talks to GitHub. Already connected on the admin page? You're set on this device.</p>
-    <form id="f-connect" autocomplete="off">
+    <div class="modal-head"><h3 id="c-title">Sign in to edit</h3><button class="modal-close" data-close aria-label="Close">&times;</button></div>
+    <div id="c-google" style="display:none;">
+      <p class="hint" style="margin:8px 0 16px;">Brendan and Jen only. Sign in once on each phone or computer and it sticks for about 90 days, here and on the trip admin.</p>
+      <div id="c-signed-in" style="display:none;">
+        <p style="margin:0 0 14px;">Signed in as <strong id="c-name"></strong>.</p>
+        <button class="btn secondary" type="button" id="c-signout">Sign out</button>
+      </div>
+      <div id="c-gbtn"></div>
+      <div class="status-msg" id="c-gmsg"></div>
+    </div>
+    <form id="f-connect" autocomplete="off" style="display:none;">
+      <p class="hint" style="margin-top:8px;">Same GitHub token the <a href="{{ '/admin/' | relative_url }}">trip admin</a> uses. It stays in this browser and only talks to GitHub.</p>
       <label>Who's editing</label>
       <div class="ct-seg ct-seg-form" id="c-who">
         <button type="button" data-v="Brendan" class="on">Brendan</button>
@@ -127,6 +136,7 @@ title: "Contractors"
   </div>
 </div>
 
+<script src="{{ '/assets/js/lot-auth.js' | relative_url }}"></script>
 <script>
 (function () {
   const DATA_PATH = 'assets/data/contractors.json';
@@ -146,9 +156,8 @@ title: "Contractors"
     del(k) { try { localStorage.removeItem(k); } catch (e) {} },
   };
 
-  let REPO = ls.get('lot_repo') || DEFAULT_REPO;
-  let TOKEN = ls.get('lot_token') || '';
-  let WHO = ls.get('lot_who') || 'Brendan';
+  const signedIn = () => !!LOT.user();
+  const who = () => (LOT.user() || {}).name || 'Brendan';
   let DATA = { contractors: [] };
   let filters = { q: '', prop: '', trade: '' };
   let openIds = new Set();
@@ -170,22 +179,16 @@ title: "Contractors"
 
   // ---------- GitHub ----------
   async function ghGet(path) {
-    const res = await fetch(`https://api.github.com/repos/${REPO}/contents/${path}?ref=main`, {
-      headers: { Authorization: `token ${TOKEN}`, Accept: 'application/vnd.github+json' }, cache: 'no-store'
-    });
+    const res = await LOT.gh(`contents/${path}?ref=main`);
     if (res.status === 404) return { content: null, sha: null };
-    if (!res.ok) throw new Error(res.status === 401 ? 'GitHub rejected the token.' : `Couldn't read from GitHub (${res.status}).`);
+    if (!res.ok) throw new Error(res.status === 401 ? 'GitHub rejected the sign-in.' : `Couldn't read from GitHub (${res.status}).`);
     const data = await res.json();
     return { content: b64decode(data.content), sha: data.sha };
   }
   async function ghPut(path, content, sha, message) {
     const body = { message, content: b64encode(content), branch: 'main' };
     if (sha) body.sha = sha;
-    const res = await fetch(`https://api.github.com/repos/${REPO}/contents/${path}`, {
-      method: 'PUT',
-      headers: { Authorization: `token ${TOKEN}`, Accept: 'application/vnd.github+json', 'Content-Type': 'application/json' },
-      body: JSON.stringify(body)
-    });
+    const res = await LOT.gh(`contents/${path}`, { method: 'PUT', body: JSON.stringify(body) });
     if (!res.ok) {
       const err = await res.json().catch(() => ({}));
       const e = new Error(err.message || `Save failed (${res.status}).`); e.status = res.status; throw e;
@@ -199,7 +202,7 @@ title: "Contractors"
   // Read fresh, apply the change, write back. If Jen saved in between, the sha
   // won't match: re-read and re-apply rather than overwrite her change.
   async function mutate(fn, message) {
-    if (!TOKEN) throw new Error('Connect first to make changes.');
+    if (!signedIn()) throw new Error('Sign in first to make changes.');
     for (let attempt = 0; attempt < 3; attempt++) {
       const { content, sha } = await ghGet(DATA_PATH);
       const data = parse(content);
@@ -217,7 +220,7 @@ title: "Contractors"
 
   async function load() {
     try {
-      if (TOKEN) {
+      if (signedIn()) {
         const { content } = await ghGet(DATA_PATH); DATA = parse(content);
       } else {
         const res = await fetch(STATIC_URL + '?t=' + Date.now(), { cache: 'no-store' });
@@ -295,9 +298,9 @@ title: "Contractors"
     $('trade-list').innerHTML = [...new Set([...trades, ...COMMON_TRADES])].sort().map(t => `<option value="${esc(t)}">`).join('');
 
     // connect bar
-    $('ct-connect').innerHTML = TOKEN
-      ? `Editing as <strong>${esc(WHO)}</strong> &middot; <button type="button" class="ct-link" id="ct-open-connect">change</button>`
-      : `View only. <button type="button" class="ct-link" id="ct-open-connect">Connect to add or edit</button>`;
+    $('ct-connect').innerHTML = signedIn()
+      ? `Editing as <strong>${esc(who())}</strong> &middot; <button type="button" class="ct-link" id="ct-open-connect">${LOT.google ? 'sign out' : 'change'}</button>`
+      : `View only. <button type="button" class="ct-link" id="ct-open-connect">${LOT.google ? 'Sign in to add or edit' : 'Connect to add or edit'}</button>`;
     $('ct-open-connect').onclick = openConnect;
 
     const list = $('ct-list');
@@ -354,10 +357,12 @@ title: "Contractors"
   document.addEventListener('keydown', (e) => { if (e.key === 'Escape') document.querySelectorAll('.modal-overlay:not(.hidden)').forEach(m => closeModal(m.id)); });
   function setMsg(el, text, ok) { el.textContent = text; el.className = 'status-msg ' + (text ? (ok ? 'ok' : 'err') : ''); }
 
-  function needToken() { if (TOKEN) return false; openConnect(); setMsg($('c-msg'), 'Connect first, then try again.', false); return true; }
+  // Not signed in: open the sign-in box, and pick up where they left off after.
+  let afterSignIn = null;
+  function needToken(then) { if (signedIn()) return false; afterSignIn = then || null; openConnect(); return true; }
 
   function openAdd() {
-    if (needToken()) return;
+    if (needToken(openAdd)) return;
     editingId = null; dupWarned = false;
     $('m-edit-title').textContent = 'Add a contractor';
     $('f-edit').reset(); eStars.set(0); eProp.set(filters.prop || 'hartford');
@@ -368,7 +373,7 @@ title: "Contractors"
     openModal('m-edit');
   }
   function openEdit(c) {
-    if (needToken()) return;
+    if (needToken(() => openEdit(c))) return;
     editingId = c.id;
     $('m-edit-title').textContent = 'Edit ' + c.name;
     $('e-name').value = c.name; $('e-phone').value = c.phone || ''; $('e-trade').value = c.trade || ''; $('e-company').value = c.company || ''; $('e-url').value = c.url || '';
@@ -379,7 +384,7 @@ title: "Contractors"
     openModal('m-edit');
   }
   function openReview(c) {
-    if (needToken()) return;
+    if (needToken(() => openReview(c))) return;
     reviewingId = c.id;
     $('m-review-title').textContent = 'Note for ' + c.name;
     $('f-review').reset(); rStars.set(0); rProp.set(c.property === 'palos' ? 'palos' : (filters.prop === 'palos' ? 'palos' : 'hartford'));
@@ -388,9 +393,29 @@ title: "Contractors"
     openModal('m-review');
   }
   function openConnect() {
-    $('c-token').value = TOKEN; cWho.set(WHO); setMsg($('c-msg'), '');
+    setMsg($('c-msg'), ''); setMsg($('c-gmsg'), '');
+    if (LOT.google) {
+      const u = LOT.user();
+      $('c-google').style.display = ''; $('f-connect').style.display = 'none';
+      $('c-title').textContent = u ? 'Signed in' : 'Sign in to edit';
+      $('c-signed-in').style.display = u ? '' : 'none';
+      $('c-gbtn').style.display = u ? 'none' : '';
+      if (u) $('c-name').textContent = u.name + (u.email ? ` (${u.email})` : '');
+      else LOT.renderButton($('c-gbtn'), (m) => setMsg($('c-gmsg'), m, false)).catch(e => setMsg($('c-gmsg'), e.message, false));
+    } else {
+      $('c-google').style.display = 'none'; $('f-connect').style.display = '';
+      $('c-title').textContent = 'Connect to edit';
+      $('c-token').value = ls.get('lot_token') || ''; cWho.set(ls.get('lot_who') || 'Brendan');
+    }
     openModal('m-connect');
   }
+  $('c-signout').onclick = () => { LOT.signOut(); closeModal('m-connect'); load(); };
+  LOT.onChange((u) => {
+    if (!u) return render();
+    closeModal('m-connect');
+    const next = afterSignIn; afterSignIn = null;
+    load().then(() => { if (next) next(); });
+  });
 
   $('ct-fab').onclick = openAdd;
 
@@ -415,8 +440,8 @@ title: "Contractors"
         const id = editingId;
         await mutate(data => { const c = data.contractors.find(x => x.id === id); if (!c) throw new Error('That contractor was deleted.'); Object.assign(c, rec); }, `Contractors: edit ${rec.name}`);
       } else {
-        const c = { id: newId(), ...rec, added: today(), addedBy: WHO, reviews: [] };
-        if (rating || comment) c.reviews.push({ date: today(), by: WHO, property: rec.property === 'both' ? '' : rec.property, rating, comment });
+        const c = { id: newId(), ...rec, added: today(), addedBy: who(), reviews: [] };
+        if (rating || comment) c.reviews.push({ date: today(), by: who(), property: rec.property === 'both' ? '' : rec.property, rating, comment });
         await mutate(data => data.contractors.push(c), `Contractors: add ${rec.name} (${rec.trade})`);
       }
       closeModal('m-edit');
@@ -427,7 +452,7 @@ title: "Contractors"
   $('f-review').addEventListener('submit', async (e) => {
     e.preventDefault();
     const msg = $('r-msg');
-    const r = { date: $('r-date').value || today(), by: WHO, property: rProp.get(), rating: rStars.get(), comment: $('r-comment').value.trim() };
+    const r = { date: $('r-date').value || today(), by: who(), property: rProp.get(), rating: rStars.get(), comment: $('r-comment').value.trim() };
     if (!r.rating && !r.comment) { setMsg(msg, 'Add a rating or a comment.', false); return; }
     const id = reviewingId;
     setMsg(msg, 'Saving...', true);
@@ -443,17 +468,20 @@ title: "Contractors"
     e.preventDefault();
     const t = $('c-token').value.trim();
     if (!t) { setMsg($('c-msg'), 'Paste a token first.', false); return; }
-    TOKEN = t; WHO = cWho.get();
+    const prev = ls.get('lot_token');
+    ls.set('lot_token', t); ls.set('lot_who', cWho.get());
     setMsg($('c-msg'), 'Checking...', true);
     try {
       await ghGet(DATA_PATH);
-      ls.set('lot_token', TOKEN); ls.set('lot_repo', REPO); ls.set('lot_who', WHO);
-      closeModal('m-connect'); load();
-    } catch (err) { TOKEN = ls.get('lot_token') || ''; setMsg($('c-msg'), err.message, false); }
+      ls.set('lot_repo', DEFAULT_REPO);
+      closeModal('m-connect');
+      const next = afterSignIn; afterSignIn = null;
+      await load(); if (next) next();
+    } catch (err) { prev ? ls.set('lot_token', prev) : ls.del('lot_token'); setMsg($('c-msg'), err.message, false); }
   });
-  $('c-disconnect').onclick = () => { ls.del('lot_token'); TOKEN = ''; closeModal('m-connect'); load(); };
+  $('c-disconnect').onclick = () => { LOT.signOut(); closeModal('m-connect'); load(); };
   // switching who's editing doesn't need a re-paste
-  $('c-who').addEventListener('click', () => { if (TOKEN && $('c-token').value.trim() === TOKEN) { WHO = cWho.get(); ls.set('lot_who', WHO); render(); } });
+  $('c-who').addEventListener('click', () => { if (ls.get('lot_token') && $('c-token').value.trim() === ls.get('lot_token')) { ls.set('lot_who', cWho.get()); render(); } });
 
   // ---------- card actions ----------
   $('ct-list').addEventListener('click', async (e) => {
@@ -629,7 +657,7 @@ title: "Contractors"
     if (e.target.closest && e.target.closest('input, textarea')) return;
     const f = imageFromClipboard(e); if (!f) return;
     e.preventDefault();
-    if ($('m-edit').classList.contains('hidden')) { openAdd(); if (!TOKEN) return; }
+    if ($('m-edit').classList.contains('hidden')) { openAdd(); if (!signedIn()) return; }
     smartImage(f);
   });
 
