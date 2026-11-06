@@ -39,6 +39,7 @@ async function renderLayout(page, inner, layoutName) {
   const targets = [
     { label: 'index', file: path.join(SITE_DIR, 'index.html'), layout: 'default' },
     { label: 'shows', file: path.join(SITE_DIR, 'shows', 'index.html'), layout: 'default' },
+    { label: 'contractors', file: path.join(SITE_DIR, 'contractors', 'index.html'), layout: 'default' },
   ];
   for (const f of fs.readdirSync(path.join(SITE_DIR, '_trips'))) {
     if (f.endsWith('.md')) targets.push({ label: `trip:${f}`, file: path.join(SITE_DIR, '_trips', f), layout: 'trip' });

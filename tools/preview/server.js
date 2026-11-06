@@ -111,6 +111,16 @@ app.get('/shows/', async (req, res) => {
   }
 });
 
+app.get('/contractors/', async (req, res) => {
+  try {
+    const cfg = loadConfig();
+    const html = await renderPage(cfg, path.join(SITE_DIR, 'contractors', 'index.html'), 'default');
+    res.set('Content-Type', 'text/html').send(html);
+  } catch (e) {
+    res.status(500).send(`<pre>${e.stack}</pre>`);
+  }
+});
+
 app.get('/admin/', async (req, res) => {
   const candidates = [
     path.join(SITE_DIR, 'admin', 'index.html'),

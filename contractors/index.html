@@ -1,0 +1,623 @@
+---
+layout: default
+title: "Contractors"
+---
+<div class="trip-hero" style="margin-bottom:26px;">
+  <div class="inner">
+    <div class="eyebrow">The house book</div>
+    <h1>Who to call.</h1>
+    <div class="route">Contractors for Hartford and Palos, with our own ratings and notes. Twenty years of phone contacts, finally sorted.</div>
+    <div class="stats">
+      <div class="stat"><div class="n" id="stat-total">&ndash;</div><div class="l">Contractors</div></div>
+      <div class="stat"><div class="n" id="stat-trades">&ndash;</div><div class="l">Trades</div></div>
+      <div class="stat"><div class="n" id="stat-used">&ndash;</div><div class="l">Used &amp; rated</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="ct-connect" id="ct-connect"></div>
+
+<div class="ct-toolbar">
+  <input type="search" id="ct-search" placeholder="Search name, trade, notes" autocomplete="off">
+  <div class="ct-seg" id="ct-prop" role="group" aria-label="Property">
+    <button type="button" data-v="" class="on">Both houses</button>
+    <button type="button" data-v="hartford">Hartford</button>
+    <button type="button" data-v="palos">Palos</button>
+  </div>
+  <select id="ct-trade" aria-label="Trade"><option value="">All trades</option></select>
+</div>
+
+<p class="ct-status" id="ct-status">Loading&hellip;</p>
+<div id="ct-list"></div>
+
+<button class="fab-add" id="ct-fab" type="button" aria-label="Add a contractor" title="Add a contractor">+</button>
+
+<!-- Add / edit contractor -->
+<div class="modal-overlay hidden" id="m-edit">
+  <div class="modal-card">
+    <div class="modal-head"><h3 id="m-edit-title">Add a contractor</h3><button class="modal-close" data-close aria-label="Close">&times;</button></div>
+    <form id="f-edit" autocomplete="off">
+      <div id="e-smart">
+        <div class="ct-smart" id="s-drop">
+          <textarea id="s-input" rows="2" placeholder="Paste a screenshot, a website link, or contact text here"></textarea>
+          <div class="ct-smart-row">
+            <button class="btn secondary" type="button" id="s-pick">Choose screenshot</button>
+            <button class="btn secondary" type="button" id="s-go">Fill it in</button>
+            <input type="file" id="s-file" accept="image/*" hidden>
+          </div>
+          <div class="hint" id="s-msg">Lazy mode. It'll take a guess at name, phone, trade, and house. Check before saving.</div>
+        </div>
+      </div>
+      <label for="e-name">Name</label>
+      <input type="text" id="e-name" required placeholder="Mike Sullivan">
+      <label for="e-phone">Phone</label>
+      <input type="tel" id="e-phone" inputmode="tel" placeholder="269-555-0123">
+      <label for="e-trade">Trade</label>
+      <input type="text" id="e-trade" list="trade-list" required placeholder="Plumber">
+      <datalist id="trade-list"></datalist>
+      <label for="e-company">Company <span class="ct-opt">optional</span></label>
+      <input type="text" id="e-company" placeholder="Sullivan Plumbing">
+      <label>Which house</label>
+      <div class="ct-seg ct-seg-form" id="e-prop">
+        <button type="button" data-v="hartford" class="on">Hartford</button>
+        <button type="button" data-v="palos">Palos</button>
+        <button type="button" data-v="both">Both</button>
+      </div>
+      <div id="e-review-part">
+        <label>Used them? Rate it <span class="ct-opt">optional</span></label>
+        <div class="ct-stars-input" id="e-stars"></div>
+        <label for="e-comment">Comment <span class="ct-opt">optional</span></label>
+        <textarea id="e-comment" placeholder="Fixed the well pump in a day. Fair price, shows up when he says."></textarea>
+      </div>
+      <div style="margin-top:18px; display:flex; gap:10px; flex-wrap:wrap; align-items:center;">
+        <button class="btn" type="submit" id="e-save">Save</button>
+        <button class="btn secondary" type="button" data-close>Cancel</button>
+      </div>
+      <div class="status-msg" id="e-msg"></div>
+    </form>
+  </div>
+</div>
+
+<!-- Add a review -->
+<div class="modal-overlay hidden" id="m-review">
+  <div class="modal-card">
+    <div class="modal-head"><h3 id="m-review-title">Add a note</h3><button class="modal-close" data-close aria-label="Close">&times;</button></div>
+    <form id="f-review" autocomplete="off">
+      <label>Rating <span class="ct-opt">leave blank if you didn't hire them</span></label>
+      <div class="ct-stars-input" id="r-stars"></div>
+      <label>Which house</label>
+      <div class="ct-seg ct-seg-form" id="r-prop">
+        <button type="button" data-v="hartford" class="on">Hartford</button>
+        <button type="button" data-v="palos">Palos</button>
+      </div>
+      <label for="r-date">When</label>
+      <input type="date" id="r-date">
+      <label for="r-comment">Comment</label>
+      <textarea id="r-comment" placeholder="What they did, how it went, would you call them again?"></textarea>
+      <div style="margin-top:18px; display:flex; gap:10px; flex-wrap:wrap;">
+        <button class="btn" type="submit">Save note</button>
+        <button class="btn secondary" type="button" data-close>Cancel</button>
+      </div>
+      <div class="status-msg" id="r-msg"></div>
+    </form>
+  </div>
+</div>
+
+<!-- Connect -->
+<div class="modal-overlay hidden" id="m-connect">
+  <div class="modal-card">
+    <div class="modal-head"><h3>Connect to edit</h3><button class="modal-close" data-close aria-label="Close">&times;</button></div>
+    <p class="hint" style="margin-top:8px;">Same GitHub token the <a href="{{ '/admin/' | relative_url }}">trip admin</a> uses. It stays in this browser and only talks to GitHub. Already connected on the admin page? You're set on this device.</p>
+    <form id="f-connect" autocomplete="off">
+      <label>Who's editing</label>
+      <div class="ct-seg ct-seg-form" id="c-who">
+        <button type="button" data-v="Brendan" class="on">Brendan</button>
+        <button type="button" data-v="Jen">Jen</button>
+      </div>
+      <label for="c-token">GitHub token</label>
+      <input type="password" id="c-token" placeholder="github_pat_...">
+      <div style="margin-top:18px; display:flex; gap:10px; flex-wrap:wrap;">
+        <button class="btn" type="submit">Connect</button>
+        <button class="btn secondary" type="button" id="c-disconnect">Disconnect</button>
+      </div>
+      <div class="status-msg" id="c-msg"></div>
+    </form>
+  </div>
+</div>
+
+<script>
+(function () {
+  const DATA_PATH = 'assets/data/contractors.json';
+  const STATIC_URL = '{{ "/assets/data/contractors.json" | relative_url }}';
+  const DEFAULT_REPO = '{{ site.repo }}' || 'bmlanders/adventures';
+  const COMMON_TRADES = ['Appliance repair','Carpenter','Cleaning','Concrete','Deck builder','Drywall','Electrician','Excavation','Fencing','Flooring','Garage door','General contractor','Gutters','Handyman','HVAC','Insulation','Landscaping','Lawn care','Locksmith','Masonry','Painter','Paving','Pest control','Plumber','Pool','Roofer','Septic','Siding','Snow removal','Solar','Tile','Tree service','Water treatment','Well','Windows & doors','Dock & lift'];
+  const PROP_LABEL = { hartford: 'Hartford', palos: 'Palos', both: 'Both houses' };
+
+  const $ = (id) => document.getElementById(id);
+  const ls = {
+    get(k) { try { return localStorage.getItem(k); } catch (e) { return null; } },
+    set(k, v) { try { localStorage.setItem(k, v); } catch (e) {} },
+    del(k) { try { localStorage.removeItem(k); } catch (e) {} },
+  };
+
+  let REPO = ls.get('lot_repo') || DEFAULT_REPO;
+  let TOKEN = ls.get('lot_token') || '';
+  let WHO = ls.get('lot_who') || 'Brendan';
+  let DATA = { contractors: [] };
+  let filters = { q: '', prop: '', trade: '' };
+  let openIds = new Set();
+  let editingId = null, reviewingId = null, pendingDelete = null;
+
+  // ---------- helpers ----------
+  function esc(s) { return String(s == null ? '' : s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+  function b64encode(str) { const b = new TextEncoder().encode(str); let s = ''; for (let i = 0; i < b.length; i++) s += String.fromCharCode(b[i]); return btoa(s); }
+  function b64decode(b64) { return new TextDecoder().decode(Uint8Array.from(atob(b64.replace(/\n/g,'')), c => c.charCodeAt(0))); }
+  function today() { const d = new Date(); return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0'); }
+  function digits(p) { return String(p || '').replace(/\D/g, '').replace(/^1(?=\d{10}$)/, ''); }
+  function fmtPhone(p) { const d = digits(p); return d.length === 10 ? `(${d.slice(0,3)}) ${d.slice(3,6)}-${d.slice(6)}` : (p || ''); }
+  function fmtDate(iso) { if (!iso) return ''; const [y,m,d] = iso.split('-').map(Number); return new Date(y, m-1, d).toLocaleDateString('en-US', { month: 'short', year: 'numeric' }); }
+  function titleCase(s) { s = s.trim(); return s && s === s.toLowerCase() ? s.replace(/\b\w/g, c => c.toUpperCase()) : s; }
+  function avg(c) { const r = (c.reviews || []).filter(x => x.rating > 0); return r.length ? r.reduce((a, x) => a + x.rating, 0) / r.length : 0; }
+  function ratedCount(c) { return (c.reviews || []).filter(x => x.rating > 0).length; }
+  function starsHtml(n) { const full = Math.round(n); return '<span class="ct-stars" aria-hidden="true">' + '★'.repeat(full) + '<span class="off">' + '★'.repeat(5 - full) + '</span></span>'; }
+  function newId() { return 'c' + Date.now().toString(36) + Math.random().toString(36).slice(2, 5); }
+
+  // ---------- GitHub ----------
+  async function ghGet(path) {
+    const res = await fetch(`https://api.github.com/repos/${REPO}/contents/${path}?ref=main`, {
+      headers: { Authorization: `token ${TOKEN}`, Accept: 'application/vnd.github+json' }, cache: 'no-store'
+    });
+    if (res.status === 404) return { content: null, sha: null };
+    if (!res.ok) throw new Error(res.status === 401 ? 'GitHub rejected the token.' : `Couldn't read from GitHub (${res.status}).`);
+    const data = await res.json();
+    return { content: b64decode(data.content), sha: data.sha };
+  }
+  async function ghPut(path, content, sha, message) {
+    const body = { message, content: b64encode(content), branch: 'main' };
+    if (sha) body.sha = sha;
+    const res = await fetch(`https://api.github.com/repos/${REPO}/contents/${path}`, {
+      method: 'PUT',
+      headers: { Authorization: `token ${TOKEN}`, Accept: 'application/vnd.github+json', 'Content-Type': 'application/json' },
+      body: JSON.stringify(body)
+    });
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      const e = new Error(err.message || `Save failed (${res.status}).`); e.status = res.status; throw e;
+    }
+    return res.json();
+  }
+  function parse(text) {
+    if (!text) return { contractors: [] };
+    const d = JSON.parse(text); if (!Array.isArray(d.contractors)) d.contractors = []; return d;
+  }
+  // Read fresh, apply the change, write back. If Jen saved in between, the sha
+  // won't match: re-read and re-apply rather than overwrite her change.
+  async function mutate(fn, message) {
+    if (!TOKEN) throw new Error('Connect first to make changes.');
+    for (let attempt = 0; attempt < 3; attempt++) {
+      const { content, sha } = await ghGet(DATA_PATH);
+      const data = parse(content);
+      fn(data);
+      data.contractors.sort((a, b) => a.name.localeCompare(b.name));
+      try {
+        await ghPut(DATA_PATH, JSON.stringify(data, null, 2) + '\n', sha, message);
+        DATA = data; render(); return;
+      } catch (e) {
+        if (e.status !== 409 && e.status !== 422) throw e;
+      }
+    }
+    throw new Error('Someone else was saving at the same moment. Try again.');
+  }
+
+  async function load() {
+    try {
+      if (TOKEN) {
+        const { content } = await ghGet(DATA_PATH); DATA = parse(content);
+      } else {
+        const res = await fetch(STATIC_URL + '?t=' + Date.now(), { cache: 'no-store' });
+        DATA = res.ok ? parse(await res.text()) : { contractors: [] };
+      }
+      $('ct-status').textContent = '';
+    } catch (e) {
+      $('ct-status').textContent = e.message;
+    }
+    render();
+  }
+
+  // ---------- render ----------
+  function matches(c) {
+    if (filters.prop && c.property !== filters.prop && c.property !== 'both') return false;
+    if (filters.trade && c.trade !== filters.trade) return false;
+    if (filters.q) {
+      const hay = [c.name, c.company, c.trade, c.phone, ...(c.reviews || []).map(r => r.comment)].join(' ').toLowerCase();
+      if (!filters.q.toLowerCase().split(/\s+/).every(w => hay.includes(w))) return false;
+    }
+    return true;
+  }
+
+  function cardHtml(c) {
+    const a = avg(c), n = ratedCount(c);
+    const reviews = (c.reviews || []).slice().sort((x, y) => (y.date || '').localeCompare(x.date || ''));
+    const latest = reviews.find(r => r.comment);
+    const d = digits(c.phone);
+    const open = openIds.has(c.id);
+    const propChips = (c.property === 'both' ? ['hartford', 'palos'] : [c.property]).map(p => `<span class="ct-chip ${p}">${PROP_LABEL[p] || p}</span>`).join('');
+    return `
+    <article class="ct-card${open ? ' open' : ''}" data-id="${esc(c.id)}">
+      <div class="ct-main">
+        <div class="ct-who">
+          <h3>${esc(c.name)}</h3>
+          ${c.company ? `<div class="ct-company">${esc(c.company)}</div>` : ''}
+          <div class="ct-meta">${propChips}${n ? `${starsHtml(a)}<span class="ct-score">${a.toFixed(1)} &middot; ${n} job${n > 1 ? 's' : ''}</span>` : '<span class="ct-score muted">Not rated</span>'}</div>
+        </div>
+        <div class="ct-actions">
+          ${d ? `<a class="ct-call" href="tel:${d}" aria-label="Call ${esc(c.name)}">Call</a><a class="ct-text" href="sms:${d}" aria-label="Text ${esc(c.name)}">Text</a>` : ''}
+        </div>
+      </div>
+      ${d ? `<div class="ct-phone">${esc(fmtPhone(c.phone))}</div>` : ''}
+      ${latest && !open ? `<p class="ct-latest">&ldquo;${esc(latest.comment)}&rdquo; <span>${esc(latest.by || '')}${latest.date ? ', ' + fmtDate(latest.date) : ''}</span></p>` : ''}
+      <button class="ct-toggle" type="button" data-act="toggle">${open ? 'Less' : (reviews.length ? `All notes (${reviews.length})` : 'More')}</button>
+      ${open ? `
+      <div class="ct-detail">
+        ${reviews.length ? reviews.map(r => `
+          <div class="ct-review">
+            <div class="ct-review-head">${r.rating ? starsHtml(r.rating) : '<span class="ct-score muted">No rating</span>'}
+              <span>${esc(r.by || '')}${r.date ? ' &middot; ' + fmtDate(r.date) : ''}${r.property ? ' &middot; ' + esc(PROP_LABEL[r.property] || r.property) : ''}</span></div>
+            ${r.comment ? `<p>${esc(r.comment)}</p>` : ''}
+          </div>`).join('') : '<p class="ct-score muted" style="margin:0 0 8px;">No notes yet.</p>'}
+        <div class="ct-detail-actions">
+          <button class="btn" type="button" data-act="review">Add note or rating</button>
+          <button class="btn secondary" type="button" data-act="edit">Edit</button>
+          <button class="btn secondary" type="button" data-act="vcard">Save to phone</button>
+          <button class="btn secondary ct-del" type="button" data-act="delete">${pendingDelete === c.id ? 'Tap again to delete' : 'Delete'}</button>
+        </div>
+        <div class="status-msg" data-msg></div>
+      </div>` : ''}
+    </article>`;
+  }
+
+  function render() {
+    const all = DATA.contractors;
+    // stats + trade lists
+    const trades = [...new Set(all.map(c => c.trade).filter(Boolean))].sort();
+    $('stat-total').textContent = all.length;
+    $('stat-trades').textContent = trades.length;
+    $('stat-used').textContent = all.filter(c => ratedCount(c) > 0).length;
+    const sel = $('ct-trade'), cur = filters.trade;
+    sel.innerHTML = '<option value="">All trades</option>' + trades.map(t => `<option${t === cur ? ' selected' : ''}>${esc(t)}</option>`).join('');
+    $('trade-list').innerHTML = [...new Set([...trades, ...COMMON_TRADES])].sort().map(t => `<option value="${esc(t)}">`).join('');
+
+    // connect bar
+    $('ct-connect').innerHTML = TOKEN
+      ? `Editing as <strong>${esc(WHO)}</strong> &middot; <button type="button" class="ct-link" id="ct-open-connect">change</button>`
+      : `View only. <button type="button" class="ct-link" id="ct-open-connect">Connect to add or edit</button>`;
+    $('ct-open-connect').onclick = openConnect;
+
+    const list = $('ct-list');
+    if (!all.length) {
+      list.innerHTML = `<div class="ct-empty"><p>Nothing here yet.</p><p>Hit the <strong>+</strong> button to add your first contractor. Name, phone, trade, and a comment is all it takes.</p></div>`;
+      return;
+    }
+    const shown = all.filter(matches);
+    if (!shown.length) { list.innerHTML = '<p class="memory-empty">Nobody matches that. Try clearing the search or filters.</p>'; return; }
+    // group by trade, best rated first within each trade
+    const groups = {};
+    shown.forEach(c => (groups[c.trade || 'Other'] = groups[c.trade || 'Other'] || []).push(c));
+    list.innerHTML = Object.keys(groups).sort().map(t => {
+      const cs = groups[t].sort((a, b) => (avg(b) - avg(a)) || a.name.localeCompare(b.name));
+      return `<section class="ct-group"><h2>${esc(t)} <span>${cs.length}</span></h2>${cs.map(cardHtml).join('')}</section>`;
+    }).join('');
+  }
+
+  // ---------- star input ----------
+  function starInput(el) {
+    let val = 0;
+    el.innerHTML = [1,2,3,4,5].map(i => `<button type="button" data-n="${i}" aria-label="${i} star${i > 1 ? 's' : ''}">★</button>`).join('') + '<span class="ct-star-label"></span>';
+    const paint = () => {
+      el.querySelectorAll('button').forEach(b => b.classList.toggle('on', +b.dataset.n <= val));
+      el.querySelector('.ct-star-label').textContent = val ? ['', 'Wouldn\'t use again', 'Meh', 'Fine', 'Good', 'Great, call them first'][val] : 'Not rated';
+    };
+    el.addEventListener('click', (e) => { const b = e.target.closest('button'); if (!b) return; const n = +b.dataset.n; val = (val === n ? 0 : n); paint(); });
+    paint();
+    return { get: () => val, set: (v) => { val = v || 0; paint(); } };
+  }
+  const eStars = starInput($('e-stars'));
+  const rStars = starInput($('r-stars'));
+
+  function seg(el, onChange) {
+    el.addEventListener('click', (e) => {
+      const b = e.target.closest('button'); if (!b) return;
+      el.querySelectorAll('button').forEach(x => x.classList.toggle('on', x === b));
+      if (onChange) onChange(b.dataset.v);
+    });
+    return {
+      get: () => (el.querySelector('button.on') || {}).dataset.v,
+      set: (v) => el.querySelectorAll('button').forEach(x => x.classList.toggle('on', x.dataset.v === v)),
+    };
+  }
+  const eProp = seg($('e-prop')), rProp = seg($('r-prop')), cWho = seg($('c-who'));
+  seg($('ct-prop'), (v) => { filters.prop = v; render(); });
+
+  // ---------- modals ----------
+  function openModal(id) { $(id).classList.remove('hidden'); const f = $(id).querySelector('input:not([type=hidden]),textarea'); if (f && window.innerWidth > 700) setTimeout(() => f.focus(), 30); }
+  function closeModal(id) { $(id).classList.add('hidden'); }
+  document.querySelectorAll('.modal-overlay').forEach(m => {
+    m.addEventListener('click', (e) => { if (e.target === m || e.target.closest('[data-close]')) closeModal(m.id); });
+  });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') document.querySelectorAll('.modal-overlay:not(.hidden)').forEach(m => closeModal(m.id)); });
+  function setMsg(el, text, ok) { el.textContent = text; el.className = 'status-msg ' + (text ? (ok ? 'ok' : 'err') : ''); }
+
+  function needToken() { if (TOKEN) return false; openConnect(); setMsg($('c-msg'), 'Connect first, then try again.', false); return true; }
+
+  function openAdd() {
+    if (needToken()) return;
+    editingId = null; dupWarned = false;
+    $('m-edit-title').textContent = 'Add a contractor';
+    $('f-edit').reset(); eStars.set(0); eProp.set(filters.prop || 'hartford');
+    $('e-review-part').style.display = '';
+    $('e-smart').style.display = ''; $('s-input').value = '';
+    $('s-msg').textContent = "Lazy mode. It'll take a guess at name, phone, trade, and house. Check before saving.";
+    setMsg($('e-msg'), '');
+    openModal('m-edit');
+  }
+  function openEdit(c) {
+    if (needToken()) return;
+    editingId = c.id;
+    $('m-edit-title').textContent = 'Edit ' + c.name;
+    $('e-name').value = c.name; $('e-phone').value = c.phone || ''; $('e-trade').value = c.trade || ''; $('e-company').value = c.company || '';
+    eProp.set(c.property || 'hartford');
+    $('e-review-part').style.display = 'none';
+    $('e-smart').style.display = 'none';
+    setMsg($('e-msg'), '');
+    openModal('m-edit');
+  }
+  function openReview(c) {
+    if (needToken()) return;
+    reviewingId = c.id;
+    $('m-review-title').textContent = 'Note for ' + c.name;
+    $('f-review').reset(); rStars.set(0); rProp.set(c.property === 'palos' ? 'palos' : (filters.prop === 'palos' ? 'palos' : 'hartford'));
+    $('r-date').value = today();
+    setMsg($('r-msg'), '');
+    openModal('m-review');
+  }
+  function openConnect() {
+    $('c-token').value = TOKEN; cWho.set(WHO); setMsg($('c-msg'), '');
+    openModal('m-connect');
+  }
+
+  $('ct-fab').onclick = openAdd;
+
+  let dupWarned = false;
+  $('f-edit').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const msg = $('e-msg');
+    const rec = {
+      name: titleCase($('e-name').value), phone: fmtPhone($('e-phone').value.trim()),
+      trade: titleCase($('e-trade').value), company: $('e-company').value.trim(), property: eProp.get(),
+    };
+    if (!rec.name || !rec.trade) { setMsg(msg, 'Name and trade are required.', false); return; }
+    // friendly duplicate check on phone number for new entries
+    const d = digits(rec.phone);
+    const dup = !editingId && d && DATA.contractors.find(c => digits(c.phone) === d);
+    if (dup && !dupWarned) { dupWarned = true; setMsg(msg, `${dup.name} already has that number. Tap Save again to add anyway.`, false); return; }
+    const rating = eStars.get(), comment = $('e-comment').value.trim();
+    $('e-save').disabled = true; setMsg(msg, 'Saving...', true);
+    try {
+      if (editingId) {
+        const id = editingId;
+        await mutate(data => { const c = data.contractors.find(x => x.id === id); if (!c) throw new Error('That contractor was deleted.'); Object.assign(c, rec); }, `Contractors: edit ${rec.name}`);
+      } else {
+        const c = { id: newId(), ...rec, added: today(), addedBy: WHO, reviews: [] };
+        if (rating || comment) c.reviews.push({ date: today(), by: WHO, property: rec.property === 'both' ? '' : rec.property, rating, comment });
+        await mutate(data => data.contractors.push(c), `Contractors: add ${rec.name} (${rec.trade})`);
+      }
+      closeModal('m-edit');
+    } catch (err) { setMsg(msg, err.message, false); }
+    $('e-save').disabled = false;
+  });
+
+  $('f-review').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const msg = $('r-msg');
+    const r = { date: $('r-date').value || today(), by: WHO, property: rProp.get(), rating: rStars.get(), comment: $('r-comment').value.trim() };
+    if (!r.rating && !r.comment) { setMsg(msg, 'Add a rating or a comment.', false); return; }
+    const id = reviewingId;
+    setMsg(msg, 'Saving...', true);
+    try {
+      let name = '';
+      await mutate(data => { const c = data.contractors.find(x => x.id === id); if (!c) throw new Error('That contractor was deleted.'); name = c.name; (c.reviews = c.reviews || []).push(r); }, `Contractors: note on ${DATA.contractors.find(x => x.id === id)?.name || id}`);
+      openIds.add(id); render();
+      closeModal('m-review');
+    } catch (err) { setMsg(msg, err.message, false); }
+  });
+
+  $('f-connect').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const t = $('c-token').value.trim();
+    if (!t) { setMsg($('c-msg'), 'Paste a token first.', false); return; }
+    TOKEN = t; WHO = cWho.get();
+    setMsg($('c-msg'), 'Checking...', true);
+    try {
+      await ghGet(DATA_PATH);
+      ls.set('lot_token', TOKEN); ls.set('lot_repo', REPO); ls.set('lot_who', WHO);
+      closeModal('m-connect'); load();
+    } catch (err) { TOKEN = ls.get('lot_token') || ''; setMsg($('c-msg'), err.message, false); }
+  });
+  $('c-disconnect').onclick = () => { ls.del('lot_token'); TOKEN = ''; closeModal('m-connect'); load(); };
+  // switching who's editing doesn't need a re-paste
+  $('c-who').addEventListener('click', () => { if (TOKEN && $('c-token').value.trim() === TOKEN) { WHO = cWho.get(); ls.set('lot_who', WHO); render(); } });
+
+  // ---------- card actions ----------
+  $('ct-list').addEventListener('click', async (e) => {
+    const btn = e.target.closest('[data-act]'); if (!btn) return;
+    const card = btn.closest('.ct-card'); const id = card.dataset.id;
+    const c = DATA.contractors.find(x => x.id === id); if (!c) return;
+    const act = btn.dataset.act;
+    if (act !== 'delete') pendingDelete = null;
+    if (act === 'toggle') { openIds.has(id) ? openIds.delete(id) : openIds.add(id); render(); }
+    else if (act === 'review') openReview(c);
+    else if (act === 'edit') openEdit(c);
+    else if (act === 'vcard') saveVcard(c);
+    else if (act === 'delete') {
+      if (needToken()) return;
+      if (pendingDelete !== id) { pendingDelete = id; render(); return; }
+      pendingDelete = null;
+      const m = card.querySelector('[data-msg]'); setMsg(m, 'Deleting...', true);
+      try { await mutate(data => { data.contractors = data.contractors.filter(x => x.id !== id); }, `Contractors: remove ${c.name}`); }
+      catch (err) { setMsg(m, err.message, false); }
+    }
+  });
+
+  function saveVcard(c) {
+    const v = ['BEGIN:VCARD', 'VERSION:3.0', `FN:${c.name}`, c.company ? `ORG:${c.company}` : '', `TITLE:${c.trade}`,
+      c.phone ? `TEL;TYPE=WORK,VOICE:${digits(c.phone)}` : '', `NOTE:${c.trade} (${PROP_LABEL[c.property] || ''}) from Landers On Tour`, 'END:VCARD'].filter(Boolean).join('\r\n');
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(new Blob([v], { type: 'text/vcard' }));
+    a.download = c.name.replace(/[^\w ]+/g, '').trim() + '.vcf';
+    document.body.appendChild(a); a.click(); a.remove();
+  }
+
+  // ---------- smart paste: screenshot / link / text -> fields ----------
+  const TRADE_KEYS = [
+    [/plumb|drain|sewer|water heater/i, 'Plumber'], [/electric/i, 'Electrician'],
+    [/hvac|heating|cooling|furnace|air condition|heat pump/i, 'HVAC'], [/roof/i, 'Roofer'],
+    [/drywall|sheetrock/i, 'Drywall'], [/paint/i, 'Painter'], [/landscap|hardscap|paver/i, 'Landscaping'],
+    [/lawn|mowing|mow\b/i, 'Lawn care'], [/tree (service|removal|trim)|arborist|stump/i, 'Tree service'],
+    [/excavat|grading|bulldoz/i, 'Excavation'], [/concrete|cement/i, 'Concrete'], [/mason|brick|stone ?work/i, 'Masonry'],
+    [/septic/i, 'Septic'], [/well (drill|pump|service)|water well/i, 'Well'], [/softener|water treatment|reverse osmosis|filtration/i, 'Water treatment'],
+    [/flooring|hardwood|carpet|\blvp\b/i, 'Flooring'], [/\btile\b/i, 'Tile'], [/window|glass/i, 'Windows & doors'],
+    [/gutter/i, 'Gutters'], [/fenc/i, 'Fencing'], [/\bdecks?\b/i, 'Deck builder'], [/pest|extermin|termite/i, 'Pest control'],
+    [/cleaning|maid|janitor/i, 'Cleaning'], [/handyman/i, 'Handyman'], [/general contract|remodel|builder|construction/i, 'General contractor'],
+    [/insulat|spray foam/i, 'Insulation'], [/garage door/i, 'Garage door'], [/solar/i, 'Solar'], [/paving|asphalt|sealcoat/i, 'Paving'],
+    [/\bdock|boat lift|shore station|seawall/i, 'Dock & lift'], [/siding/i, 'Siding'], [/carpent|cabinet|trim work|finish carp/i, 'Carpenter'],
+    [/snow (removal|plow)|plowing/i, 'Snow removal'], [/\bpool/i, 'Pool'], [/appliance/i, 'Appliance repair'], [/locksmith/i, 'Locksmith'],
+  ];
+  const HARTFORD = /\b(hartford|paw paw|south haven|benton harbor|st\.? joseph|kalamazoo|watervliet|coloma|bangor|lawrence|dowagiac|decatur|van buren|berrien|bloomingdale|gobles|lawton|mattawan|covert|49\d{3})\b/i;
+  const PALOS = /\b(palos|orland|oak lawn|tinley|worth|alsip|mokena|frankfort|lockport|homer glen|lemont|oak forest|chicago ridge|evergreen park|hickory hills|bridgeview|crestwood|60\d{3})\b/i;
+  const UI_WORDS = /^(contact|contacts|edit|cancel|done|message|call|video|mail|email|mobile|home|work|phone|iphone|main|other|notes?|send message|share contact|add to favorites|facetime|search|menu|home page|about|services|reviews?|directions|website|open|closed|hours|sponsored|ad)$/i;
+
+  function guessFromText(raw, opts = {}) {
+    const text = raw.replace(/\r/g, '').replace(/[ \t]+/g, ' ');
+    const out = {};
+    // phone: tel: links win, then anything phone-shaped
+    const tel = text.match(/tel:\+?1?[\s.-]?(\d{3})[\s.-]?(\d{3})[\s.-]?(\d{4})/i);
+    const ph = tel || text.match(/(?:\+?1[\s.-]?)?\(?(\d{3})\)?[\s.-]?(\d{3})[\s.-]?(\d{4})\b/);
+    if (ph) out.phone = fmtPhone(ph[1] + ph[2] + ph[3]);
+    // trade: whichever keyword set hits most
+    let best = null, bestN = 0;
+    TRADE_KEYS.forEach(([re, trade]) => { const n = (text.match(new RegExp(re.source, 'gi')) || []).length; if (n > bestN) { bestN = n; best = trade; } });
+    if (best) out.trade = best;
+    // house: area code first, then town names
+    const ac = ph ? ph[1] : '';
+    if (ac === '269') out.property = 'hartford';
+    else if (['708','773','312','630','815','847','872','779'].includes(ac)) out.property = 'palos';
+    else if (HARTFORD.test(text) && !PALOS.test(text)) out.property = 'hartford';
+    else if (PALOS.test(text) && !HARTFORD.test(text)) out.property = 'palos';
+    // company
+    const lines = text.split('\n').map(l => l.replace(/[#*_>\[\]]/g, '').replace(/\(http[^)]*\)/g, '').trim()).filter(Boolean);
+    if (opts.title) {
+      const t = opts.title.split(/\s[|–—-]\s|\s·\s/).map(s => s.trim()).filter(s => s && !/^home$/i.test(s));
+      if (t.length) out.company = t.sort((a, b) => (/(llc|inc|co\b|company|services|plumbing|electric|roofing|heating|construction|landscap)/i.test(b) ? 1 : 0) - (/(llc|inc|co\b|company|services|plumbing|electric|roofing|heating|construction|landscap)/i.test(a) ? 1 : 0))[0];
+    }
+    if (!out.company) {
+      const co = lines.find(l => l.length < 60 && /\b(llc|inc\.?|co\.|company|services|& sons|and sons|plumbing|electric(al)?|roofing|heating|construction|landscaping|excavating|builders?|contracting)\b/i.test(l) && !/\d{3}.?\d{4}/.test(l));
+      if (co) out.company = co;
+    }
+    // person name: first short line of 2-3 capitalized words with no digits
+    const nm = lines.find(l => l.length < 40 && !/\d|@|http|www\./i.test(l) && !UI_WORDS.test(l) && l !== out.company &&
+      /^([A-Z][a-zA-Z'.-]+)(\s[A-Z][a-zA-Z'.-]+){0,2}$/.test(l) && !TRADE_KEYS.some(([re]) => re.test(l)));
+    if (nm) out.name = nm;
+    if (!out.name && out.company) { out.name = out.company; delete out.company; }
+    return out;
+  }
+
+  function applyGuess(g) {
+    const filled = [];
+    if (g.name) { $('e-name').value = g.name; filled.push('name'); }
+    if (g.phone) { $('e-phone').value = g.phone; filled.push('phone'); }
+    if (g.trade) { $('e-trade').value = g.trade; filled.push('trade'); }
+    if (g.company) { $('e-company').value = g.company; filled.push('company'); }
+    if (g.property) { eProp.set(g.property); filled.push(PROP_LABEL[g.property]); }
+    return filled;
+  }
+
+  function loadScript(src) {
+    return new Promise((res, rej) => { const s = document.createElement('script'); s.src = src; s.onload = res; s.onerror = () => rej(new Error('Couldn\'t load the screenshot reader.')); document.head.appendChild(s); });
+  }
+  // Grayscale, upscale, and flip dark-mode screenshots to dark-on-light so OCR reads them.
+  async function prepImage(file) {
+    const img = await createImageBitmap(file);
+    const scale = img.width < 1200 ? 2 : 1;
+    const cv = document.createElement('canvas'); cv.width = img.width * scale; cv.height = img.height * scale;
+    const cx = cv.getContext('2d'); cx.drawImage(img, 0, 0, cv.width, cv.height);
+    const px = cx.getImageData(0, 0, cv.width, cv.height), d = px.data;
+    let sum = 0; for (let i = 0; i < d.length; i += 4) { const g = 0.299*d[i] + 0.587*d[i+1] + 0.114*d[i+2]; d[i] = d[i+1] = d[i+2] = g; sum += g; }
+    if (sum / (d.length / 4) < 110) for (let i = 0; i < d.length; i += 4) { d[i] = d[i+1] = d[i+2] = 255 - d[i]; }
+    cx.putImageData(px, 0, 0);
+    return cv;
+  }
+  async function smartImage(file) {
+    const msg = $('s-msg');
+    try {
+      msg.textContent = 'Reading screenshot... (first time takes ~10 seconds)';
+      if (!window.Tesseract) await loadScript('https://cdn.jsdelivr.net/npm/tesseract.js@5.1.1/dist/tesseract.min.js');
+      const canvas = await prepImage(file);
+      const { data } = await Tesseract.recognize(canvas, 'eng');
+      smartDone(guessFromText(data.text), 'screenshot');
+    } catch (e) { msg.textContent = 'Couldn\'t read that screenshot: ' + e.message; }
+  }
+  async function smartUrl(url) {
+    const msg = $('s-msg');
+    msg.textContent = 'Reading the website...';
+    try {
+      const res = await fetch('https://r.jina.ai/' + url, { headers: { Accept: 'text/plain' } });
+      if (!res.ok) throw new Error(`site returned ${res.status}`);
+      const body = await res.text();
+      const title = (body.match(/^Title:\s*(.+)$/m) || [])[1] || '';
+      const content = body.split(/^Markdown Content:\s*$/m)[1] || body;
+      smartDone(guessFromText(content, { title }), 'website');
+    } catch (e) { msg.textContent = 'Couldn\'t read that site (' + e.message + '). Try a screenshot of it instead.'; }
+  }
+  function smartDone(g, src) {
+    const filled = applyGuess(g);
+    $('s-msg').textContent = filled.length ? `From the ${src}: filled ${filled.join(', ')}. Give it a once-over, then Save.` : `Couldn't find contact details in that ${src}. Type it in below.`;
+    $('s-input').value = '';
+  }
+  function smartGo() {
+    const v = $('s-input').value.trim(); if (!v) { $('s-msg').textContent = 'Paste something first.'; return; }
+    if (/^(https?:\/\/|www\.)\S+$/i.test(v)) smartUrl(v.startsWith('http') ? v : 'https://' + v);
+    else smartDone(guessFromText(v), 'text');
+  }
+  function imageFromClipboard(e) {
+    const item = [...(e.clipboardData?.items || [])].find(i => i.type.startsWith('image/'));
+    return item ? item.getAsFile() : null;
+  }
+  $('s-input').addEventListener('paste', (e) => {
+    const f = imageFromClipboard(e);
+    if (f) { e.preventDefault(); smartImage(f); return; }
+    setTimeout(smartGo, 0); // text or link: go straight away
+  });
+  $('s-go').onclick = smartGo;
+  $('s-pick').onclick = () => $('s-file').click();
+  $('s-file').addEventListener('change', (e) => { if (e.target.files[0]) smartImage(e.target.files[0]); e.target.value = ''; });
+  const drop = $('s-drop');
+  ['dragover','dragenter'].forEach(ev => drop.addEventListener(ev, (e) => { e.preventDefault(); drop.classList.add('drag'); }));
+  ['dragleave','drop'].forEach(ev => drop.addEventListener(ev, (e) => { e.preventDefault(); drop.classList.remove('drag'); }));
+  drop.addEventListener('drop', (e) => { const f = [...e.dataTransfer.files].find(x => x.type.startsWith('image/')); if (f) smartImage(f); });
+  // Paste a screenshot anywhere on the page (desktop): opens Add and reads it.
+  document.addEventListener('paste', (e) => {
+    if (e.target.closest && e.target.closest('input, textarea')) return;
+    const f = imageFromClipboard(e); if (!f) return;
+    e.preventDefault();
+    if ($('m-edit').classList.contains('hidden')) { openAdd(); if (!TOKEN) return; }
+    smartImage(f);
+  });
+
+  // ---------- filters ----------
+  let t;
+  $('ct-search').addEventListener('input', (e) => { clearTimeout(t); t = setTimeout(() => { filters.q = e.target.value.trim(); render(); }, 120); });
+  $('ct-trade').addEventListener('change', (e) => { filters.trade = e.target.value; render(); });
+
+  load();
+})();
+</script>
