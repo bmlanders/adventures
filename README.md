@@ -67,8 +67,23 @@ _trips/           one file per trip — the whole archive
 _layouts/         page templates (default + trip detail)
 assets/css/       the visual design
 admin/index.html  the admin page — talks to GitHub's API from your browser
+contractors/      the house book: contractors for Hartford and Palos, rated
+assets/data/contractors.json  the contractor list itself (the page edits it)
 robots.txt        keeps the site out of search engines
 ```
+
+## Contractors
+
+`/contractors/` is a call list for both houses. Tap + to add someone. Paste a
+screenshot of a contact card, a company's website link, or any text into the
+gold box and it fills in name, phone, trade, and which house (269 numbers and
+Michigan towns go to Hartford, Chicago-area ones to Palos). Check it, rate it
+if you've used them, save.
+
+Editing uses the same GitHub token as the admin page. To set Jen up, open
+`/contractors/` on her phone, tap "Connect to add or edit", pick Jen, and paste
+the token. Her notes get tagged with her name. Anyone with the link can see the
+list, phone numbers included.
 
 ## Using your own domain
 

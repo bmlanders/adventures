@@ -239,6 +239,36 @@ the parsed itinerary box before saving.
 card behind it, so without a background band the page text shows through the
 gaps between pills while scrolling.
 
+### Contractors (`/contractors/`)
+
+A call list for both houses, added Nov 2026. Unlike shows (HTML blocks between
+markers), the data is plain JSON at `assets/data/contractors.json`:
+`{contractors: [{id, name, company, phone, trade, property: hartford|palos|both,
+added, addedBy, reviews: [{date, by, property, rating 0-5, comment}]}]}`. A
+rating of 0 means a note without a rating (quoted but didn't hire). The page
+renders it all client-side, grouped by trade, best-rated first.
+
+Brendan and Jen both edit, so saves are read-modify-write: `mutate()` fetches
+the file fresh, applies the change, PUTs with the sha, and on 409/422 re-reads
+and re-applies instead of clobbering. Viewing without a token reads the static
+file (cache-busted, so up to a minute behind after a save); with a token it
+reads through the API. Who's editing (`lot_who`) is a localStorage pick, not
+auth; the token is shared. Same `lot_token`/`lot_repo` keys as the admin page.
+GitHub helpers are duplicated again here; that's the third copy, so the
+"worth revisiting" note under Shows now applies.
+
+**Smart paste.** The Add form takes a screenshot, a URL, or raw text and
+guesses fields (`guessFromText`). Screenshots run through Tesseract.js 5.1.1
+(lazy-loaded from jsdelivr, OCR in the browser, nothing uploaded). Images are
+grayscaled, upscaled under 1200px wide, and inverted when mostly dark, because
+iPhone dark-mode contact cards OCR badly otherwise. Links go through
+`r.jina.ai`, same as the setlist importer. Heuristics: tel: links beat other
+phone-shaped strings; trade is the keyword set with the most hits; house is
+area code first (269 Hartford; 708/773/312/630/815/847 Palos) then town names;
+name is the first short 2-3 capitalized-word line that isn't UI chrome. With no
+person name the company becomes the name. Tested on a fake dark-mode iPhone
+contact card and a mocked well-company site; real-world mileage will vary.
+
 ## Deploying
 
 Push to `main`; GitHub Pages builds automatically. Git Credential Manager's
