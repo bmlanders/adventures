@@ -100,7 +100,11 @@ export default {
 // ---- tiny signed session: base64url(payload).base64url(hmac) ----
 const enc = new TextEncoder();
 const b64u = (buf) => btoa(String.fromCharCode(...new Uint8Array(buf))).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
-const unb64u = (s) => Uint8Array.from(atob(s.replace(/-/g, '+').replace(/_/g, '/')), c => c.charCodeAt(0));
+// Cloudflare's atob() rejects unpadded base64, so restore the '=' padding first.
+const unb64u = (s) => {
+  const b = s.replace(/-/g, '+').replace(/_/g, '/');
+  return Uint8Array.from(atob(b + '='.repeat((4 - b.length % 4) % 4)), c => c.charCodeAt(0));
+};
 async function key(secret) {
   if (!secret || secret.length < 16) throw new Error('SESSION_SECRET is missing or too short');
   return crypto.subtle.importKey('raw', enc.encode(secret), { name: 'HMAC', hash: 'SHA-256' }, false, ['sign', 'verify']);
@@ -111,6 +115,9 @@ async function sign(payload, secret) {
   return p + '.' + b64u(sig);
 }
 async function verify(request, env) {
+  try { return await verifyInner(request, env); } catch (e) { return null; } // junk session = signed out, not a crash
+}
+async function verifyInner(request, env) {
   const m = (request.headers.get('Authorization') || '').match(/^Bearer\s+([\w-]+)\.([\w-]+)$/);
   if (!m) return null;
   const ok = await crypto.subtle.verify('HMAC', await key(env.SESSION_SECRET), unb64u(m[2]), enc.encode(m[1]));
