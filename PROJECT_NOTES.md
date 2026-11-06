@@ -269,6 +269,22 @@ name is the first short 2-3 capitalized-word line that isn't UI chrome. With no
 person name the company becomes the name. Tested on a fake dark-mode iPhone
 contact card and a mocked well-company site; real-world mileage will vary.
 
+Directory sites (HomeAdvisor, Angi, Yelp) are mostly nav menus, so link-list
+lines (`* [Roofing](...)`) are stripped first, and a trade keyword in the page
+title or first `# ` heading beats raw keyword counts. On links the person-name
+guess is skipped (it was picking reviewer names like "Anita C."); the business
+heading becomes the name. HomeAdvisor hides phone numbers behind a button, so
+links often come back with no phone; the listing URL is saved in `url` and
+shown as a "Site" button on the card.
+
+**Trap: the + button was dead on first deploy.** `main` has `position:
+relative; z-index: 1`, which makes it a stacking context, and the footer comes
+after it with the same z-index. So a `position: fixed` FAB inside `main` paints
+*under* the footer whenever the footer is on screen, which on a short page
+(empty list) is always. Clicks hit the footer. Fixed by moving `#ct-fab` and
+the modals to `<body>` on load. The Shows quick-add FAB has the same latent
+bug; it just never shows because that page is long.
+
 ## Deploying
 
 Push to `main`; GitHub Pages builds automatically. Git Credential Manager's
