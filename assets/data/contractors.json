@@ -1,1 +1,16 @@
-{"contractors": []}
+{
+  "contractors": [
+    {
+      "id": "cmw5d2soa2lt",
+      "name": "Steven Baggett Plumbing",
+      "phone": "(269) 930-3823",
+      "trade": "Plumber",
+      "company": "",
+      "property": "hartford",
+      "url": "https://www.homeadvisor.com/rated.StevenBaggettHandyman.68986028.html",
+      "added": "2026-11-06",
+      "addedBy": "Brendan",
+      "reviews": []
+    }
+  ]
+}
