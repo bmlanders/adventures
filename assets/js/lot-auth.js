@@ -6,8 +6,8 @@
 // With CONFIG empty, it falls back to the old pasted GitHub token.
 (function () {
   const CONFIG = {
-    worker: '',          // e.g. https://lot-auth.yourname.workers.dev  (no trailing slash)
-    googleClientId: '',  // e.g. 1234-abc.apps.googleusercontent.com
+    worker: 'https://lot-auth.bmlanders.workers.dev',          // e.g. https://lot-auth.yourname.workers.dev  (no trailing slash)
+    googleClientId: '387048179641-ipehpbq4evc13vq4mrla4qjd46netufp.apps.googleusercontent.com',  // e.g. 1234-abc.apps.googleusercontent.com
     repo: 'bmlanders/adventures',
   };
 
