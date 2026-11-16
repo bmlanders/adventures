@@ -9,27 +9,23 @@ blurb: "Every show worth the drive over the next six months, sorted by weekend. 
 ---
 
 <div class="day-nav">
-  <a href="#booked">Booked</a><a href="#new">New</a><a href="#oct-early">Oct 13 to 22</a><a href="#oct-late">Oct 23 to 31</a><a href="#nov-early">Nov 1 to 15</a><a href="#nov-late">Nov 16 to 30</a><a href="#dec">Dec</a><a href="#winter">Jan to Apr</a>
+  <a href="#booked">Booked</a><a href="#new">New</a><a href="#nov-late">Nov 16 to 30</a><a href="#dec">Dec</a><a href="#winter">Jan to Apr</a>
 </div>
 
 <!-- DAYS_START -->
 <div class="day-block" id="booked">
   <h3>Already on the calendar</h3>
-  <div class="day-sub">These four are locked, so everything below works around them</div>
+  <div class="day-sub">These are locked, so everything below works around them</div>
 
   <dl class="facts">
-    <div><dt>Sat to Sun, Oct 24 to 25</dt><dd><b>Widespread Panic</b> · Riverside Theater, Milwaukee</dd></div>
-    <div><dt>Fri to Sun, Nov 6 to 8</dt><dd><b>Goose</b> · all three nights · Miller High Life Theatre, Milwaukee</dd></div>
+    <div><dt>Fri to Sat, Dec 11 to 12</dt><dd><b>Goose</b> · Goosemas, both nights · Jim Whelan Boardwalk Hall, Atlantic City · <a href="{{ '/trips/goosemas-2026/' | relative_url }}">trip plan</a></dd></div>
     <div><dt>Wed to Thu, Dec 30 to 31</dt><dd><b>Greensky Bluegrass</b> · The Salt Shed, Chicago</dd></div>
     <div><dt>Fri to Sat, Jan 1 to 2</dt><dd><b>Greensky Bluegrass</b> · Wings Event Center, Kalamazoo</dd></div>
   </dl>
 
   <div class="order"><b>Pairs well</b>
     Tue 12/29: <strong>Spafford</strong> at Vivarium in Milwaukee, then drive 1.5 hours to Chicago for Greensky on Wed 12/30.<br>
-    Fri 10/23: <strong>Tedeschi Trucks Band</strong> at the Chicago Theatre, then drive up to Milwaukee Saturday for Panic. Friday is the one Panic night you're skipping, so this slots right in.<br>
-    Sat 10/24: <em>Vincent Neil Emerson</em> plays Vivarium in Milwaukee the same night as Panic (check set times against the Riverside).<br>
-    Sun 10/25: <em>Armchair Boogie</em> is at Mo's Irish Pub in Milwaukee the same night as the Panic closer. Only works if it's an early set, so check this one.<br>
-    Thu 11/5: <em>Pigeons Playing Ping Pong</em> at the Vic, or <em>Armchair Boogie</em> at Garcia's, in Chicago the night before Goose starts in Milwaukee.
+    Fri 12/4 to Sat 12/5: <em>Wilco</em> at the Chicago Theatre and <b>Spafford</b> at Park West the weekend before Goosemas, both local.
   </div>
 </div>
 
@@ -37,122 +33,16 @@ blurb: "Every show worth the drive over the next six months, sorted by weekend. 
   <h3>New since the last update</h3>
   <div class="day-sub">Updated Oct 13, 2026</div>
 
-  <div class="entry"><span class="t" style="min-width:92px;">Tue 10/13</span><div class="entry-body"><em>Big Head Todd and the Monsters</em>, St. Charles (tonight)</div></div>
-  <div class="entry"><span class="t" style="min-width:92px;">Thu 10/15</span><div class="entry-body"><em>Bella White</em> and <em>Jeffrey Foucault</em>, Milwaukee</div></div>
-  <div class="entry"><span class="t" style="min-width:92px;">Fri 10/16</span><div class="entry-body"><em>Duane Betts</em>, Evanston (two nights), and <em>Kenny Wayne Shepherd</em>, New Buffalo MI</div></div>
-  <div class="entry"><span class="t" style="min-width:92px;">Sun 10/18</span><div class="entry-body"><em>Duane Betts</em>, Acorn Theater, Three Oaks MI</div></div>
-  <div class="entry"><span class="t" style="min-width:92px;">Tue 10/20</span><div class="entry-body"><em>Jeff Tweedy</em>, Acorn Theater, Three Oaks MI</div></div>
-  <div class="entry"><span class="t" style="min-width:92px;">Thu 10/22</span><div class="entry-body"><em>William Elliott Whitmore</em>, South Bend</div></div>
-  <div class="entry"><span class="t" style="min-width:92px;">Fri 10/23</span><div class="entry-body"><em>Armchair Boogie</em>, Indianapolis (Sat 10/24 The Livery, Sun 10/25 Milwaukee)</div></div>
-  <div class="entry"><span class="t" style="min-width:92px;">Tue 10/27</span><div class="entry-body"><b>Marcus King</b>, Ryman, Nashville</div></div>
-  <div class="entry"><span class="t" style="min-width:92px;">Thu 10/29</span><div class="entry-body"><em>Rhonda Vincent &amp; the Rage</em>, Shipshewana IN</div></div>
   <div class="entry"><span class="t" style="min-width:92px;">Fri 11/20</span><div class="entry-body"><b>Lucero</b>, Springfield MO</div></div>
   <div class="entry"><span class="t" style="min-width:92px;">Tue 12/1</span><div class="entry-body"><b>Marcus King</b>, Brooklyn Bowl, Nashville</div></div>
   <div class="entry"><span class="t" style="min-width:92px;">Fri 12/4</span><div class="entry-body"><em>The Steepwater Band</em>, Rockford</div></div>
   <div class="entry"><span class="t" style="min-width:92px;">Sat 12/5</span><div class="entry-body"><b>Mountain Grass Unit</b>, The Caverns, Pelham TN</div></div>
   <div class="entry"><span class="t" style="min-width:92px;">Fri 2/12</span><div class="entry-body"><b>Chicken Wire Empire</b>, Garcia's, Chicago</div></div>
   <div class="entry"><span class="t" style="min-width:92px;">Sat 4/10</span><div class="entry-body"><em>The Wailin' Jennys</em>, Lafayette IN</div></div>
-  <div class="entry"><span class="t" style="min-width:92px;">Changed</span><div class="entry-body"><b>Lotus</b> added Sat 10/31 in Erie PA after the Pittsburgh show. <em>Wilco</em> added two Thalia Hall nights, Mon and Tue Dec 7 to 8.</div></div>
+  <div class="entry"><span class="t" style="min-width:92px;">Changed</span><div class="entry-body"><em>Wilco</em> added two Thalia Hall nights, Mon and Tue Dec 7 to 8.</div></div>
 </div>
 
-<div class="day-block" id="oct-early">
-  <h3>October 13 to 22</h3>
-  <div class="day-sub">Duane Betts is everywhere this week, and the Michigan side has something good almost every night</div>
-
-  <div class="entry"><span class="t" style="min-width:92px;">Tue 10/13</span><div class="entry-body"><em>North Mississippi Allstars</em> · Vivarium, Milwaukee · 1.5h (Wed 10/14 at Atwood Music Hall, Madison · 2.5h)</div></div>
-  <div class="entry"><span class="t" style="min-width:92px;">Tue 10/13</span><div class="entry-body"><em>Big Head Todd and the Monsters</em> · Arcada Theatre, St. Charles · 1h</div></div>
-  <div class="entry"><span class="t" style="min-width:92px;">Wed to Thu</span><div class="entry-body"><em>John Scofield</em> with Oteil Burbridge · Ludlow Garage, Cincinnati · Oct 14 to 15 · 4.5h</div></div>
-  <div class="entry"><span class="t" style="min-width:92px;">Thu 10/15</span><div class="entry-body"><em>Sam Bush</em> · Grayslake IL · 1h</div></div>
-  <div class="entry"><span class="t" style="min-width:92px;">Thu 10/15</span><div class="entry-body"><em>Hiss Golden Messenger</em> · The Argo, Whitefish Bay WI · 1.5h (Fri 10/16 at Southgate House Revival, Newport KY · 4.5h)</div></div>
-  <div class="entry"><span class="t" style="min-width:92px;">Thu 10/15</span><div class="entry-body"><em>Bella White</em> · Turner Hall, Milwaukee · 1.5h. <em>Jeffrey Foucault</em> is at Anodyne Coffee there the same night.</div></div>
-  <div class="entry"><span class="t" style="min-width:92px;">Thu 10/15</span><div class="entry-body"><b>Lucero</b> · Musica, Akron OH · 6h</div></div>
-  <div class="entry"><span class="t" style="min-width:92px;">Fri 10/16</span><div class="entry-body"><b>Lucero</b> · Mercury Ballroom, Louisville · 4.5h</div></div>
-  <div class="entry"><span class="t" style="min-width:92px;">Fri to Sat</span><div class="entry-body"><em>Duane Betts</em> · SPACE, Evanston · Oct 16 to 17 · 1h (also Thu 10/15 Majestic, Madison and Mon 10/19 Shank Hall, Milwaukee)</div></div>
-  <div class="entry"><span class="t" style="min-width:92px;">Fri 10/16</span><div class="entry-body"><em>Kenny Wayne Shepherd</em> · Four Winds, New Buffalo MI · 1h 15 min (45 min from Hartford)</div></div>
-  <div class="entry"><span class="t" style="min-width:92px;">Fri 10/16</span><div class="entry-body"><em>Ryan Bingham</em> with The Texas Gentlemen · GLC Live at 20 Monroe, Grand Rapids · about an hour from Hartford (also Sat 10/17 Nashville IN, Tue 10/20 Chicago Riviera, Wed 10/21 Milwaukee Rave)</div></div>
-  <div class="entry"><span class="t" style="min-width:92px;">Fri 10/16</span><div class="entry-body"><em>Roger Clyne &amp; the Peacemakers</em> · Bell's Eccentric Cafe, Kalamazoo · 30 min from Hartford</div></div>
-  <div class="entry"><span class="t" style="min-width:92px;">Fri 10/16</span><div class="entry-body"><em>Buddy Guy</em> · Rialto Square Theatre, Joliet · 1h</div></div>
-  <div class="entry"><span class="t" style="min-width:92px;">Fri 10/16</span><div class="entry-body"><b>Eggy</b> · Beachland Ballroom, Cleveland · 5.5h</div></div>
-  <div class="entry"><span class="t" style="min-width:92px;">Sat 10/17</span><div class="entry-body"><em>May Erlewine</em> · Bell's Eccentric Cafe, Kalamazoo · 30 min from Hartford</div></div>
-  <div class="entry"><span class="t" style="min-width:92px;">Sat 10/17</span><div class="entry-body"><b>Eggy</b> · El Club, Detroit · 4.5h</div></div>
-  <div class="entry"><span class="t" style="min-width:92px;">Sun 10/18</span><div class="entry-body"><em>Duane Betts</em> · Acorn Theater, Three Oaks MI · 1.5h (45 min from Hartford)</div></div>
-  <div class="entry"><span class="t" style="min-width:92px;">Sun 10/18</span><div class="entry-body"><b>Eggy</b> · High Noon Saloon, Madison · 2.5h</div></div>
-  <div class="entry"><span class="t" style="min-width:92px;">Sun 10/18</span><div class="entry-body"><em>John Scofield</em> · Thalia Hall, Chicago · local (Sat 10/17 at the Wilson Center, Brookfield WI · 1.5h)</div></div>
-  <div class="entry"><span class="t" style="min-width:92px;">Mon 10/19</span><div class="entry-body"><b>Eggy</b> · Garcia's, Chicago · local</div></div>
-  <div class="entry"><span class="t" style="min-width:92px;">Tue 10/20</span><div class="entry-body"><em>Jeff Tweedy</em> · Acorn Theater, Three Oaks MI · 1.5h (45 min from Hartford)</div></div>
-  <div class="entry"><span class="t" style="min-width:92px;">Thu to Sat</span><div class="entry-body"><b>Jason Isbell &amp; the 400 Unit</b> · Ryman, Nashville · Oct 15 to 17 and 22 to 24 · 7h</div></div>
-  <div class="entry"><span class="t" style="min-width:92px;">Fri to Sat</span><div class="entry-body"><b>Tedeschi Trucks Band</b> · The Truth, Nashville · Oct 16 to 17 · 7h (and <b>LaMP</b> at Eastside Bowl, Sat 10/17)</div></div>
-  <div class="entry"><span class="t" style="min-width:92px;">Tue 10/20</span><div class="entry-body"><b>Tedeschi Trucks Band</b> · The Wylie, Pittsburgh · 7h</div></div>
-  <div class="entry"><span class="t" style="min-width:92px;">Wed 10/21</span><div class="entry-body"><b>Tedeschi Trucks Band</b> · Landmark Credit Union Live, Milwaukee · 1.5h</div></div>
-  <div class="entry"><span class="t" style="min-width:92px;">Thu 10/22</span><div class="entry-body"><em>William Elliott Whitmore</em> · Stockroom East, South Bend · 1.5h (1h from Hartford)</div></div>
-  <div class="entry"><span class="t" style="min-width:92px;">Thu 10/22</span><div class="entry-body"><b>Sierra Ferrell</b> · Bridgestone Arena, Nashville · 7h. On The Red Clay Strays bill with Brent Cobb, also Fri 10/23, and Isbell is at the Ryman both nights. Check the billing on this one.</div></div>
-</div>
-
-<div class="day-block" id="oct-late">
-  <h3>October 23 to 31</h3>
-  <div class="day-sub">TTB Friday, Panic Saturday and Sunday, then Old Crow and Donato for Halloween</div>
-
-  <div class="entry"><span class="t" style="min-width:92px;">Fri 10/23</span><div class="entry-body"><b>Tedeschi Trucks Band</b> · Chicago Theatre · local. Four nights total (Oct 23, 24, 26, 27); Fri, Mon and Tue work around Panic.</div></div>
-  <div class="entry"><span class="t" style="min-width:92px;">Fri 10/23</span><div class="entry-body"><em>Vincent Neil Emerson</em> · SPACE, Evanston · 1h</div></div>
-  <div class="entry"><span class="t" style="min-width:92px;">Fri 10/23</span><div class="entry-body"><em>William Elliott Whitmore</em> · Reggie's, Chicago · local</div></div>
-  <div class="entry"><span class="t" style="min-width:92px;">Fri 10/23</span><div class="entry-body"><em>Armchair Boogie</em> · The Mousetrap, Indianapolis · 3h</div></div>
-  <div class="entry"><span class="t" style="min-width:92px;">Sat 10/24</span><div class="entry-body"><em>Vincent Neil Emerson</em> · Vivarium, Milwaukee · 1.5h</div></div>
-  <div class="entry"><span class="t" style="min-width:92px;">Sat 10/24</span><div class="entry-body"><em>Armchair Boogie</em> · The Livery, Benton Harbor MI · 30 min from Hartford</div></div>
-  <div class="entry"><span class="t" style="min-width:92px;">Sun 10/25</span><div class="entry-body"><em>Armchair Boogie</em> · Mo's Irish Pub, Milwaukee · 1.5h</div></div>
-  <div class="entry"><span class="t" style="min-width:92px;">Mon 10/26</span><div class="entry-body"><b>Old Crow Medicine Show</b> · Stranahan Theatre, Toledo · 4.5h</div></div>
-  <div class="entry"><span class="t" style="min-width:92px;">Tue 10/27</span><div class="entry-body"><b>Old Crow Medicine Show</b> with The Steel Wheels · Pabst Theater, Milwaukee · 1.5h</div></div>
-  <div class="entry"><span class="t" style="min-width:92px;">Tue 10/27</span><div class="entry-body"><b>Marcus King</b> · Ryman, Nashville · 7h</div></div>
-  <div class="entry"><span class="t" style="min-width:92px;">Wed 10/28</span><div class="entry-body"><em>Shakey Graves</em> · The Vic, Chicago (Thu 10/29 Turner Hall, Milwaukee)</div></div>
-  <div class="entry"><span class="t" style="min-width:92px;">Wed 10/28</span><div class="entry-body"><b>Neal Francis</b> · Fogg Street Lawn Club, Nashville · 7h</div></div>
-  <div class="entry"><span class="t" style="min-width:92px;">Wed 10/28</span><div class="entry-body"><b>Daniel Donato</b> · Globe Iron, Cleveland · 5.5h (Tue 10/27 at Mr. Smalls, Pittsburgh · 7h)</div></div>
-  <div class="entry"><span class="t" style="min-width:92px;">Thu 10/29</span><div class="entry-body"><b>Old Crow Medicine Show</b> · Knuckleheads, Kansas City · 7.5h</div></div>
-  <div class="entry"><span class="t" style="min-width:92px;">Thu 10/29</span><div class="entry-body"><em>Dumpstaphunk</em> · Frauenthal Center, Muskegon MI · 3h (about 1h 15 min from Hartford)</div></div>
-  <div class="entry"><span class="t" style="min-width:92px;">Thu 10/29</span><div class="entry-body"><em>Rhonda Vincent &amp; the Rage</em> · Blue Gate, Shipshewana IN · 2.5h (75 min from Hartford)</div></div>
-  <div class="entry"><span class="t" style="min-width:92px;">Fri 10/30</span><div class="entry-body"><b>Daniel Donato's Cosmic Country</b> · Pabst Theater, Milwaukee · 1.5h</div></div>
-  <div class="entry"><span class="t" style="min-width:92px;">Fri 10/30</span><div class="entry-body"><b>Lotus</b> · Mr. Smalls, Millvale PA (Pittsburgh) · 7h (Sat 10/31 at Kings Rook Club, Erie PA · 7.5h)</div></div>
-  <div class="entry"><span class="t" style="min-width:92px;">Fri 10/30</span><div class="entry-body"><b>Kitchen Dwellers</b> + Dogs In A Pile · The Bluestone, Columbus · 5h</div></div>
-  <div class="entry"><span class="t" style="min-width:92px;">Sat 10/31</span><div class="entry-body"><b>Daniel Donato's Cosmic Country</b> (Halloween) · Pabst Theater, Milwaukee · 1.5h</div></div>
-  <div class="entry"><span class="t" style="min-width:92px;">Sat 10/31</span><div class="entry-body"><b>Kitchen Dwellers</b> + Dogs In A Pile · House of Blues, Cleveland · 5.5h</div></div>
-  <div class="entry"><span class="t" style="min-width:92px;">Sat 10/31</span><div class="entry-body"><em>Allison Russell</em> · The Vic, Chicago · local</div></div>
-  <div class="entry"><span class="t" style="min-width:92px;">Sat 10/31</span><div class="entry-body"><em>Dumpstaphunk</em> (Halloween) · Garcia's, Chicago · local (second night Sun 11/1)</div></div>
-  <div class="entry"><span class="t" style="min-width:92px;">Sat 10/31</span><div class="entry-body"><em>Desmond Jones</em> (Halloween) · The Livery, Benton Harbor MI · 30 min from Hartford</div></div>
-</div>
-
-<div class="day-block" id="nov-early">
-  <h3>November 1 to 15</h3>
-  <div class="day-sub">Goose weekend in Milwaukee, String Cheese in Grand Rapids, then the Kitchen Dwellers and Fruition swing</div>
-
-  <div class="entry"><span class="t" style="min-width:92px;">Sun 11/1</span><div class="entry-body"><em>Dumpstaphunk</em> · Garcia's, Chicago · local</div></div>
-  <div class="entry"><span class="t" style="min-width:92px;">Tue to Wed</span><div class="entry-body"><b>Goose</b> · Midland Theatre, Kansas City · Nov 3 to 4 · 7.5h (<b>Daniel Donato</b> plays the Uptown Theater there Thu 11/5)</div></div>
-  <div class="entry"><span class="t" style="min-width:92px;">Wed 11/4</span><div class="entry-body"><em>Béla Fleck</em> · Evanston · 1h (Thu 11/5 at St. Cecilia, Grand Rapids)</div></div>
-  <div class="entry"><span class="t" style="min-width:92px;">Wed 11/4</span><div class="entry-body"><em>John Cowan</em> · SPACE, Evanston · 1h</div></div>
-  <div class="entry"><span class="t" style="min-width:92px;">Wed 11/4</span><div class="entry-body"><em>The String Cheese Incident</em> · GLC Live at 20 Monroe, Grand Rapids · about an hour from Hartford (Thu 11/5 Fillmore Detroit, Sat 11/7 Taft Theatre Cincinnati)</div></div>
-  <div class="entry"><span class="t" style="min-width:92px;">Wed 11/4</span><div class="entry-body"><em>The Po' Ramblin' Boys</em> · Tip Top Deluxe, Grand Rapids · about an hour from Hartford</div></div>
-  <div class="entry"><span class="t" style="min-width:92px;">Thu 11/5</span><div class="entry-body"><em>Pigeons Playing Ping Pong</em> · The Vic, Chicago · local. <em>Armchair Boogie</em> is at Garcia's the same night.</div></div>
-  <div class="entry"><span class="t" style="min-width:92px;">Mon 11/9</span><div class="entry-body"><em>The War and Treaty</em> · Thalia Hall, Chicago · local</div></div>
-  <div class="entry"><span class="t" style="min-width:92px;">Mon 11/9</span><div class="entry-body"><b>Mountain Grass Unit</b> · Thunderbird Cafe, Pittsburgh · 7h</div></div>
-  <div class="entry"><span class="t" style="min-width:92px;">Tue 11/10</span><div class="entry-body"><b>Fruition</b> · High Noon Saloon, Madison · 2.5h</div></div>
-  <div class="entry"><span class="t" style="min-width:92px;">Tue to Wed</span><div class="entry-body"><b>Goose</b> · The Truth, Nashville · Nov 10 to 11 · 7h</div></div>
-  <div class="entry"><span class="t" style="min-width:92px;">Wed 11/11</span><div class="entry-body"><b>Kitchen Dwellers</b> + Dogs In A Pile · Castle Theatre, Bloomington IL · 2h</div></div>
-  <div class="entry"><span class="t" style="min-width:92px;">Wed 11/11</span><div class="entry-body"><b>Fruition</b> · Turf Club, St. Paul · 6.5h</div></div>
-  <div class="entry"><span class="t" style="min-width:92px;">Wed 11/11</span><div class="entry-body"><em>Donna the Buffalo</em> · Garcia's, Chicago · local (Thu 11/12 at Bell's Eccentric Cafe, Kalamazoo · 30 min from Hartford)</div></div>
-  <div class="entry"><span class="t" style="min-width:92px;">Thu 11/12</span><div class="entry-body"><b>Kitchen Dwellers</b> + Dogs In A Pile · El Club, Detroit · 4.5h</div></div>
-  <div class="entry"><span class="t" style="min-width:92px;">Thu 11/12</span><div class="entry-body"><em>Hiss Golden Messenger</em> · Thalia Hall, Chicago · local</div></div>
-  <div class="entry"><span class="t" style="min-width:92px;">Thu 11/12</span><div class="entry-body"><em>Charles Wesley Godwin</em> · The Salt Shed, Chicago (Fri 11/13 at Riverside Theater, Milwaukee)</div></div>
-  <div class="entry"><span class="t" style="min-width:92px;">Thu 11/12</span><div class="entry-body"><b>Sam Grisman Project</b> · Poplar Hall, Appleton WI · 3.5h</div></div>
-  <div class="entry"><span class="t" style="min-width:92px;">Fri 11/13</span><div class="entry-body"><b>Kitchen Dwellers</b> + Dogs In A Pile · The Sylvee, Madison · 2.5h</div></div>
-  <div class="entry"><span class="t" style="min-width:92px;">Fri 11/13</span><div class="entry-body"><b>Fruition</b> · Wildwood, Iowa City · 3.5h</div></div>
-  <div class="entry"><span class="t" style="min-width:92px;">Fri 11/13</span><div class="entry-body"><em>Del McCoury Band</em> · Paramount Theatre, Anderson IN · 3h</div></div>
-  <div class="entry"><span class="t" style="min-width:92px;">Fri to Sat</span><div class="entry-body"><b>Sam Grisman Project</b> · Garcia's, Chicago · Nov 13 to 14 · local</div></div>
-  <div class="entry"><span class="t" style="min-width:92px;">Sat 11/14</span><div class="entry-body"><em>Little Feat</em> · North Shore Center, Skokie · 1h (also Tue 11/10 Taft Theatre, Cincinnati and Wed 11/11 Murat, Indianapolis)</div></div>
-  <div class="entry"><span class="t" style="min-width:92px;">Sat to Sun</span><div class="entry-body"><em>Brandi Carlile</em> · Pabst Theater, Milwaukee · Nov 14 to 15 · 1.5h</div></div>
-  <div class="entry"><span class="t" style="min-width:92px;">Sat 11/14</span><div class="entry-body"><b>Kitchen Dwellers</b> + Dogs In A Pile · First Avenue, Minneapolis · 6.5h</div></div>
-  <div class="entry"><span class="t" style="min-width:92px;">Sat 11/14</span><div class="entry-body"><b>Fruition</b> · Turntable, Indianapolis · 3h</div></div>
-  <div class="entry"><span class="t" style="min-width:92px;">Sun 11/15</span><div class="entry-body"><b>Fruition</b> · Music Box Supper Club, Cleveland · 5.5h</div></div>
-  <div class="entry"><span class="t" style="min-width:92px;">Sun 11/15</span><div class="entry-body"><em>Eric Gales</em> · Ludlow Garage, Cincinnati · 4.5h</div></div>
-</div>
-
-<div class="day-block" id="nov-late">
+<div class="day-block" id="nov-late" data-until="2026-11-30">
   <h3>November 16 to 30</h3>
   <div class="day-sub">Mountain Grass Unit and Craig Finn in Chicago, Full Cord in Holland</div>
 
@@ -175,7 +65,7 @@ blurb: "Every show worth the drive over the next six months, sorted by weekend. 
   <div class="entry"><span class="t" style="min-width:92px;">Sun 11/29</span><div class="entry-body"><b>Allman Betts Family Revival</b> · Brown County Music Center, Nashville IN · 4h (Sat 11/28 at Stifel Theatre, St. Louis · 4.5h, and Mon 11/30 at the Ryman, Nashville)</div></div>
 </div>
 
-<div class="day-block" id="dec">
+<div class="day-block" id="dec" data-until="2026-12-31">
   <h3>December</h3>
   <div class="day-sub">Spafford runs the first weekend, moe. owns the third, then New Year's</div>
 
@@ -200,7 +90,7 @@ blurb: "Every show worth the drive over the next six months, sorted by weekend. 
   <div class="entry"><span class="t" style="min-width:92px;">Tue 12/29</span><div class="entry-body"><b>Spafford</b> · Vivarium, Milwaukee · 1.5h (runs through Thu 12/31, but you have Greensky those nights)</div></div>
 </div>
 
-<div class="day-block" id="winter">
+<div class="day-block" id="winter" data-until="2027-04-30">
   <h3>January to April</h3>
   <div class="day-sub">Fewer dates posted so far, so this part will grow</div>
 
@@ -221,6 +111,31 @@ blurb: "Every show worth the drive over the next six months, sorted by weekend. 
   <div class="entry"><span class="t" style="min-width:92px;">Thu to Sat</span><div class="entry-body"><em>The Wailin' Jennys</em> · Whitewater WI (Thu 4/8), Chicago (Fri 4/9) and Long Center, Lafayette IN (Sat 4/10 · 2.5h)</div></div>
 </div>
 <!-- DAYS_END -->
+<script>
+// Hides anything already in the past, so the page doesn't go stale between
+// refreshes. Single-date entries ("Tue 11/18") hide the day after; whole
+// sections hide after their data-until date. Season runs Jul 2026 to Jun 2027.
+(function () {
+  const now = new Date(); now.setHours(0, 0, 0, 0);
+  const iso = d => d.toISOString().slice(0, 10);
+  const today = iso(now);
+  document.querySelectorAll('.day-block[data-until]').forEach(b => {
+    if (b.dataset.until < today) {
+      b.style.display = 'none';
+      const link = document.querySelector('.day-nav a[href="#' + b.id + '"]');
+      if (link) link.style.display = 'none';
+    }
+  });
+  document.querySelectorAll('.day-block .entry').forEach(e => {
+    const t = e.querySelector('.t');
+    const m = t && t.textContent.match(/^\w{3} (\d{1,2})\/(\d{1,2})$/);
+    if (!m) return;
+    const mo = +m[1], d = +m[2], y = mo >= 7 ? 2026 : 2027;
+    if (iso(new Date(Date.UTC(y, mo - 1, d))) < today) e.style.display = 'none';
+  });
+})();
+</script>
+
 
 <div class="memories-section" id="memories">
   <h2>Memories</h2>
