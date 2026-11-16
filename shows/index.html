@@ -125,6 +125,42 @@ map: true
   <a class="show-trip-link" href="https://www.setlist.fm/setlist/widespread-panic/2026/riverside-theater-milwaukee-wi-23729c47.html" target="_blank" rel="noopener">View full setlist &rarr;</a>
 </div>
 
+<div class="show-entry" id="2026-10-10-chicken-wire-empire">
+  <div class="show-date">October 10, 2026</div>
+  <h3>Chicken Wire Empire</h3>
+  <div class="show-venue">The Livery, Benton Harbor, MI</div>
+  <div class="setlist">
+    <div class="setlist-lbl">Setlist</div>
+    <ol class="setlist-list">
+      <li class="setlist-set">Set 1:</li>
+      <li>Going Across the Sea</li>
+      <li>Likes of Me</li>
+      <li>Lonely Night</li>
+      <li>Ocean Tiger</li>
+      <li>Cazadero</li>
+      <li>Can’t You Hear Me</li>
+      <li>Fiddling Around</li>
+      <li>Say Goodbye</li>
+      <li>I’ll Be Gone</li>
+      <li>High Lonesome Sound</li>
+      <li>Still</li>
+      <li>Salt Creek</li>
+      <li class="setlist-set">Set 2:</li>
+      <li>Another One More</li>
+      <li>Fiddle and Song</li>
+      <li>40 West</li>
+      <li>Steam Powered Aero Plane</li>
+      <li>Manz Vibez &gt; Manzanita</li>
+      <li>Let Him Go On, Mama</li>
+      <li>If You Are Ever in Oklahoma</li>
+      <li>Ballad of Dan Toe</li>
+      <li>Northern White Clouds</li>
+      <li>Ship of Fools</li>
+    </ol>
+  </div>
+  <a class="show-trip-link" href="https://www.gratefulweb.com/articles/chicken-wire-empire-packs-the-livery-with-high-lonesome-fire/" target="_blank" rel="noopener">Read the review &rarr;</a>
+</div>
+
 <div class="show-entry" id="2026-10-04-fruition">
   <div class="show-date">October 4, 2026</div>
   <h3>Fruition</h3>
@@ -2648,7 +2684,14 @@ map: true
   // Signed in (Google or legacy token)? Getters so a sign-in elsewhere is picked up.
   const signedIn = () => !!(window.LOT && LOT.user());
 
-  function b64encode(str) { return btoa(String.fromCharCode(...new TextEncoder().encode(str))); }
+  // Chunked: spreading the whole page's bytes into fromCharCode blew the
+  // call stack once shows/index.html grew past ~125KB.
+  function b64encode(str) {
+    const bytes = new TextEncoder().encode(str);
+    let bin = '';
+    for (let i = 0; i < bytes.length; i += 0x8000) bin += String.fromCharCode.apply(null, bytes.subarray(i, i + 0x8000));
+    return btoa(bin);
+  }
   function b64decode(b64) { return new TextDecoder().decode(Uint8Array.from(atob(b64.replace(/\n/g, '')), c => c.charCodeAt(0))); }
   function escapeHtml(s) { return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
   function slugify(s) { return s.toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, ''); }
@@ -3005,7 +3048,8 @@ map: true
     'Eureka Springs, AR': [36.4012, -93.7382],
     'George, WA': [47.0910, -119.9350],
     'Paw Paw, MI': [42.2192, -85.8886],
-    'Fort Collins, CO': [40.5853, -105.0844]
+    'Fort Collins, CO': [40.5853, -105.0844],
+    'Benton Harbor, MI': [42.1167, -86.4542]
   };
   function cityFromVenue(venueText) {
     const parts = venueText.split(',').map(s => s.trim());
