@@ -21,6 +21,7 @@ blurb: "Every show worth the drive from now into next summer, sorted by date. Bo
     <div><dt>Fri to Sat, Dec 11 to 12</dt><dd><b>Goose</b> · Goosemas, both nights · Jim Whelan Boardwalk Hall, Atlantic City · <a href="{{ '/trips/goosemas-2026/' | relative_url }}">trip plan</a></dd></div>
     <div><dt>Wed to Thu, Dec 30 to 31</dt><dd><b>Greensky Bluegrass</b> · The Salt Shed, Chicago</dd></div>
     <div><dt>Fri to Sat, Jan 1 to 2</dt><dd><b>Greensky Bluegrass</b> · Wings Event Center, Kalamazoo</dd></div>
+    <div><dt>Fri to Sat, Feb 19 to 20</dt><dd><b>Billy Strings</b> · Bridgestone Arena, Nashville · <a href="{{ '/trips/nashville-2027/' | relative_url }}">trip plan</a></dd></div>
     <div><dt>Tue, Apr 13</dt><dd><b>Billy Strings</b> · St. Augustine Amphitheatre, St. Augustine FL · <a href="{{ '/trips/st-augustine-2027/' | relative_url }}">trip plan</a></dd></div>
     <div><dt>Thu to Fri, Aug 5 to 6</dt><dd><b>Billy Strings</b> and <b>Dave Matthews</b> · Wildlands, Big Sky Events Arena, Big Sky MT · <a href="{{ '/trips/wildlands-2027/' | relative_url }}">trip plan</a></dd></div>
   </dl>
