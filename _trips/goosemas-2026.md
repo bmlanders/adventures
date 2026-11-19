@@ -10,6 +10,7 @@ map:
   - { name: "Jim Whelan Boardwalk Hall", lat: 39.3549, lng: -74.4372 }
 shows:
   - { id: "2026-12-11-goose", label: "Goose · December 11, 2026" }
+  - { id: "2026-12-12-dogs-in-a-pile", label: "Dogs In A Pile · late night, December 11, 2026" }
   - { id: "2026-12-12-goose", label: "Goose · December 12, 2026" }
 ---
 
@@ -25,12 +26,14 @@ shows:
 
 <div class="day-block">
   <h3>Friday, Dec 11 · Goosemas Night One</h3>
-  <div class="day-sub">Jim Whelan Boardwalk Hall, first of two</div>
+  <div class="day-sub">Jim Whelan Boardwalk Hall, first of two, then Dogs In A Pile late night at the Hard Rock</div>
   <dl class="facts">
     <div><dt>Show</dt><dd>Goosemas Night One &middot; Jim Whelan Boardwalk Hall</dd></div>
+    <div><dt>Late night</dt><dd>Dogs In A Pile &middot; Sound Waves at Hard Rock Hotel &amp; Casino &middot; 1:00 AM (technically Sat) &middot; GA standing, tickets on Jen's Ticketmaster</dd></div>
   </dl>
   <div class="entry">Goose's first-ever shows in Atlantic City, and the 13th annual Goosemas run, always themed, always a batch of cover debuts nobody saw coming.</div>
   <a class="trip-shows-link" href="{{ '/shows/' | relative_url }}#2026-12-11-goose">Setlist &amp; notes &rarr;</a>
+  <a class="trip-shows-link" href="{{ '/shows/' | relative_url }}#2026-12-12-dogs-in-a-pile">Late-night setlist &amp; notes &rarr;</a>
 </div>
 
 <div class="day-block">

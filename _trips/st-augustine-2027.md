@@ -23,6 +23,7 @@ shows:
   <div class="day-sub">ORD to JAX, then down the coast to the condo</div>
   <dl class="facts">
     <div><dt>Flight</dt><dd>UA 3657, ORD &rarr; JAX nonstop &middot; departs 7:15 AM CDT, arrives 11:04 AM EDT</dd></div>
+    <div><dt>Car</dt><dd>Hertz at JAX &middot; Nissan Pathfinder or similar (7-passenger SUV) &middot; pickup 11:30 AM at the counter in baggage claim</dd></div>
     <div><dt>Stay</dt><dd>Airbnb condo at Seaside at Anastasia, St. Augustine Beach &middot; check-in after 3:00 PM</dd></div>
   </dl>
 </div>
@@ -38,9 +39,10 @@ shows:
 
 <div class="day-block" id="apr18">
   <h3>Sunday, Apr 18 · Home</h3>
-  <div class="day-sub">Out of the condo, flight home still to book</div>
+  <div class="day-sub">Out of the condo, car back at JAX, flight home still to book</div>
   <dl class="facts">
     <div><dt>Checkout</dt><dd>10:00 AM</dd></div>
+    <div><dt>Car</dt><dd>Return to Hertz at JAX by 11:30 AM &middot; follow Rental Car Return signs into the garage</dd></div>
     <div><dt>Flight</dt><dd>Not booked yet</dd></div>
   </dl>
 </div>

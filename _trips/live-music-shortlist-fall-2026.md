@@ -18,10 +18,11 @@ blurb: "Every show worth the drive from now into next summer, sorted by date. Bo
   <div class="day-sub">These are locked, so everything below works around them</div>
 
   <dl class="facts">
-    <div><dt>Fri to Sat, Dec 11 to 12</dt><dd><b>Goose</b> · Goosemas, both nights · Jim Whelan Boardwalk Hall, Atlantic City · <a href="{{ '/trips/goosemas-2026/' | relative_url }}">trip plan</a></dd></div>
-    <div><dt>Wed to Thu, Dec 30 to 31</dt><dd><b>Greensky Bluegrass</b> · The Salt Shed, Chicago</dd></div>
+    <div><dt>Fri to Sat, Dec 11 to 12</dt><dd><b>Goose</b> · Goosemas, both nights · Jim Whelan Boardwalk Hall, Atlantic City, plus <em>Dogs In A Pile</em> late night Fri at the Hard Rock · <a href="{{ '/trips/goosemas-2026/' | relative_url }}">trip plan</a></dd></div>
+    <div><dt>Wed to Thu, Dec 30 to 31</dt><dd><b>Greensky Bluegrass</b> · The Salt Shed, Chicago · 2-day GA floor passes, 7:00 PM Wed and 8:30 PM Thu</dd></div>
     <div><dt>Fri to Sat, Jan 1 to 2</dt><dd><b>Greensky Bluegrass</b> · Wings Event Center, Kalamazoo</dd></div>
     <div><dt>Fri to Sat, Feb 19 to 20</dt><dd><b>Billy Strings</b> · Bridgestone Arena, Nashville · <a href="{{ '/trips/nashville-2027/' | relative_url }}">trip plan</a></dd></div>
+    <div><dt>Thu, Mar 11</dt><dd><em>Andy Falco &amp; Travis Book</em> · Jerry Garcia Duo · Ludlow Garage, Cincinnati · 7:30 PM ET · 4 seats, Sec 2 Row D</dd></div>
     <div><dt>Tue, Apr 13</dt><dd><b>Billy Strings</b> · St. Augustine Amphitheatre, St. Augustine FL · <a href="{{ '/trips/st-augustine-2027/' | relative_url }}">trip plan</a></dd></div>
     <div><dt>Thu to Fri, Aug 5 to 6</dt><dd><b>Billy Strings</b> and <b>Dave Matthews</b> · Wildlands, Big Sky Events Arena, Big Sky MT · <a href="{{ '/trips/wildlands-2027/' | relative_url }}">trip plan</a></dd></div>
   </dl>
@@ -128,7 +129,6 @@ blurb: "Every show worth the drive from now into next summer, sorted by date. Bo
   <div class="entry"><span class="t" style="min-width:92px;">Sat 3/6</span><div class="entry-body"><b>Sam Bush</b> · North Shore Center, Skokie · 45 min</div></div>
   <div class="entry"><span class="t" style="min-width:92px;">Sat 3/6</span><div class="entry-body"><b>Pigeons Playing Ping Pong</b> · Headliners Music Hall, Louisville · 5h. Earlier that week they hit Turner Hall in Milwaukee, The Sovereign in St. Louis and the Varsity in Minneapolis, exact dates not posted yet.</div></div>
   <div class="entry"><span class="t" style="min-width:92px;">Thu 3/11</span><div class="entry-body"><b>Warren Haynes</b> · Schermerhorn Symphony Center, Nashville · Mar 11 to 12 · 7h</div></div>
-  <div class="entry"><span class="t" style="min-width:92px;">Thu 3/11</span><div class="entry-body"><em>Andy Falco &amp; Travis Book</em> · Ludlow Garage, Cincinnati · 4.5h</div></div>
   <div class="entry"><span class="t" style="min-width:92px;">Sat 3/13</span><div class="entry-body"><b>Greensky Bluegrass</b> with Miles Miller · Riverside Theater, Milwaukee · 1.5h (Fri 3/12 at the Palace Theatre, St. Paul)</div></div>
   <div class="entry"><span class="t" style="min-width:92px;">Tue 3/16</span><div class="entry-body"><b>Greensky Bluegrass</b> · Blue Gate Performing Arts Center, Shipshewana IN · 2.5h, about 1.5h from Hartford</div></div>
   <div class="entry"><span class="t" style="min-width:92px;">Thu 3/18</span><div class="entry-body"><b>Greensky Bluegrass</b> · The Pageant, St. Louis · 4.5h</div></div>
