@@ -28,10 +28,10 @@ shows:
   <dl class="facts">
     <div><dt>Flight 1</dt><dd>UA 2666, ORD &rarr; DEN &middot; departs 5:00 AM CDT, arrives 6:42 AM MDT</dd></div>
     <div><dt>Flight 2</dt><dd>UA 348, DEN &rarr; BZN &middot; departs 8:01 AM MDT, arrives 9:47 AM MDT</dd></div>
-    <div><dt>Car</dt><dd>Rental at BZN &middot; pickup 10:30 AM</dd></div>
+    <div><dt>Car</dt><dd>National at BZN (Gallatin Field) &middot; pickup 11:30 AM MDT &middot; midsize, Emerald Aisle</dd></div>
     <div><dt>Lunch</dt><dd>Livingston: Gil's Goods or the Murray Bar, both downtown</dd></div>
     <div><dt>Afternoon</dt><dd>US-89 down Paradise Valley to Chico Hot Springs in Pray &middot; soak in the two outdoor pools</dd></div>
-    <div><dt>Dinner</dt><dd>Chico Historic Dining Room &middot; reservation needed, summer books up &middot; backup: The Grill at Sage Lodge, also in Pray</dd></div>
+    <div><dt>Dinner</dt><dd>Chico Dining Room, 163 Chico Rd, Pray &middot; 7:00 PM reservation for 2 &middot; table held 15 minutes</dd></div>
     <div><dt>Stay</dt><dd>Yellowstone Village Inn &amp; Suites, 1102 Scott St W, Gardiner &middot; 2 nights &middot; check-in from 4:00 PM &middot; Chico to Gardiner is about 30 miles</dd></div>
     <div><dt>Park pass</dt><dd>$35 private-vehicle pass, good 7 days &middot; buy ahead on Recreation.gov</dd></div>
   </dl>
@@ -61,7 +61,7 @@ shows:
     <div><dt>Afternoon</dt><dd>Grand Canyon of the Yellowstone: Artist Point, Brink of the Lower Falls, North Rim Drive</dd></div>
     <div><dt>Late afternoon</dt><dd>Hayden Valley south to Lake &middot; prime bison and bear country</dd></div>
     <div><dt>Dinner</dt><dd>Lake Yellowstone Hotel Dining Room &middot; the park's best restaurant &middot; reservation required, opens 30 days out for in-park guests (about Jul 3)</dd></div>
-    <div><dt>Stay</dt><dd>Lake Lodge Cabins &middot; nightcap on the lodge porch</dd></div>
+    <div><dt>Stay</dt><dd>Lake Lodge Cabins &middot; Frontier Cabin &middot; check-in 4:00 PM &middot; no internet, spotty cell &middot; nightcap on the lodge porch</dd></div>
   </dl>
 </div>
 
@@ -69,13 +69,14 @@ shows:
   <h3>Tuesday, Aug 3 · Lake to Old Faithful</h3>
   <div class="day-sub">Along the lake and over Craig Pass to the geysers</div>
   <dl class="facts">
+    <div><dt>Checkout</dt><dd>11:00 AM at Lake Lodge</dd></div>
     <div><dt>Breakfast</dt><dd>Coffee on the Lake Yellowstone Hotel veranda</dd></div>
     <div><dt>Morning</dt><dd>West Thumb Geyser Basin</dd></div>
     <div><dt>Afternoon</dt><dd>Upper Geyser Basin: Old Faithful, Grand Geyser, Morning Glory Pool</dd></div>
     <div><dt>Drinks</dt><dd>Old Faithful Inn Mezzanine Bar, opens 4:30 PM</dd></div>
     <div><dt>Dinner</dt><dd>Old Faithful Inn Dining Room &middot; reservation required</dd></div>
     <div><dt>Evening</dt><dd>Catch an eruption after the day-trippers leave</dd></div>
-    <div><dt>Stay</dt><dd>Old Faithful Lodge Cabins</dd></div>
+    <div><dt>Stay</dt><dd>Old Faithful Lodge Cabins &middot; Frontier Cabin &middot; check-in 4:00 PM</dd></div>
   </dl>
 </div>
 
@@ -83,6 +84,7 @@ shows:
   <h3>Wednesday, Aug 4 · Grand Prismatic, then Big Sky</h3>
   <div class="day-sub">Geysers early, out the West Entrance and up the Gallatin</div>
   <dl class="facts">
+    <div><dt>Checkout</dt><dd>11:00 AM at Old Faithful Lodge</dd></div>
     <div><dt>Early</dt><dd>Grand Prismatic before the lot fills &middot; Fairy Falls trailhead overlook for the view from above</dd></div>
     <div><dt>Late morning</dt><dd>Firehole Lake Drive and Fountain Paint Pot</dd></div>
     <div><dt>Lunch</dt><dd>West Yellowstone: Firehole Bar-B-Que Co. (smoked brisket, bison sausage)</dd></div>
@@ -130,7 +132,7 @@ shows:
   <div class="day-sub">Out of the condo, back to BZN</div>
   <dl class="facts">
     <div><dt>Checkout</dt><dd>11:00 AM</dd></div>
-    <div><dt>Car</dt><dd>Return at BZN &middot; 12:00 PM placeholder, adjust once the flight is booked</dd></div>
+    <div><dt>Car</dt><dd>Return to National at BZN &middot; 11:30 AM MDT</dd></div>
     <div><dt>Flight</dt><dd>Not booked yet</dd></div>
   </dl>
 </div>
