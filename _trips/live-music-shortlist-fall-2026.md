@@ -37,15 +37,11 @@ blurb: "Every show worth the drive from now into next summer, sorted by date. Bo
 
 <div class="day-block" id="new">
   <h3>New since the last update</h3>
-  <div class="day-sub">Updated Nov 23, 2026</div>
+  <div class="day-sub">Updated Nov 25, 2026</div>
 
-  <div class="entry"><span class="t" style="min-width:92px;">Sun 3/14</span><div class="entry-body"><em>Dan Tyminski</em>, The Caverns, Pelham TN</div></div>
-  <div class="entry"><span class="t" style="min-width:92px;">Sat 4/17</span><div class="entry-body"><em>Foy Vance</em>, Thalia Hall, Chicago</div></div>
-  <div class="entry"><span class="t" style="min-width:92px;">Sun 5/2</span><div class="entry-body"><em>Trampled by Turtles</em>, The Caverns, Pelham TN</div></div>
-  <div class="entry"><span class="t" style="min-width:92px;">Thu 5/6</span><div class="entry-body"><b>Jason Isbell &amp; the 400 Unit</b> and <b>Drive-By Truckers</b>, Summer of Joy tour, Nashville (two nights), then St. Louis 5/11 and Kansas City 5/16</div></div>
-  <div class="entry"><span class="t" style="min-width:92px;">Tue 5/11</span><div class="entry-body"><b>Little Feat</b>, Shipshewana IN (and Des Moines 5/10)</div></div>
-  <div class="entry"><span class="t" style="min-width:92px;">Aug 4 to 9</span><div class="entry-body"><b>Jason Isbell &amp; the 400 Unit</b> and <b>Drive-By Truckers</b>, Detroit, Chicago (two nights), Indianapolis and Cincinnati</div></div>
-  <div class="entry"><span class="t" style="min-width:92px;">Changed</span><div class="entry-body">St. Augustine now has Billy on Mon 4/12 too and all three Goose nights (4/15 to 4/17), so they're up in Booked along with Rhythm &amp; Sails in May. The page runs through August now to catch the Summer of Joy dates.</div></div>
+  <div class="entry"><span class="t" style="min-width:92px;">Sat 2/27</span><div class="entry-body"><em>The High Kings</em>, The Vic, Chicago (Fri 2/26 at the Pabst, Milwaukee)</div></div>
+  <div class="entry"><span class="t" style="min-width:92px;">Thu 3/4</span><div class="entry-body"><b>Pigeons Playing Ping Pong</b>, Turner Hall, Milwaukee (Wed 3/3 Minneapolis, Fri 3/5 St. Louis)</div></div>
+  <div class="entry"><span class="t" style="min-width:92px;">Changed</span><div class="entry-body">Pigeons finally posted the exact dates for their early March Midwest run, so Milwaukee and St. Louis have their own entries now. Quiet couple of days otherwise.</div></div>
 </div>
 
 <div class="day-block" id="nov-late" data-until="2026-11-30">
@@ -83,7 +79,7 @@ blurb: "Every show worth the drive from now into next summer, sorted by date. Bo
 
 <div class="day-block" id="winter" data-until="2027-04-30">
   <h3>January to April</h3>
-  <div class="day-sub">Yonder in Evanston, Spafford and Greensky in February, then Greensky's big March swing through the Midwest and Dan Tyminski at The Caverns</div>
+  <div class="day-sub">Yonder in Evanston, Spafford and Greensky in February, The High Kings at the Vic, Pigeons in Milwaukee, then Greensky's big March swing through the Midwest and Dan Tyminski at The Caverns</div>
 
   <div class="entry"><span class="t" style="min-width:92px;">Thu 1/7</span><div class="entry-body"><em>G. Love &amp; Special Sauce</em> · Moontown Brewing, Whitestown IN · 3h (Wed 1/6 at Blueberry Hill, St. Louis)</div></div>
   <div class="entry"><span class="t" style="min-width:92px;">Fri to Sat</span><div class="entry-body"><em>Chicago Farmer</em> · Hey Nonny, Arlington Heights · Jan 15 to 16 · 1h</div></div>
@@ -103,8 +99,11 @@ blurb: "Every show worth the drive from now into next summer, sorted by date. Bo
   <div class="entry"><span class="t" style="min-width:92px;">Sun 2/21</span><div class="entry-body"><b>Buffalo Traffic Jam</b> · The Sylvee, Madison · 2.5h (Fri 2/19 at First Avenue, Minneapolis). Both sold out, so resale only.</div></div>
   <div class="entry"><span class="t" style="min-width:92px;">Sun 2/21</span><div class="entry-body"><em>Shovels &amp; Rope</em> · St. Cecilia, Grand Rapids (Tue 2/23 at Turntable, Indianapolis)</div></div>
   <div class="entry"><span class="t" style="min-width:92px;">Fri 2/26</span><div class="entry-body"><em>Altan</em>, the Donegal trad band · Ludlow Garage, Cincinnati · 4.5h</div></div>
+  <div class="entry"><span class="t" style="min-width:92px;">Sat 2/27</span><div class="entry-body"><em>The High Kings</em>, the Irish folk group, Power of the People tour · The Vic, Chicago · local (Fri 2/26 at the Pabst Theater, Milwaukee · 1.5h)</div></div>
+  <div class="entry"><span class="t" style="min-width:92px;">Thu 3/4</span><div class="entry-body"><b>Pigeons Playing Ping Pong</b> with Hot Like Mars · Turner Hall Ballroom, Milwaukee · 1.5h (Wed 3/3 in Minneapolis)</div></div>
+  <div class="entry"><span class="t" style="min-width:92px;">Fri 3/5</span><div class="entry-body"><b>Pigeons Playing Ping Pong</b> with Hot Like Mars · The Sovereign, St. Louis · 4.5h</div></div>
   <div class="entry"><span class="t" style="min-width:92px;">Sat 3/6</span><div class="entry-body"><b>Sam Bush</b> · North Shore Center, Skokie · 45 min</div></div>
-  <div class="entry"><span class="t" style="min-width:92px;">Sat 3/6</span><div class="entry-body"><b>Pigeons Playing Ping Pong</b> · Headliners Music Hall, Louisville · 5h. Earlier that week they hit Turner Hall in Milwaukee, The Sovereign in St. Louis and the Varsity in Minneapolis, exact dates not posted yet.</div></div>
+  <div class="entry"><span class="t" style="min-width:92px;">Sat 3/6</span><div class="entry-body"><b>Pigeons Playing Ping Pong</b> with Hot Like Mars · Headliners Music Hall, Louisville · 5h, last night of the run</div></div>
   <div class="entry"><span class="t" style="min-width:92px;">Thu 3/11</span><div class="entry-body"><b>Warren Haynes</b> · Schermerhorn Symphony Center, Nashville · Mar 11 to 12 · 7h</div></div>
   <div class="entry"><span class="t" style="min-width:92px;">Sat 3/13</span><div class="entry-body"><b>Greensky Bluegrass</b> with Miles Miller · Riverside Theater, Milwaukee · 1.5h (Fri 3/12 at the Palace Theatre, St. Paul)</div></div>
   <div class="entry"><span class="t" style="min-width:92px;">Sun 3/14</span><div class="entry-body"><em>Dan Tyminski</em> · The Caverns, Pelham TN · 8h</div></div>
