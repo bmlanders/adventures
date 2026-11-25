@@ -22,6 +22,12 @@ shows:
   <a href="#dec10">Thu 12/10</a><a href="#dec11">Fri 12/11</a><a href="#dec12">Sat 12/12</a><a href="#dec13">Sun 12/13</a><a href="#todo">To do</a><a href="#memories">Memories</a>
 </div>
 
+<a class="photo-link" href="{{ '/assets/docs/goosemas-2026-itinerary.pdf' | relative_url }}" target="_blank" rel="noopener">
+  <span class="ico"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M12 18v-6M9 15l3 3 3-3"/></svg></span>
+  <span class="txt"><span class="h">Full itinerary (PDF)</span><span class="s">Six pages: every stop with times, map, hours and logistics</span></span>
+  <span class="go"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M7 17L17 7M7 7h10v10"/></svg></span>
+</a>
+
 <!-- DAYS_START -->
 <div class="day-block" id="dec10">
   <h3>Thursday, Dec 10 · Arrival</h3>
